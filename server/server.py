@@ -16,7 +16,7 @@ def NNMF_on_microbiome_data(dataframe_in, dimensionality):
     :return: The fitted NNMF model, the NNMF defined topics, the contributing components (OTUs)
     of each topic
     """
-    nnmf_model = NMF(n_components=dimensionality, init='random', random_state=0, max_iter=1000)
+    nnmf_model = NMF(n_components=dimensionality, init='random', random_state=0, max_iter=10000)
     nnmf_topics = nnmf_model.fit_transform(dataframe_in)
     nnmf_components = nnmf_model.components_
     nnmf_topics = pd.DataFrame(nnmf_topics)
@@ -48,7 +48,5 @@ def main_function_topic_generation(dimensionality):
         cPickle.dump(nnmf_model, output_file)
 
 if __name__ == "__main__":
-    # Example dimensionalities to run
-    dimensionalities = [5, 10, 15, 20, 25, 30]
-    for dim in dimensionalities:
+    for dim in range(59, 100):
         main_function_topic_generation(dim)

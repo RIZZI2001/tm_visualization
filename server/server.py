@@ -1,13 +1,14 @@
 import pandas as pd
+import os
 import _pickle as cPickle
 from sklearn.decomposition import NMF
 
 #global variables
-input_data = 'server/Input/otus_16s_filtered.csv'
-input_metadata = 'server/Input/all_metadata_combined.csv'
-output_trained_TM_models = 'server/Output/Trained_TM_Models/'
-output_tm_components = 'server/Output/TM_Components/'
-output_tm_topics = 'server/Output/TM_Topics/'
+input_folder = 'server/Input'
+output_folder = 'server/Output'
+output_trained_TM_models = 'Trained_TM_Models'
+output_tm_components = 'TM_Components'
+output_tm_topics = 'TM_Topics'
 
 def NNMF_on_microbiome_data(dataframe_in, dimensionality):
     """ Non-negative Matrix Factorization (NNMF) on microbiome data
@@ -24,29 +25,35 @@ def NNMF_on_microbiome_data(dataframe_in, dimensionality):
     return nnmf_model, nnmf_topics, nnmf_components
 
 # Dimensionality reduction function
-def main_function_topic_generation(dimensionality):
+def main_function_topic_generation(dimensionality, file_name):
     print("Starting Topic Modeling with dimensionality: ", dimensionality)
-    # Load and prepare data: Ensuring same samples are processed
-    df = pd.read_csv(input_data, sep=',', index_col=0, header=0)
+    # Load and prepare data: use samples and sample IDs already present in the input data
+    df = pd.read_csv(input_folder + '/' + file_name + '.csv', sep=',', index_col=0, header=0)
     df = df.fillna(0)
-    # Load metadata into workspace
-    df_metadata = pd.read_csv(input_metadata, sep=',', index_col=0, header=0)
-    # create lists with sample names in microbiome data and metadata
-    n_ids = df.index.values.tolist()
-    n_ids_metadata = df_metadata.index.values.tolist()
-    # Identify the common sample ids of microbiome data and metadata
-    common_ids = [x for x in n_ids if x in n_ids_metadata]
-    df = df.loc[common_ids]  # keeping only the common samples
-    df_metadata = df_metadata.loc[common_ids]
     # Topic Modeling
     nnmf_model, nnmf_topics, nnmf_components = NNMF_on_microbiome_data(df, dimensionality)
     # Save the NNMF topics, components and model
-    nnmf_topics.index = df_metadata.index
-    nnmf_topics.to_csv(output_tm_topics + str(dimensionality) + '_topics.csv')
-    nnmf_components.to_csv(output_tm_components + str(dimensionality) + '_components.csv')
-    with open(output_trained_TM_models + str(dimensionality) + '_topic_model_' + '_model', "wb") as output_file:
+
+    # create output folder structure: output_folder/<file_name>/{Trained_TM_Models,TM_Components,TM_Topics}
+    output_base = os.path.join(output_folder, file_name)
+    topics_dir = os.path.join(output_base, output_tm_topics)
+    components_dir = os.path.join(output_base, output_tm_components)
+    models_dir = os.path.join(output_base, output_trained_TM_models)
+    os.makedirs(topics_dir, exist_ok=True)
+    os.makedirs(components_dir, exist_ok=True)
+    os.makedirs(models_dir, exist_ok=True)
+
+    # set topics index from input data and write outputs into their respective folders
+    nnmf_topics.index = df.index
+    topics_path = os.path.join(topics_dir, f"{dimensionality}_topics.csv")
+    components_path = os.path.join(components_dir, f"{dimensionality}_components.csv")
+    model_path = os.path.join(models_dir, f"{dimensionality}_topic_model_model")
+
+    nnmf_topics.to_csv(topics_path)
+    nnmf_components.to_csv(components_path)
+    with open(model_path, "wb") as output_file:
         cPickle.dump(nnmf_model, output_file)
 
 if __name__ == "__main__":
-    for dim in range(59, 100):
-        main_function_topic_generation(dim)
+    for dim in range(2, 100):
+        main_function_topic_generation(dim, 'otus_18s_filtered')

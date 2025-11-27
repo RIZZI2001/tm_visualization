@@ -4,8 +4,8 @@ import _pickle as cPickle
 from sklearn.decomposition import NMF
 
 #global variables
-input_folder = 'server/Input'
-output_folder = 'server/Output'
+input_folder = 'server/DATA/Input'
+output_folder = 'server/DATA/Output'
 output_trained_TM_models = 'Trained_TM_Models'
 output_tm_components = 'TM_Components'
 output_tm_topics = 'TM_Topics'
@@ -28,7 +28,7 @@ def NNMF_on_microbiome_data(dataframe_in, dimensionality):
 def main_function_topic_generation(dimensionality, file_name):
     print("Starting Topic Modeling with dimensionality: ", dimensionality)
     # Load and prepare data: use samples and sample IDs already present in the input data
-    df = pd.read_csv(input_folder + '/' + file_name + '.csv', sep=',', index_col=0, header=0)
+    df = pd.read_csv(input_folder + '/otus_' + file_name + '.csv', sep=',', index_col=0, header=0)
     df = df.fillna(0)
     # Topic Modeling
     nnmf_model, nnmf_topics, nnmf_components = NNMF_on_microbiome_data(df, dimensionality)
@@ -56,4 +56,4 @@ def main_function_topic_generation(dimensionality, file_name):
 
 """ if __name__ == "__main__":
     for dim in range(2, 100):
-        main_function_topic_generation(dim, 'otus_18s_filtered') """
+        main_function_topic_generation(dim, '18s') """

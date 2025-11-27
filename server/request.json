@@ -1,0 +1,40 @@
+{
+    "file": "Input/metadata.csv",
+    "table_type": "metadata",
+    "specs": {
+        "topic": {
+            "type": "list",
+            "value": [5, 7, 10, 16, 25]
+        },
+        "sample": {
+            "time": {
+                "type": "single",
+                "year": [2022],
+                "week": [20]},
+            "place": {
+                "place_type": "site",
+                "site": {
+                    "type": "all",
+                    "value": []
+                },
+                "latitude": {
+                    "type": "range",
+                    "value": [53.0, 55.0]
+                },
+                "longitude": {
+                    "type": "range",
+                    "value": [11.0, 13.0]
+                }
+            }
+        },
+        "otu": {
+            "type": "list",
+            "prefix": "otu_16s_",
+            "value": [13, 55, 297]
+        },
+        "attribute": {
+            "type": "single",
+            "value": ["temperature"]
+        }
+    }
+}

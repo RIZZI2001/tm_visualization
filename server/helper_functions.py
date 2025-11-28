@@ -136,10 +136,28 @@ def generateSampleKeys(sample_input) -> List[str]:
 
 		site_ids = df.loc[mask, "location_id"].astype(int).tolist()
 
+	# Accept 'day' either at the sample root or within the time spec (time_spec)
+	day_spec = sample.get("day", None)
+	if day_spec is None:
+		day_spec = time_spec.get("day", "all")
+
+	if isinstance(day_spec, str):
+		d = day_spec.strip().upper()
+		if d == "ALL":
+			day_markers = ['X', 'M', 'T']
+		elif d in ('X', 'M', 'T'):
+			day_markers = [d]
+		else:
+			raise HTTPException(status_code=400, detail="Invalid 'day' value; must be 'X', 'M', 'T' or 'all'")
+	else:
+		raise HTTPException(status_code=400, detail="'day' must be a string with value 'X','M','T' or 'all'")
 	# Combine
 	result: List[str] = []
 	for sid in site_ids:
 		for t in times_array:
-			result.append(f"s{int(sid):02d}X{t}")
+			for d in day_markers:
+				result.append(f"s{int(sid):02d}{d}{t}")
+
+	print(f"Generated {len(result)} sample keys")
 
 	return result

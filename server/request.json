@@ -10,7 +10,8 @@
             "time": {
                 "type": "single",
                 "year": [2022],
-                "week": [20]},
+                "week": [41]},
+                "day": "M",
             "place": {
                 "place_type": "site",
                 "site": {

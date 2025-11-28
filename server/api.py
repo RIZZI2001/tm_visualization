@@ -127,11 +127,8 @@ def get_data(attribute: str = Query(...)):
 	allowed_rows = None
 	allowed_cols = None
 	specs = payload.get("specs", {})
-
-	if row_type:
-		allowed_rows = allowed_for_axis(row_type)
-	if column_type:
-		allowed_cols = allowed_for_axis(column_type)
+	allowed_rows = allowed_for_axis(row_type)
+	allowed_cols = allowed_for_axis(column_type)
 
 	# Convert allowed lists to strings
 	if allowed_rows is not None:
@@ -139,26 +136,34 @@ def get_data(attribute: str = Query(...)):
 	if allowed_cols is not None:
 		allowed_cols = [str(x) for x in allowed_cols]
 
-	# Filter rows
+	print(f"Filtering rows ({row_type}): {allowed_rows if allowed_rows else 'none'}")
+	print(f"Filtering columns ({column_type}): {allowed_cols if allowed_cols else 'none'}")
+
+	# Filter rows: keep rows where the FIRST column value is in allowed_rows
 	if allowed_rows is not None and len(allowed_rows) > 0:
-		# Check index first
-		index_vals = [str(i) for i in df.index]
-		matches = [v for v in index_vals if v in allowed_rows]
-		if matches:
-			df = df.loc[[int(i) if i.isdigit() else i for i in matches]]
-		else:
-			# maybe samples are columns -> transpose, filter, transpose back
-			col_matches = [c for c in df.columns if str(c) in allowed_rows]
-			if col_matches:
-				df = df[col_matches]
+		try:
+			mask = df[df.columns[0]].astype(str).isin(allowed_rows)
+		except Exception:
+			mask = [str(v) in allowed_rows for v in df[df.columns[0]]]
+		df = df[mask]
+
+	print(f"Rows after filtering: {len(df)}")
 
 	# Filter columns
 	if allowed_cols is not None and len(allowed_cols) > 0:
+		# Ensure we keep the first column (sample/key) as the label column
+		key_col = df.columns[0] if len(df.columns) > 0 else None
 		col_matches = [c for c in df.columns if str(c) in allowed_cols]
+		# Prepend key_col if it's not already requested
+		if key_col is not None and key_col not in col_matches:
+			col_matches = [key_col] + col_matches
+		# Apply selection preserving order
 		if col_matches:
-			df = df[col_matches]
+			df = df[[c for c in df.columns if c in col_matches]]
 
-	# Return filtered CSV
-	csv_bytes = df.to_csv(index=True).encode("utf-8")
+	print(f"Columns after filtering: {len(df.columns)}")
+
+	# Return filtered CSV (do not write pandas index so original first column remains first)
+	csv_bytes = df.to_csv(index=False).encode("utf-8")
 	return Response(content=csv_bytes, media_type="text/csv")
 

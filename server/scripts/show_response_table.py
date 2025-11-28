@@ -27,7 +27,7 @@ def fetch_response():
     return resp.text
 
 
-def print_table(text, max_rows=20):
+def print_table(text, max_rows=200):
     df = pd.read_csv(StringIO(text), dtype=str)
     # limit rows for readability
     if len(df) > max_rows:
@@ -48,7 +48,7 @@ def save_html(df):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--html", action="store_true", help="Save and open HTML preview")
-    parser.add_argument("--rows", type=int, default=20, help="Number of rows to display in terminal")
+    parser.add_argument("--rows", type=int, default=200, help="Number of rows to display in terminal")
     args = parser.parse_args()
 
     text = fetch_response()

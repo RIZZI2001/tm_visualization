@@ -1,16 +1,16 @@
 {
-    "file": "Input/metadata.csv",
-    "table_type": "metadata",
+    "file": "Output/16s/TM_Topics/11_topics.csv",
+    "table_type": "topic",
     "specs": {
         "topic": {
             "type": "list",
-            "value": [5, 7, 10, 16, 25]
+            "value": [5, 6, 9]
         },
         "sample": {
             "time": {
-                "type": "single",
-                "year": [2022],
-                "week": [41]},
+                "type": "range",
+                "year": [2022, 2022],
+                "week": [31, 41]},
                 "day": "M",
             "place": {
                 "place_type": "site",
@@ -26,7 +26,8 @@
                     "type": "range",
                     "value": [11.0, 13.0]
                 }
-            }
+            },
+            "average": "time"
         },
         "otu": {
             "type": "list",

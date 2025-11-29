@@ -157,7 +157,5 @@ def generateSampleKeys(sample_input) -> List[str]:
 		for t in times_array:
 			for d in day_markers:
 				result.append(f"s{int(sid):02d}{d}{t}")
-
-	print(f"Generated {len(result)} sample keys")
-
+	
 	return result

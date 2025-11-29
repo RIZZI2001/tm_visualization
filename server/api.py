@@ -45,9 +45,9 @@ def get_data(attribute: str = Query(...)):
 	row_type = axis["row"]
 	column_type = axis["column"]
 
+	specs = payload.get("specs", {})
 	samplekeys = []
-	if(row_type == "sample" or column_type == "sample"):
-		specs = payload.get("specs", {})
+	if(row_type == "sample"):
 		sample = specs.get("sample")
 		if sample is None:
 			raise HTTPException(status_code=400, detail="'sample' spec must be provided under 'specs' when 'sample' is used as row or column type")
@@ -126,7 +126,6 @@ def get_data(attribute: str = Query(...)):
 	# Determine allowed rows and columns
 	allowed_rows = None
 	allowed_cols = None
-	specs = payload.get("specs", {})
 	allowed_rows = allowed_for_axis(row_type)
 	allowed_cols = allowed_for_axis(column_type)
 
@@ -163,7 +162,71 @@ def get_data(attribute: str = Query(...)):
 
 	print(f"Columns after filtering: {len(df.columns)}")
 
-	# Return filtered CSV (do not write pandas index so original first column remains first)
+	# --- sample averaging / splitting behavior ---
+	# Only act when 'sample' is used as one of the axes
+	if row_type == "sample":
+		# read sample spec and normalize 'average'
+		sample_spec = specs.get("sample", {}) if isinstance(specs, dict) else {}
+		avg_spec = sample_spec.get("average", False)
+		if isinstance(avg_spec, str):
+			aval = avg_spec.strip().lower()
+			if aval in ("false", "none"):
+				avg_spec = False
+			elif aval in ("time", "place"):
+				avg_spec = aval
+			else:
+				avg_spec = False
+
+		# Helper to split a sample-key string into (place, time)
+		def split_key(s: str):
+			s = str(s)
+			return s[0:3], s[3:8]
+
+		key_col = df.columns[0] if len(df.columns) > 0 else None
+		if key_col is None:
+			csv_bytes = df.to_csv(index=False).encode("utf-8")
+			return Response(content=csv_bytes, media_type="text/csv")
+		data_cols = list(df.columns[1:])
+		# compute place/time parts
+		s_keys = df[key_col].astype(str)
+		places = s_keys.apply(lambda x: split_key(x)[0])
+		times = s_keys.apply(lambda x: split_key(x)[1])
+
+		# Priority 1: if avg_spec requests averaging, do it (regardless of other axis size)
+		if avg_spec in ("time", "place"):
+			# convert data columns to numeric where appropriate
+			for c in data_cols:
+				df[c] = pd.to_numeric(df[c], errors="coerce")
+			working = df.copy()
+			working["__place"] = places
+			working["__time"] = times
+			if avg_spec == "time":
+				# average over time -> group by place (remaining axis = place)
+				grouped = working.groupby("__place")[data_cols].mean()
+				res = grouped
+			else:
+				# average over place -> group by time (remaining axis = time)
+				grouped = working.groupby("__time")[data_cols].mean()
+				res = grouped
+			csv_bytes = res.to_csv(index=True).encode("utf-8")
+			return Response(content=csv_bytes, media_type="text/csv")
+
+		# Priority 2: if avg_spec is False and other axis only has 1 data column, split/pivot to use unused dimension
+		if not avg_spec and len(data_cols) == 1:
+			val_col = data_cols[0]
+			pivot = df.copy()
+			pivot["__place"] = places
+			pivot["__time"] = times
+			pivot[val_col] = pd.to_numeric(pivot[val_col], errors="coerce")
+			pt = pivot.pivot_table(index="__time", columns="__place", values=val_col, aggfunc="first")
+			pt.index = pt.index.astype(str)
+			pt.columns = pt.columns.astype(str)
+			csv_bytes = pt.to_csv(index=True).encode("utf-8")
+			return Response(content=csv_bytes, media_type="text/csv")
+
+		# otherwise, no special sample splitting/averaging — fall through to return filtered CSV
+
+	# Default: return filtered CSV (do not write pandas index so original first column remains first)
 	csv_bytes = df.to_csv(index=False).encode("utf-8")
 	return Response(content=csv_bytes, media_type="text/csv")
 

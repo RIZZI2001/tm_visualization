@@ -1,6 +1,6 @@
 {
-    "file": "Output/16s/TM_Topics/11_topics.csv",
-    "table_type": "topic",
+    "file": "Input/otus_16s.csv",
+    "table_type": "otu",
     "specs": {
         "topic": {
             "type": "list",

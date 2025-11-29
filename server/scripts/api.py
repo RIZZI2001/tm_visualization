@@ -224,8 +224,17 @@ def get_data(attribute: str = Query(...)):
                     # average over place -> group by time (remaining axis = time)
                     grouped = working.groupby("__time")[data_cols].mean()
                     res = grouped
-                csv_bytes = res.to_csv(index=True).encode("utf-8")
-                return Response(content=csv_bytes, media_type="text/csv")
+                # build axis metadata: sample was averaged -> remaining axis is the grouping key
+                out_row_type = "place" if avg_spec == "time" else "time"
+                out_col_type = column_type
+                # prepare response CSV and axis values
+                resp_df = grouped.reset_index()
+                csv_str = resp_df.to_csv(index=False)
+                payload = {
+                    "csv": csv_str,
+                    "axis": [out_row_type, out_col_type]
+                }
+                return Response(content=json.dumps(payload), media_type="application/json")
 
             # Priority 2: if avg_spec is False and other axis only has 1 data column, split/pivot to use unused dimension
             if not avg_spec and len(data_cols) == 1:
@@ -237,11 +246,28 @@ def get_data(attribute: str = Query(...)):
                 pt = pivot.pivot_table(index="__time", columns="__place", values=val_col, aggfunc="first")
                 pt.index = pt.index.astype(str)
                 pt.columns = pt.columns.astype(str)
-                csv_bytes = pt.to_csv(index=True).encode("utf-8")
-                return Response(content=csv_bytes, media_type="text/csv")
+                # pivot produced time x place table
+                resp_df = pt.reset_index()
+                csv_str = resp_df.to_csv(index=False)
+                payload = {
+                    "csv": csv_str,
+                    "axis": ["time", "place"]
+                }
+                return Response(content=json.dumps(payload), media_type="application/json")
 
             # otherwise, no special sample splitting/averaging — fall through to return filtered CSV
 
     # Default: return filtered CSV (do not write pandas index so original first column remains first)
-    csv_bytes = df.to_csv(index=False).encode("utf-8")
-    return Response(content=csv_bytes, media_type="text/csv")
+    # Prepare axis metadata reflecting current df layout
+    # If df has a meaningful index (not RangeIndex), treat index as row labels; otherwise use first column as row labels
+    # Always return CSV without pandas index column. Ensure any meaningful index becomes a column.
+    resp_df = df.reset_index(drop=True)
+    csv_str = resp_df.to_csv(index=False)
+    out_row_type = row_type
+    out_col_type = column_type
+
+    payload = {
+        "csv": csv_str,
+        "axis": [out_row_type, out_col_type]
+    }
+    return Response(content=json.dumps(payload), media_type="application/json")

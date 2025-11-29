@@ -5,7 +5,9 @@ import pandas as pd
 from fastapi import HTTPException
 from pathlib import Path
 
-DATA_DIR = Path(__file__).resolve().parents[1] / "server/DATA"
+# DATA_DIR is repo_root / "server/DATA"
+# `parents[1]` is the `server` folder, so join with "DATA" (avoid duplicate 'server/server')
+DATA_DIR = Path(__file__).resolve().parents[1] / "DATA"
 
 def generateSampleKeys(sample_input) -> List[str]:
 	"""Generate sample keys `s<site_id>X<WWYY>` from the provided sample spec.
@@ -157,5 +159,5 @@ def generateSampleKeys(sample_input) -> List[str]:
 		for t in times_array:
 			for d in day_markers:
 				result.append(f"s{int(sid):02d}{d}{t}")
-	
+
 	return result

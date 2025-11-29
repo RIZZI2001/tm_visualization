@@ -2,13 +2,16 @@ import pandas as pd
 import os
 import _pickle as cPickle
 from sklearn.decomposition import NMF
+from pathlib import Path
 
-#global variables
-input_folder = 'server/DATA/Input'
-output_folder = 'server/DATA/Output'
-output_trained_TM_models = 'Trained_TM_Models'
-output_tm_components = 'TM_Components'
-output_tm_topics = 'TM_Topics'
+# base dir (the `server` folder)
+# For scripts under `server/scripts`, parents[1] yields the `server` directory.
+BASE_DIR = Path(__file__).resolve().parents[1]
+INPUT_FOLDER = BASE_DIR / 'DATA' / 'Input'
+OUTPUT_FOLDER = BASE_DIR / 'DATA' / 'Output'
+OUTPUT_TRAINED_TM_MODELS = 'Trained_TM_Models'
+OUTPUT_TM_COMPONENTS = 'TM_Components'
+OUTPUT_TM_TOPICS = 'TM_Topics'
 
 def NNMF_on_microbiome_data(dataframe_in, dimensionality):
     """ Non-negative Matrix Factorization (NNMF) on microbiome data
@@ -24,21 +27,22 @@ def NNMF_on_microbiome_data(dataframe_in, dimensionality):
     nnmf_components = pd.DataFrame(nnmf_components, columns=dataframe_in.columns)
     return nnmf_model, nnmf_topics, nnmf_components
 
+
 # Dimensionality reduction function
 def main_function_topic_generation(dimensionality, file_name):
     print("Starting Topic Modeling with dimensionality: ", dimensionality)
     # Load and prepare data: use samples and sample IDs already present in the input data
-    df = pd.read_csv(input_folder + '/otus_' + file_name + '.csv', sep=',', index_col=0, header=0)
+    df = pd.read_csv(str(INPUT_FOLDER / f'otus_{file_name}.csv'), sep=',', index_col=0, header=0)
     df = df.fillna(0)
     # Topic Modeling
     nnmf_model, nnmf_topics, nnmf_components = NNMF_on_microbiome_data(df, dimensionality)
     # Save the NNMF topics, components and model
 
     # create output folder structure: output_folder/<file_name>/{Trained_TM_Models,TM_Components,TM_Topics}
-    output_base = os.path.join(output_folder, file_name)
-    topics_dir = os.path.join(output_base, output_tm_topics)
-    components_dir = os.path.join(output_base, output_tm_components)
-    models_dir = os.path.join(output_base, output_trained_TM_models)
+    output_base = os.path.join(str(OUTPUT_FOLDER), file_name)
+    topics_dir = os.path.join(output_base, OUTPUT_TM_TOPICS)
+    components_dir = os.path.join(output_base, OUTPUT_TM_COMPONENTS)
+    models_dir = os.path.join(output_base, OUTPUT_TRAINED_TM_MODELS)
     os.makedirs(topics_dir, exist_ok=True)
     os.makedirs(components_dir, exist_ok=True)
     os.makedirs(models_dir, exist_ok=True)
@@ -53,6 +57,7 @@ def main_function_topic_generation(dimensionality, file_name):
     nnmf_components.to_csv(components_path)
     with open(model_path, "wb") as output_file:
         cPickle.dump(nnmf_model, output_file)
+
 
 """ if __name__ == "__main__":
     for dim in range(2, 100):

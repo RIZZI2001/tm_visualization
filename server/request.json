@@ -1,22 +1,18 @@
 {
-    "file": "Input/otus_16s.csv",
-    "table_type": "otu",
+    "file": "Output/16s/TM_Components/11_components.csv",
+    "table_type": "component",
     "specs": {
-        "topic": {
-            "type": "list",
-            "value": [5, 6, 9]
-        },
         "sample": {
             "time": {
-                "type": "range",
-                "year": [2022, 2022],
-                "week": [31, 41]},
-                "day": "M",
+                "type": "all",
+                "year": [],
+                "week": []},
+                "day": "all",
             "place": {
                 "place_type": "site",
                 "site": {
-                    "type": "all",
-                    "value": []
+                    "type": "range",
+                    "value": [2, 15]
                 },
                 "latitude": {
                     "type": "range",
@@ -27,16 +23,19 @@
                     "value": [11.0, 13.0]
                 }
             },
-            "average": "time"
+            "average": "false"
+        },
+        "attribute": {
+            "type": "list",
+            "value": ["f0"]
         },
         "otu": {
             "type": "list",
             "prefix": "otu_16s_",
-            "value": [13, 55, 297]
+            "value": [2, 3, 1]
         },
-        "attribute": {
-            "type": "single",
-            "value": ["temperature"]
+        "topic": {
+            "type": "all"
         }
     }
 }

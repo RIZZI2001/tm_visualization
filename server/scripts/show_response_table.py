@@ -24,7 +24,18 @@ def fetch_response():
     payload = json.loads(REQ_PATH.read_text())
     resp = requests.get(API_URL, params={"attribute": json.dumps(payload)})
     resp.raise_for_status()
-    return resp.text
+    # The API may return plain CSV text or a JSON object like {"csv": "...", "axis": [...]}
+    text = resp.text
+    try:
+        obj = json.loads(text)
+    except Exception:
+        return text, None
+
+    # If it's a JSON wrapper with a csv key, extract it
+    if isinstance(obj, dict) and "csv" in obj:
+        return obj.get("csv", ""), obj.get("axis")
+    # Otherwise fall back to returning the raw text
+    return text, None
 
 
 def print_table(text, max_rows=200):
@@ -51,8 +62,17 @@ def main():
     parser.add_argument("--rows", type=int, default=200, help="Number of rows to display in terminal")
     args = parser.parse_args()
 
-    text = fetch_response()
+    text, axis = fetch_response()
     df = print_table(text, max_rows=args.rows)
+    # Print axis metadata after the CSV table when present
+    if axis is not None:
+        try:
+            pretty = json.dumps(axis, indent=2)
+        except Exception:
+            pretty = str(axis)
+        print("\nAxis metadata:")
+        print(pretty)
+
     if args.html:
         save_html(df)
 

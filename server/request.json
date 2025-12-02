@@ -1,18 +1,18 @@
 {
-    "file": "Output/16s/TM_Components/11_components.csv",
-    "table_type": "component",
+    "file": "Output/16s/TM_Topics/3_topics.csv",
+    "table_type": "topic",
     "specs": {
         "sample": {
             "time": {
-                "type": "all",
-                "year": [],
-                "week": []},
+                "type": "range",
+                "year": [2022, 2022],
+                "week": [30, 32]},
                 "day": "all",
             "place": {
                 "place_type": "site",
                 "site": {
                     "type": "range",
-                    "value": [2, 15]
+                    "value": [2, 4]
                 },
                 "latitude": {
                     "type": "range",
@@ -23,7 +23,7 @@
                     "value": [11.0, 13.0]
                 }
             },
-            "average": "false"
+            "average": "place"
         },
         "attribute": {
             "type": "list",
@@ -35,7 +35,8 @@
             "value": [2, 3, 1]
         },
         "topic": {
-            "type": "all"
+            "type": "all",
+            "value": [1]
         }
     }
 }

@@ -1,5 +1,5 @@
 // Simple CSV visualizer: parses CSV text and appends a labeled table to `root`.
-function visualizeCSV(rootEl, resp, transposed=false){
+function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
     // Try to parse CSV using d3 (handles quoted fields)
     const txt = String(resp.csv || '').trim();
     const container = document.createElement('div');
@@ -12,45 +12,11 @@ function visualizeCSV(rootEl, resp, transposed=false){
     const cols = rows.columns;
     if(!cols || cols.length < 2){ container.textContent = 'Unexpected CSV format'; return; }
 
-    function decodeTimeLabel(label){
-        if(!label) return null;
-        const s = String(label);
-        const dayChar = s.charAt(0) || 'M';
-        const week = parseInt(s.slice(1,3) || '0', 10) || 0;
-        const year2 = parseInt(s.slice(3,5) || '0', 10) || 0;
-        const year = 2000 + year2;
-        const dayMap = { 'M': 1, 'T': 4, 'X': 1 };
-        const isoWeekday = dayMap[dayChar] || 1;
-
-        const jan4 = new Date(Date.UTC(year, 0, 4));
-        const jan4Day = jan4.getUTCDay() === 0 ? 7 : jan4.getUTCDay();
-        const mon1 = new Date(Date.UTC(year, 0, 4));
-        mon1.setUTCDate(jan4.getUTCDate() - (jan4Day - 1));
-
-        const days = (week - 1) * 7 + (isoWeekday - 1);
-        const target = new Date(mon1);
-        target.setUTCDate(mon1.getUTCDate() + days);
-
-        const Y = target.getUTCFullYear();
-        const M = String(target.getUTCMonth() + 1).padStart(2, '0');
-        const D = String(target.getUTCDate()).padStart(2, '0');
-        return `${Y}-${M}-${D}`;
-    }
-
+    // displayLabel: frontend no longer decodes or renames time/sample tokens;
+    // backend provides already-decoded labels and sorting.
     const displayLabel = (token, axisPos) => {
-        if(!token) return '';
-        const axis = Array.isArray(resp && resp.axis) ? resp.axis : null;
-        const axisType = (axis[axisPos] === 'time' || axis[axisPos] === 'sample') ? axis[axisPos] : null;
-        if(axisType === 'time'){
-            return decodeTimeLabel(token);
-        }
-        if(axisType === 'sample'){
-            const prefix = String(token).slice(0,3);
-            const tpart = String(token).slice(3,8);
-            const dec = decodeTimeLabel(tpart);
-            return prefix + ':' + (dec || tpart);
-        }
-        return token;
+        if(token === null || token === undefined) return '';
+        return String(token);
     };
 
     const rows2 = d3.csvParseRows(txt);
@@ -62,47 +28,16 @@ function visualizeCSV(rootEl, resp, transposed=false){
     // determine axis types and optionally sort by date when axis is 'time' or 'sample'
     const axis = Array.isArray(resp && resp.axis) ? resp.axis : [null, null];
 
-    function parseDateToken(token, axisType){
-        if(!token) return NaN;
-        if(axisType === 'time'){
-            const d = decodeTimeLabel(token);
-            return d ? Date.parse(d) : NaN;
-        }
-        if(axisType === 'sample'){
-            const s = String(token);
-            const tpart = s.slice(3,8);
-            const d = decodeTimeLabel(tpart);
-            return d ? Date.parse(d) : NaN;
-        }
-        return NaN;
-    }
+    // No client-side date parsing/sorting — backend performs decoding and ordering.
 
     // build ordered index arrays for rows and columns
     const colIdxs = [];
     for(let c=1;c<rows2[0].length;c++) colIdxs.push(c);
-    if(axis[1] === 'time' || axis[1] === 'sample'){
-        colIdxs.sort((a,b)=>{
-            const va = parseDateToken(rows2[0][a], axis[1]);
-            const vb = parseDateToken(rows2[0][b], axis[1]);
-            const na = isNaN(va), nb = isNaN(vb);
-            if(na && nb) return a - b;
-            if(na) return 1; if(nb) return -1;
-            return va - vb;
-        });
-    }
+    // client leaves column order as provided by server
 
     const rowIdxs = [];
     for(let r=1;r<rows2.length;r++) rowIdxs.push(r);
-    if(axis[0] === 'time' || axis[0] === 'sample'){
-        rowIdxs.sort((a,b)=>{
-            const va = parseDateToken(rows2[a][0], axis[0]);
-            const vb = parseDateToken(rows2[b][0], axis[0]);
-            const na = isNaN(va), nb = isNaN(vb);
-            if(na && nb) return a - b;
-            if(na) return 1; if(nb) return -1;
-            return va - vb;
-        });
-    }
+    // client leaves row order as provided by server
 
     // parse numeric matrix in the chosen order and compute domain
     const matrix = [];
@@ -127,13 +62,15 @@ function visualizeCSV(rootEl, resp, transposed=false){
     const displayCols = transposed ? nRows : nCols;
 
     // layout sizes based on displayed dimensions
-    const cell = Math.max(15, Math.min(32, Math.floor(600 / Math.max(displayCols, displayRows))));
+    const cell_AR = (1/2); // cell aspect ratio (width/height)
+    const cell_x = Math.max(15, Math.min(32, 600 / Math.max(displayCols, displayRows)));
+    const cell_y = cell_x / cell_AR;
     const leftLabelWidth = 120;
     const topLabelHeight = 60;
     const legendHeight = 12;
 
-    const svgW = leftLabelWidth + displayCols * cell + 40;
-    const svgH = topLabelHeight + displayRows * cell + 60;
+    const svgW = leftLabelWidth + displayCols * cell_x + 40;
+    const svgH = topLabelHeight + displayRows * cell_y + 60;
 
     const svg = d3.create('svg')
         .attr('width', svgW)
@@ -153,7 +90,7 @@ function visualizeCSV(rootEl, resp, transposed=false){
     const rowG = svg.append('g').attr('transform', `translate(${leftLabelWidth - 6}, ${topLabelHeight})`);
     rowG.selectAll('text').data(displayRowLabels).enter().append('text')
         .attr('x', 0)
-        .attr('y', (_,i) => i * cell + cell/2)
+        .attr('y', (_,i) => i * cell_y + cell_y/2)
         .attr('text-anchor', 'end')
         .attr('dominant-baseline', 'middle')
         .text(d => d)
@@ -162,11 +99,11 @@ function visualizeCSV(rootEl, resp, transposed=false){
     // column label group (rotate each label around its own center) - appended after cells so labels are on top
     const colG = svg.append('g').attr('transform', `translate(${leftLabelWidth}, ${topLabelHeight})`);
     colG.selectAll('text').data(displayColLabels).enter().append('text')
-        .attr('x', (_,i) => i * cell + cell/2)
+        .attr('x', (_,i) => i * cell_x + cell_x/2)
         .attr('y', -5)
         .attr('text-anchor', 'start')
         .attr('dominant-baseline', 'middle')
-        .attr('transform', (_,i) => `rotate(-90, ${i*cell + cell/2}, ${-5})`)
+        .attr('transform', (_,i) => `rotate(-90, ${i*cell_x + cell_x/2}, ${-5})`)
         .text(d => d)
         .style('font-weight','600');
 
@@ -184,27 +121,29 @@ function visualizeCSV(rootEl, resp, transposed=false){
     }
 
     const rowsSel = cellsG.selectAll('g.row').data(displayMatrix).enter().append('g').attr('class','row')
-        .attr('transform', (_,i) => `translate(0, ${i*cell})`);
+        .attr('transform', (_,i) => `translate(0, ${i*cell_y})`);
     rowsSel.selectAll('rect').data(d => d).enter().append('rect')
-        .attr('x', (_,i) => i * cell)
+        .attr('x', (_,i) => i * cell_x)
         .attr('y', 0)
-        .attr('width', cell)
-        .attr('height', cell)
+        .attr('width', cell_x)
+        .attr('height', cell_y)
         .attr('fill', d => (!isNaN(d) ? color(d) : '#707070ff'));
 
-    // Hover behavior: expand hovered row and shrink others; no fetching/overlay
-    const expandFactor = 10;
+    // Hover behavior: expand hovered row and shrink others
+    const expandFactor = 6;
     const smallFactor = (displayRows - expandFactor) / (displayRows - 1);
     let activeExpanded = null;
 
     const rowGroups = cellsG.selectAll('g.row');
 
     function clearExpanded(){
-        rowGroups.selectAll('rect').transition().duration(150).attr('height', cell).attr('display', null);
-        rowGroups.transition().duration(150).attr('transform', (_,i) => `translate(0, ${i*cell})`);
+        rowGroups.selectAll('rect').transition().duration(150).attr('height', cell_y).attr('display', null);
+        rowGroups.transition().duration(150).attr('transform', (_,i) => `translate(0, ${i*cell_y})`);
         // move y-labels back to their original positions
-        rowG.selectAll('text').transition().duration(150).attr('y', (_,i) => i * cell + cell/2);
-        svg.transition().duration(150).attr('height', topLabelHeight + displayRows * cell + 60);
+        rowG.selectAll('text').transition().duration(150).attr('y', (_,i) => i * cell_y + cell_y/2);
+        svg.transition().duration(150).attr('height', topLabelHeight + displayRows * cell_y + 60);
+        // remove any mini heatmaps inserted into rows
+        rowGroups.selectAll('g.mini').remove();
         activeExpanded = null;
     }
 
@@ -215,8 +154,8 @@ function visualizeCSV(rootEl, resp, transposed=false){
         if(activeExpanded === i) return;
         activeExpanded = i;
 
-        const expandedH = cell * expandFactor;
-        const smallH = Math.max(1, cell * smallFactor);
+        const expandedH = cell_y * expandFactor;
+        const smallH = Math.max(1, cell_y * smallFactor);
 
         // compute new y positions
         const heights = [];
@@ -237,6 +176,92 @@ function visualizeCSV(rootEl, resp, transposed=false){
         // resize svg to fit
         const newH = topLabelHeight + cur + 40;
         svg.transition().duration(150).attr('height', newH);
+
+        // fetch detail CSV for this row/topic if basePayload provided
+        if(basePayload){
+            const topicVal = displayRowLabels[i];
+            const payload = JSON.parse(JSON.stringify(basePayload));
+            // ensure sample average is false for detail
+            if(payload.specs && payload.specs.sample) payload.specs.sample.average = "false";
+            // set topic to single
+            payload.topic = { type: 'single', value: topicVal };
+            // if original structure has specs.topic, mirror it
+            if(payload.specs) payload.specs.topic = { type: 'single', value: topicVal };
+
+            const q = encodeURIComponent(JSON.stringify(payload));
+            // remove any mini heatmaps from other rows before inserting new one
+            rowGroups.selectAll('g.mini').remove();
+
+            fetch(`/data?attribute=${q}`).then(async res=>{
+                const ct = res.headers.get('content-type')||'';
+                let txt;
+                if(ct.includes('application/json')){ const j = await res.json(); txt = j.csv || ''; }
+                else txt = await res.text();
+                if(!txt) return;
+                const miniRows = d3.csvParseRows(String(txt).trim());
+                if(!miniRows || miniRows.length<2) return;
+
+                // build mini matrix values (time x place: first row times, first column sites)
+                const mCols = miniRows[0].length - 1;
+                const mRows = miniRows.length - 1;
+                if(mCols<=0 || mRows<=0) return;
+
+                const miniVals = [];
+                const miniMat = [];
+                for(let r=1;r<miniRows.length;r++){
+                    const row = [];
+                    for(let c=1;c<miniRows[r].length;c++){
+                        const v = parseFloat(miniRows[r][c]); row.push(v); if(!isNaN(v)) miniVals.push(v);
+                    }
+                    miniMat.push(row);
+                }
+                const mvmin = miniVals.length ? Math.min(...miniVals) : 0;
+                const mvmax = miniVals.length ? Math.max(...miniVals) : 1;
+                const mcolor = d3.scaleSequential(d3.interpolateInferno).domain([mvmin,mvmax]);
+
+                // compute mini cell sizes to fit into expanded area
+                const hoveredGroup = d3.select(rowGroups.nodes()[i]);
+                // ensure any mini in hovered group removed (redundant but safe)
+                hoveredGroup.selectAll('g.mini').remove();
+                // hide the underlying cell rects in the hovered row so the
+                // mini-heatmap completely covers the area (avoids visible gaps)
+                hoveredGroup.selectAll('rect').attr('display', 'none');
+                const miniG = hoveredGroup.append('g').attr('class','mini');
+
+                // if outer heatmap is transposed, keep inner transposed as well
+                const innerTransposed = !!transposed;
+                const renderCols = innerTransposed ? mRows : mCols;
+                const renderRows = innerTransposed ? mCols : mRows;
+
+                const mCellW = Math.max(6, (displayCols * cell_x) / renderCols);
+                const mCellH = Math.max(6, (expandedH) / renderRows);
+
+                for(let rr=0; rr<renderRows; rr++){
+                    for(let cc=0; cc<renderCols; cc++){
+                        // pick value depending on inner transposition
+                        const val = innerTransposed ? miniMat[cc][rr] : miniMat[rr][cc];
+                        miniG.append('rect')
+                            .attr('x', cc * mCellW)
+                            .attr('y', rr * mCellH)
+                            .attr('width', mCellW)
+                            .attr('height', mCellH)
+                            .attr('fill', (!isNaN(val) ? mcolor(val) : '#707070ff'));
+                    }
+                }
+
+            }).catch(()=>{});
+        }
+    });
+
+    // when leaving a specific row, revert expansion if that row was active
+    rowGroups.on('mouseleave', function(event){
+        const nodes = rowGroups.nodes();
+        const i = nodes.indexOf(this);
+        if(i < 0) return;
+        // only clear if leaving the currently expanded row
+        if(activeExpanded === i){
+            clearExpanded();
+        }
     });
 
     // when mouse leaves the whole cells area, clear expanded view
@@ -255,9 +280,9 @@ function visualizeCSV(rootEl, resp, transposed=false){
             .attr('stop-color', color(vmin + t*(vmax - vmin)));
     }
 
-    const legendW = Math.min(300, displayCols * cell);
+    const legendW = Math.min(300, displayCols * cell_x);
     const legendX = leftLabelWidth;
-    const legendY = topLabelHeight + displayRows * cell + 18;
+    const legendY = topLabelHeight + displayRows * cell_y + 18;
 
     svg.append('rect')
         .attr('x', legendX)

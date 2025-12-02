@@ -22,14 +22,6 @@ var axis_categories = ['time', 'topic', 'place'];
                 "site": {
                     "type": "range",
                     "value": [2, 15]
-                },
-                "latitude": {
-                    "type": "range",
-                    "value": [53.0, 55.0]
-                },
-                "longitude": {
-                    "type": "range",
-                    "value": [11.0, 13.0]
                 }
             },
             "average": "place"
@@ -37,11 +29,6 @@ var axis_categories = ['time', 'topic', 'place'];
         "attribute": {
             "type": "list",
             "value": ["temperature"]
-        },
-        "otu": {
-            "type": "list",
-            "prefix": "otu_16s_",
-            "value": [2, 3, 1]
         },
         "topic": {
             "type": "all",

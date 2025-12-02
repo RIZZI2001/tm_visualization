@@ -192,6 +192,56 @@ function visualizeCSV(rootEl, resp, transposed=false){
         .attr('height', cell)
         .attr('fill', d => (!isNaN(d) ? color(d) : '#707070ff'));
 
+    // Hover behavior: expand hovered row and shrink others; no fetching/overlay
+    const expandFactor = 10;
+    const smallFactor = (displayRows - expandFactor) / (displayRows - 1);
+    let activeExpanded = null;
+
+    const rowGroups = cellsG.selectAll('g.row');
+
+    function clearExpanded(){
+        rowGroups.selectAll('rect').transition().duration(150).attr('height', cell).attr('display', null);
+        rowGroups.transition().duration(150).attr('transform', (_,i) => `translate(0, ${i*cell})`);
+        // move y-labels back to their original positions
+        rowG.selectAll('text').transition().duration(150).attr('y', (_,i) => i * cell + cell/2);
+        svg.transition().duration(150).attr('height', topLabelHeight + displayRows * cell + 60);
+        activeExpanded = null;
+    }
+
+    rowGroups.on('mouseenter', function(event, d){
+        const nodes = rowGroups.nodes();
+        const i = nodes.indexOf(this);
+        if(i < 0) return;
+        if(activeExpanded === i) return;
+        activeExpanded = i;
+
+        const expandedH = cell * expandFactor;
+        const smallH = Math.max(1, cell * smallFactor);
+
+        // compute new y positions
+        const heights = [];
+        for(let r=0;r<displayRows;r++) heights.push(r===i ? expandedH : smallH);
+        const yPos = [];
+        let cur = 0;
+        for(let r=0;r<displayRows;r++){ yPos.push(cur); cur += heights[r]; }
+
+        // apply new positions and heights
+        rowGroups.each(function(_,idx){
+            const g = d3.select(this);
+            g.transition().duration(150).attr('transform', `translate(0, ${yPos[idx]})`);
+            g.selectAll('rect').transition().duration(150).attr('height', heights[idx]);
+        });
+        // move y-labels together with rows
+        rowG.selectAll('text').transition().duration(150).attr('y', (_,idx) => yPos[idx] + heights[idx]/2);
+
+        // resize svg to fit
+        const newH = topLabelHeight + cur + 40;
+        svg.transition().duration(150).attr('height', newH);
+    });
+
+    // when mouse leaves the whole cells area, clear expanded view
+    cellsG.on('mouseleave', function(){ clearExpanded(); });
+
     // legend
     const defs = svg.append('defs');
     const gid = 'lg1';

@@ -62,8 +62,8 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
     const displayCols = transposed ? nRows : nCols;
 
     // layout sizes based on displayed dimensions
-    const cell_AR = (1/2); // cell aspect ratio (width/height)
-    const cell_x = Math.max(15, Math.min(32, 600 / Math.max(displayCols, displayRows)));
+    const cell_AR = (2/3); // cell aspect ratio (width/height)
+    const cell_x = Math.max(10, Math.min(32, 600 / Math.max(displayCols, displayRows)));
     const cell_y = cell_x / cell_AR;
     const leftLabelWidth = 120;
     const topLabelHeight = 60;
@@ -75,6 +75,7 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
     const svg = d3.create('svg')
         .attr('width', svgW)
         .attr('height', svgH)
+        .attr('shape-rendering', 'crispEdges')
         .style('font-family', 'Arial, Helvetica, sans-serif')
         .style('font-size', '11px');
 
@@ -127,10 +128,11 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
         .attr('y', 0)
         .attr('width', cell_x)
         .attr('height', cell_y)
-        .attr('fill', d => (!isNaN(d) ? color(d) : '#707070ff'));
+        .attr('fill', d => (!isNaN(d) ? color(d) : '#707070ff'))
+        .attr('stroke', 'none');
 
     // Hover behavior: expand hovered row and shrink others
-    const expandFactor = 6;
+    const expandFactor = 10;
     const smallFactor = (displayRows - expandFactor) / (displayRows - 1);
     let activeExpanded = null;
 
@@ -177,6 +179,11 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
         const newH = topLabelHeight + cur + 40;
         svg.transition().duration(150).attr('height', newH);
 
+        // restore any previously-hidden underlying rects and remove leftover mini maps
+        // before fetching new details, so only one mini map can exist at a time
+        rowGroups.selectAll('rect').attr('display', null);
+        rowGroups.selectAll('g.mini').remove();
+
         // fetch detail CSV for this row/topic if basePayload provided
         if(basePayload){
             const topicVal = displayRowLabels[i];
@@ -189,15 +196,14 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
             if(payload.specs) payload.specs.topic = { type: 'single', value: topicVal };
 
             const q = encodeURIComponent(JSON.stringify(payload));
-            // remove any mini heatmaps from other rows before inserting new one
-            rowGroups.selectAll('g.mini').remove();
-
             fetch(`/data?attribute=${q}`).then(async res=>{
                 const ct = res.headers.get('content-type')||'';
                 let txt;
                 if(ct.includes('application/json')){ const j = await res.json(); txt = j.csv || ''; }
                 else txt = await res.text();
                 if(!txt) return;
+                // abort if this row is no longer the active expanded row
+                if(activeExpanded !== i) return;
                 const miniRows = d3.csvParseRows(String(txt).trim());
                 if(!miniRows || miniRows.length<2) return;
 
@@ -223,6 +229,8 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
                 const hoveredGroup = d3.select(rowGroups.nodes()[i]);
                 // ensure any mini in hovered group removed (redundant but safe)
                 hoveredGroup.selectAll('g.mini').remove();
+                // abort if this row is no longer active (may have changed while fetching)
+                if(activeExpanded !== i) return;
                 // hide the underlying cell rects in the hovered row so the
                 // mini-heatmap completely covers the area (avoids visible gaps)
                 hoveredGroup.selectAll('rect').attr('display', 'none');

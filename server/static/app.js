@@ -8,7 +8,7 @@ var axis_categories = ['time', 'topic', 'place'];
   const root = document.getElementById('chart') || document.body;
 
   const payload = {
-    "file": "Output/16s/TM_Topics/20_topics.csv",
+    "file": "Output/18s/TM_Topics/50_topics.csv",
     "table_type": "topic",
     "specs": {
         "sample": {

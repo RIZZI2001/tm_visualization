@@ -8,6 +8,14 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
 
     const nRows = rows2.length - 1;
     const nCols = rows2[0].length - 1;
+    
+    // Variables for cell hover tracking
+    let hoveredCell = null;
+    let cellHighlight = null;
+    let tooltip = null;
+    
+    // Store mini-heatmap labels for tooltip access
+    let storedRowLabels = [];
 
     // Parse numeric matrix and compute domain
     const matrix = [];
@@ -31,6 +39,7 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
     const displayRows = transposed ? nCols : nRows;
     const displayCols = transposed ? nRows : nCols;
     const displayRowLabels = transposed ? colLabels : rowLabels;
+    const displayColLabels = transposed ? rowLabels : colLabels;
 
     // Compute cell dimensions
     const containerW = rootEl.clientWidth;
@@ -125,7 +134,8 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
         .attr('width', cell_x)
         .attr('height', cell_y)
         .attr('fill', d => (!isNaN(d) ? color(d) : '#707070ff'))
-        .attr('stroke', 'none');
+        .attr('stroke', 'none')
+        .datum((d, i) => ({col: i, value: d}));
 
     // Row hover expansion behavior
     const expandFactor = displayRows / 4;
@@ -153,12 +163,124 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
             labelGroups.select('.label-border').transition().duration(150)
                 .attr('height', labelCellH);
             labelsSvg.transition().duration(150).attr('height', labelContainerH);
-            // Clear 1D heatmap backgrounds
+            // Clear 1D heatmap backgrounds and place labels
             labelGroups.selectAll('g.place-heatmap-bg').selectAll('*').remove();
+            labelGroups.selectAll('g.place-labels').remove();
+            // Reset main label to right-aligned position
+            labelGroups.select('text')
+                .attr('x', '95%')
+                .attr('text-anchor', 'end');
         }
         
         activeExpanded = null;
         expandedRowBounds = null;
+        clearCellHighlight();
+    }
+    
+    function clearCellHighlight(){
+        if(cellHighlight){
+            cellHighlight.remove();
+            cellHighlight = null;
+        }
+        if(tooltip){
+            tooltip.remove();
+            tooltip = null;
+        }
+        hoveredCell = null;
+    }
+    
+    function createHighlightBorder(parent, x, y, width, height){
+        return parent.append('rect')
+            .attr('class', 'cell-highlight')
+            .attr('x', x)
+            .attr('y', y)
+            .attr('width', width)
+            .attr('height', height)
+            .attr('fill', 'none')
+            .attr('stroke', 'white')
+            .attr('stroke-width', 2)
+            .attr('pointer-events', 'none');
+    }
+    
+    function showTooltipForCell(event, rowLabel, colLabel, value){
+        if(tooltip) tooltip.remove();
+        
+        const valueStr = !isNaN(value) ? value.toFixed(3) : 'N/A';
+        let content = '';
+        if(rowLabel) content += `<strong>Site:</strong> ${rowLabel}<br>`;
+        content += `<strong>Date:</strong> ${colLabel}<br><strong>Value:</strong> ${valueStr}`;
+        
+        // Determine tooltip position - switch to left side if near right edge
+        const tooltipOffset = 15;
+        const screenWidth = window.innerWidth;
+        const nearRightEdge = event.clientX > screenWidth * 0.7;
+        
+        tooltip = d3.select('body').append('div')
+            .attr('class', 'heatmap-tooltip')
+            .style('position', 'fixed')
+            .style('background', 'rgba(0, 0, 0, 0.9)')
+            .style('color', 'white')
+            .style('padding', '10px')
+            .style('border-radius', '4px')
+            .style('font-size', '13px')
+            .style('pointer-events', 'none')
+            .style('z-index', '99999')
+            .style('border', '1px solid white')
+            .style('white-space', 'nowrap')
+            .html(content);
+        
+        // Position tooltip after creation so we can measure its width
+        const tooltipWidth = tooltip.node().offsetWidth;
+        const leftPos = nearRightEdge 
+            ? (event.clientX - tooltipWidth - tooltipOffset) + 'px'
+            : (event.clientX + tooltipOffset) + 'px';
+        
+        tooltip.style('left', leftPos)
+            .style('top', (event.clientY + tooltipOffset) + 'px');
+    }
+    
+    function highlightCollapsedCell(rowGroup, colIdx, rowIdx, event){
+        const cellKey = `collapsed-${colIdx}`;
+        if(hoveredCell === cellKey && cellHighlight) return;
+        
+        hoveredCell = cellKey;
+        if(cellHighlight) cellHighlight.remove();
+        
+        const rects = d3.select(rowGroup).selectAll('rect');
+        const rect = d3.select(rects.nodes()[colIdx]);
+        const x = parseFloat(rect.attr('x'));
+        const y = parseFloat(rect.attr('y'));
+        const width = parseFloat(rect.attr('width'));
+        const height = parseFloat(rect.attr('height'));
+        
+        cellHighlight = createHighlightBorder(d3.select(rowGroup), x, y, width, height);
+        
+        const cellData = rect.datum();
+        const rowLabel = displayRowLabels[rowIdx] || 'Unknown';
+        const colLabel = displayColLabels[colIdx] || 'Unknown';
+        showTooltipForCell(event, rowLabel, colLabel, cellData ? cellData.value : null);
+    }
+    
+    function highlightCell(rectNode, colIdx, rowIdx, event){
+        const rect = d3.select(rectNode);
+        const x = parseFloat(rect.attr('x'));
+        const y = parseFloat(rect.attr('y'));
+        const width = parseFloat(rect.attr('width'));
+        const height = parseFloat(rect.attr('height'));
+        
+        const cellKey = `${colIdx},${rowIdx}`;
+        if(hoveredCell === cellKey && cellHighlight) return;
+        
+        hoveredCell = cellKey;
+        if(cellHighlight) cellHighlight.remove();
+        
+        const expandedGroup = d3.select(rowGroups.nodes()[activeExpanded]);
+        cellHighlight = createHighlightBorder(expandedGroup, x, y, width, height);
+        
+        const cellData = rect.datum();
+        const rowLabel = storedRowLabels[cellData.row] || 'Unknown';
+        const colLabel = displayColLabels[cellData.col] || 'Unknown';
+        showTooltipForCell(event, rowLabel, colLabel, cellData.value);
     }
 
     // Simple mouse tracking approach - check which row the cursor is over
@@ -200,9 +322,70 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
                 // Use actual expanded bounds instead of calculating from equal distribution
                 const mouseY = event.clientY - heatmapRect.top;
                 if(mouseY >= expandedRowBounds.heatmapTop && mouseY <= expandedRowBounds.heatmapBottom){
-                    targetRow = activeExpanded; // Stay expanded
+                    targetRow = activeExpanded;
+                    
+                    const mouseX = event.clientX - heatmapRect.left;
+                    const expandedGroup = d3.select(rowGroups.nodes()[activeExpanded]);
+                    const miniG = expandedGroup.select('g.mini');
+                    if(!miniG.empty()){
+                        const miniRects = miniG.selectAll('rect');
+                        if(!miniRects.empty()){
+                            const firstRect = d3.select(miniRects.nodes()[0]);
+                            const rectWidth = parseFloat(firstRect.attr('width'));
+                            const rectHeight = parseFloat(firstRect.attr('height'));
+                            
+                            const rowLocalY = mouseY - expandedRowBounds.heatmapTop;
+                            const miniCol = Math.floor(mouseX / rectWidth);
+                            const miniRow = Math.floor(rowLocalY / rectHeight);
+                            
+                            let targetRect = null;
+                            miniRects.each(function(){
+                                const rectData = d3.select(this).datum();
+                                if(rectData && rectData.row === miniRow && rectData.col === miniCol){
+                                    targetRect = this;
+                                }
+                            });
+                            
+                            if(targetRect){
+                                highlightCell(targetRect, miniCol, miniRow, event);
+                            } else {
+                                clearCellHighlight();
+                            }
+                        }
+                    } else {
+                        clearCellHighlight();
+                    }
+                } else {
+                    clearCellHighlight();
                 }
+            } else {
+                clearCellHighlight();
             }
+        } else if(targetRow === -1){
+            // Check if hovering over a collapsed row
+            const heatmapRect = svg.node().getBoundingClientRect();
+            if(event.clientX >= heatmapRect.left && event.clientX <= heatmapRect.right &&
+               event.clientY >= heatmapRect.top && event.clientY <= heatmapRect.bottom){
+                const mouseY = event.clientY - heatmapRect.top;
+                const mouseX = event.clientX - heatmapRect.left;
+                const collapsedRowIdx = Math.floor(mouseY / cell_y);
+                
+                if(collapsedRowIdx >= 0 && collapsedRowIdx < displayRows){
+                    const colIdx = Math.floor(mouseX / cell_x);
+                    if(colIdx >= 0 && colIdx < displayCols){
+                        const rowGroup = rowGroups.nodes()[collapsedRowIdx];
+                        highlightCollapsedCell(rowGroup, colIdx, collapsedRowIdx, event);
+                    } else {
+                        clearCellHighlight();
+                    }
+                } else {
+                    clearCellHighlight();
+                }
+            } else {
+                clearCellHighlight();
+            }
+        } else {
+            clearCellHighlight();
         }
         
         // Update expansion if needed
@@ -213,7 +396,7 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
             collapseTimeout = setTimeout(() => {
                 clearExpanded();
                 collapseTimeout = null;
-            }, 100);
+            }, 10);
         }
     }
     
@@ -222,7 +405,15 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
         
         // Clear previous expansion if switching to a different row
         if(activeExpanded !== null && activeExpanded !== i){
-            labelGroups.selectAll('g.place-heatmap-bg').selectAll('*').remove();
+            // Clean up the previously expanded row's labels
+            const prevLabelGroup = d3.select(labelGroups.nodes()[activeExpanded]);
+            prevLabelGroup.selectAll('g.place-heatmap-bg').selectAll('*').remove();
+            prevLabelGroup.selectAll('g.place-labels').remove();
+            // Reset previous row's main label to right-aligned
+            prevLabelGroup.select('text')
+                .attr('x', '95%')
+                .attr('text-anchor', 'end');
+            
             rowGroups.selectAll('g.mini').remove();
         }
         
@@ -318,10 +509,13 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
             const avgRows = d3.csvParseRows(String(txt).trim());
             if(!avgRows || avgRows.length < 2) return;
                 
-                // Parse averaged values - each row is a place, with one value column
+                // Parse averaged values and place labels
                 const avgVals = [];
+                const placeLabels = [];
                 for(let r=1; r<avgRows.length; r++){
-                    // Try all columns after the first (label) column
+                    // First column is the place label
+                    placeLabels.push(avgRows[r][0] || '');
+                    // Try all columns after the first (label) column for values
                     for(let c=1; c<avgRows[r].length; c++){
                         const v = parseFloat(avgRows[r][c]);
                         if(!isNaN(v)){
@@ -361,6 +555,36 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
                     
                     // Move background group to back so it's behind border and text
                     labelGroup.node().insertBefore(bgGroup.node(), labelGroup.node().firstChild);
+                    
+                    // Move main label to left 65% and add place labels on right 35%
+                    const mainText = labelGroup.select('text');
+                    const labelWidth = labelsContainer.clientWidth;
+                    
+                    // Adjust main label to use only 65% width, left-aligned
+                    mainText
+                        .attr('x', 5)
+                        .attr('text-anchor', 'start')
+                        .attr('width', labelWidth * 0.65);
+                    
+                    // Add place labels on the right 35%
+                    const placeLabelsGroup = labelGroup.selectAll('g.place-labels').data([null]);
+                    const placeLabelsEnter = placeLabelsGroup.enter().append('g').attr('class', 'place-labels');
+                    const placeLabelsG = placeLabelsGroup.merge(placeLabelsEnter);
+                    placeLabelsG.selectAll('*').remove();
+                    
+                    const placeFontSize = Math.max(8, Math.min(cellH * 0.9, 16));
+                    
+                    placeLabels.forEach((label, idx) => {
+                        placeLabelsG.append('text')
+                            .attr('x', '98%')
+                            .attr('y', idx * cellH + cellH / 2)
+                            .attr('dy', '0.35em')
+                            .attr('text-anchor', 'end')
+                            .style('font-size', `${placeFontSize}px`)
+                            .style('fill', 'var(--text)')
+                            .style('pointer-events', 'none')
+                            .text(label);
+                    });
                 }
             }).catch(() => {});
 
@@ -408,6 +632,15 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
                 const renderCols = innerTransposed ? mRows : mCols;
                 const renderRows = innerTransposed ? mCols : mRows;
 
+                // Store mini-heatmap metadata for tooltip
+                const miniPlaceLabels = [];
+                for(let r=1; r<miniRows[0].length; r++){
+                    miniPlaceLabels.push(miniRows[0][r]);
+                }
+                
+                // Store only place labels for tooltip access (dates come from main heatmap)
+                storedRowLabels = miniPlaceLabels;
+
                 const mCellW = Math.max(6, (displayCols * cell_x) / renderCols);
                 const mCellH = Math.max(6, (expandedH) / renderRows);
 
@@ -419,7 +652,8 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
                             .attr('y', rr * mCellH)
                             .attr('width', mCellW)
                             .attr('height', mCellH)
-                            .attr('fill', !isNaN(val) ? mcolor(val) : '#707070ff');
+                            .attr('fill', !isNaN(val) ? mcolor(val) : '#707070ff')
+                            .datum({row: rr, col: cc, value: val});
                     }
                 }
             }).catch(() => {});

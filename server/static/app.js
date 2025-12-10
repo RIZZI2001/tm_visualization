@@ -1,14 +1,16 @@
 //GLOBALS:
+var dataSet = '18s';
+var topicSet = 25;
 
 //row, column, depth
-var axis_categories = ['time', 'topic', 'place'];
+var axis_categories = ['topic', 'time', 'place'];
 
 (async function(){
   const API = '/data';
-  const root = document.getElementById('chart') || document.body;
+  const root = document.getElementById('chart-container') || document.getElementById('chart') || document.body;
 
   const payload = {
-    "file": "Output/18s/TM_Topics/50_topics.csv",
+    "file": `Output/${dataSet}/TM_Topics/${topicSet}_topics.csv`,
     "table_type": "topic",
     "specs": {
         "sample": {

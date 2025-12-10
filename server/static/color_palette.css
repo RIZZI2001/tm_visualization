@@ -1,0 +1,16 @@
+/* Color Palette Definition */
+:root {
+  /* Primary */
+  --primary: #3d5a73;
+  --primary-light: #5f778c;
+  --primary-dark: #2c3e50;
+  --primary-contrast: #c6cfd6;
+  --white: #ffffff;
+
+  /* Accent */
+  --accent: #dd4f39;
+
+  /* Text */
+  --text: #111b24;
+  --text-light: #c6cfd6;
+}

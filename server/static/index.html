@@ -5,17 +5,49 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>TM_VIZUALIZER</title>
   <script src="https://d3js.org/d3.v7.min.js"></script>
-  <style>
-    body { font-family: Arial, Helvetica, sans-serif; margin: 12px; }
-    #chart { margin-top: 16px; }
-    .cell { stroke: #eee; }
-    .axis text { font-size: 11px; }
-    .tooltip { position: absolute; pointer-events: none; background: rgba(0,0,0,0.8); color: white; padding: 6px 8px; border-radius: 4px; font-size: 12px; }
-  </style>
+  <link rel="stylesheet" href="./color_palette.css">
+  <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <div id="chart"></div>
+  <header id="header">
+    <div class="header-content">
+      <h1>TM Visualizer</h1>
+      <div class="header-buttons">
+        <button id="options-btn" class="header-btn">⚙️ Options</button>
+        <button id="menu-btn" class="header-btn">☰ Menu</button>
+      </div>
+    </div>
+  </header>
+  
+  <div class="main-container">
+    <!-- Left Sidebar -->
+    <div id="left-panel" class="panel left-panel">
+      <div class="panel-content">
+        <h3>Left Panel</h3>
+        <p>Filters and options go here</p>
+      </div>
+    </div>
+
+    <!-- Left Handle -->
+    <div class="left-handle panel-handle">◀</div>
+
+    <!-- Main Chart Area -->
+    <div id="chart-container" class="chart-container"></div>
+
+    <!-- Right Handle -->
+    <div class="right-handle panel-handle">▶</div>
+
+    <!-- Right Sidebar -->
+    <div id="right-panel" class="panel right-panel">
+      <div class="panel-content">
+        <h3>Right Panel</h3>
+        <p>Info and details go here</p>
+      </div>
+    </div>
+  </div>
+
   <script src="./visualizer_functions.js"></script>
   <script src="./app.js"></script>
+  <script src="./sidebar.js"></script>
 </body>
 </html>

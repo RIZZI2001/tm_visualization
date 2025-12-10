@@ -61,23 +61,39 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
     const displayRows = transposed ? nCols : nRows;
     const displayCols = transposed ? nRows : nCols;
 
-    // layout sizes based on displayed dimensions
-    const cell_AR = (2/3); // cell aspect ratio (width/height)
-    const cell_x = Math.max(10, Math.min(32, 600 / Math.max(displayCols, displayRows)));
-    const cell_y = cell_x / cell_AR;
-    const leftLabelWidth = 120;
-    const topLabelHeight = 60;
-    const legendHeight = 12;
+    // compute available space from container
+    const containerW = rootEl.clientWidth - 24; // subtract padding
+    const containerH = rootEl.clientHeight - 24;
+    console.log('Container size:', containerW, containerH);
 
-    const svgW = leftLabelWidth + displayCols * cell_x + 40;
+    // layout sizes based on displayed dimensions and available space
+    const leftLabelWidth = 60;
+    const topLabelHeight = 180;
+    const legendHeight = 12;
+    const margins = 20 + 60; // horizontal + vertical margins
+
+    // compute cell size to fit in available space (remove fixed max, let it scale freely)
+    const maxCellX = (containerW - leftLabelWidth - margins) / displayCols;
+    const maxCellY = (containerH - topLabelHeight - margins) / displayRows;
+    const cell_x = maxCellX;
+    const cell_y = maxCellY;
+
+    const svgW = leftLabelWidth + displayCols * cell_x + 20;
     const svgH = topLabelHeight + displayRows * cell_y + 60;
 
     const svg = d3.create('svg')
         .attr('width', svgW)
         .attr('height', svgH)
+        .attr('viewBox', `0 0 ${svgW} ${svgH}`)
+        .attr('preserveAspectRatio', 'xMidYMid meet')
         .attr('shape-rendering', 'crispEdges')
         .style('font-family', 'Arial, Helvetica, sans-serif')
-        .style('font-size', '11px');
+        .style('font-size', '11px')
+        .style('display', 'block')
+        .style('width', '100%')
+        .style('height', '100%')
+        .style('max-width', '100%')
+        .style('max-height', '100%');
 
     // color scale
     const color = d3.scaleSequentialSqrt(d3.interpolateViridis).domain([vmin, vmax]);
@@ -290,7 +306,7 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
 
     const legendW = Math.min(300, displayCols * cell_x);
     const legendX = leftLabelWidth;
-    const legendY = topLabelHeight + displayRows * cell_y + 18;
+    const legendY = topLabelHeight + displayRows * cell_y + 12;
 
     svg.append('rect')
         .attr('x', legendX)

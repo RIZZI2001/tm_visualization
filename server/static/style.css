@@ -1,0 +1,212 @@
+/* TM Visualizer Styling */
+@import url('./color_palette.css');
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--primary-light);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+#header {
+  height: 50px;
+  background-color: var(--primary-dark);
+  color: white;
+  border-bottom: 2px solid var(--primary);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.header-content h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.header-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.header-btn {
+  background-color: var(--primary);
+  color: var(--text-light);
+  border: 1px solid var(--primary);
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.header-btn:hover {
+  background-color: var(--primary-light);
+}
+
+.header-btn:active {
+  background-color: var(--primary-dark);
+}
+
+/* Main Container & Sidebars */
+.main-container {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.panel-handle {
+  width: 20px;
+  height: 30px;
+  background-color: var(--primary);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease;
+  user-select: none;
+}
+
+.panel-handle:hover {
+  background-color: var(----primary-light);
+}
+
+/* Panels - Start at 0 width (hidden), expand to 10% */
+.panel {
+  width: 0;
+  height: 100%;
+  background-color: var(--primary-dark);
+  border: 1px solid var(--primary-light);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  transition: width 0.3s ease;
+}
+
+.panel.expanded {
+  width: 10%;
+}
+
+.left-panel {
+  border-right: 2px solid var(--primary-light);
+}
+
+.right-panel {
+  border-left: 2px solid var(--primary-light);
+}
+
+.panel-content {
+  padding: 16px;
+  color: var(--text-light);
+}
+
+.panel-content h3 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+}
+
+.panel-content p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Chart Container - Takes remaining space */
+.chart-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+  padding: 12px;
+  width: 100%;
+  height: 100%;
+}
+
+#chart {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+  padding: 12px;
+  width: 100%;
+  height: 100%;
+}
+
+#chart > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+#chart svg {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  background-color: var(--primary-contrast);
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.axis text {
+  font-size: 11px;
+  fill: var(--text-color);
+}
+
+/* Row and column labels */
+.row-label {
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--text-color);
+}
+
+.col-label {
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--text-color);
+}
+
+/* Legend styling */
+.legend {
+  margin-top: 12px;
+}
+
+.legend-rect {
+  stroke: var(--primary-light);
+}
+
+.legend-text {
+  font-size: 10px;
+  fill: var(--text);
+}

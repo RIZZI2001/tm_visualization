@@ -154,6 +154,8 @@ body {
 
 /* Chart Container - Takes remaining space */
 .chart-container {
+  margin-top: 10px;
+  margin-bottom: 10px;
   flex: 1;
   display: grid;
   grid-template-columns: 10% 90%;
@@ -164,83 +166,124 @@ body {
   overflow: auto;
 }
 
-/* Grid cells */
-.toggle-cell {
+/* Grid sections */
+#toggle-section {
   grid-column: 1;
   grid-row: 1;
   display: none;
   align-items: center;
   justify-content: center;
-  border: 1px solid black;
 }
 
-.slider-cell {
+#slider-section {
   grid-column: 2;
   grid-row: 1;
   display: none;
   align-items: center;
   padding: 0 12px;
-  border: 1px solid black;
 }
 
-.labels-cell {
+#labels-section {
   grid-column: 1;
   grid-row: 2;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding-right: 8px;
-  border: 1px solid black;
 }
 
-.heatmap-cell {
+#heatmap-section {
   grid-column: 2;
   grid-row: 2;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
+  justify-content: stretch;
   overflow: hidden;
-  border: 1px solid black;
+  padding: 0;
+  margin: 0;
 }
 
-.legend-cell {
+#heatmap-section > * {
+  width: 100%;
+  height: 100%;
+}
+
+#legend-section {
   grid-column: 1;
   grid-row: 3;
   display: flex;
   align-items: flex-start;
   justify-content: center;
   padding-top: 8px;
-  border: 1px solid black;
 }
 
-.timescale-cell {
+#timescale-section {
   grid-column: 2;
   grid-row: 3;
   display: flex;
   align-items: flex-start;
   justify-content: center;
   padding-top: 8px;
-  border: 1px solid black;
 }
 
-.dropdowns-cell {
+#dropdowns-section {
   grid-column: 1;
   grid-row: 4;
   display: flex;
   flex-direction: column;
   gap: 8px;
   padding: 12px;
-  border: 1px solid black;
 }
 
-.linegraph-cell {
+#linegraph-section {
   grid-column: 2;
   grid-row: 4;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+}
+
+.chart-cell {
   border: 1px solid black;
+}
+
+/* Heatmap SVG styling */
+.heatmap-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Label SVG styling */
+.labels-svg {
+  display: block;
+}
+
+.label-row rect {
+  fill: none;
+  stroke: var(--text);
+  stroke-width: 1px;
+  fill: var(--primary-contrast)
+}
+
+.label-row text {
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--text);
+}
+
+/* Legend SVG styling */
+.legend-svg {
+  display: block;
+}
+
+.legend-svg text {
+  font-size: 10px;
+  fill: var(--text);
+}
+
+.legend-svg rect {
+  stroke: #999;
 }
 
 .axis text {

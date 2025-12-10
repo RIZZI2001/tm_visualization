@@ -1,41 +1,21 @@
-// Simple CSV visualizer: parses CSV text and appends a labeled table to `root`.
 function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
-    // Try to parse CSV using d3 (handles quoted fields)
     const txt = String(resp.csv || '').trim();
     if(!txt){ rootEl.textContent = 'Empty CSV'; return; }
     if(txt.startsWith('Error')){ rootEl.textContent = txt; return; }
 
-    const rows = d3.csvParse(txt);
-    const cols = rows.columns;
-    if(!cols || cols.length < 2){ rootEl.textContent = 'Unexpected CSV format'; return; }
-
-    const displayLabel = (token, axisPos) => {
-        if(token === null || token === undefined) return '';
-        return String(token);
-    };
-
     const rows2 = d3.csvParseRows(txt);
     if(!rows2 || rows2.length < 2 || rows2[0].length < 2){ rootEl.textContent = 'Unexpected CSV format'; return; }
 
-    const nRows = rows2.length - 1; // original data rows
-    const nCols = rows2[0].length - 1; // original data cols
+    const nRows = rows2.length - 1;
+    const nCols = rows2[0].length - 1;
 
-    // build ordered index arrays for rows and columns
-    const colIdxs = [];
-    for(let c=1;c<rows2[0].length;c++) colIdxs.push(c);
-    // client leaves column order as provided by server
-
-    const rowIdxs = [];
-    for(let r=1;r<rows2.length;r++) rowIdxs.push(r);
-    // client leaves row order as provided by server
-
-    // parse numeric matrix in the chosen order and compute domain
+    // Parse numeric matrix and compute domain
     const matrix = [];
     const vals = [];
-    for(const rIdx of rowIdxs){
+    for(let r=1; r<rows2.length; r++){
         const row = [];
-        for(const cIdx of colIdxs){
-            const v = parseFloat(rows2[rIdx][cIdx]);
+        for(let c=1; c<rows2[r].length; c++){
+            const v = parseFloat(rows2[r][c]);
             row.push(v);
             if(!isNaN(v)) vals.push(v);
         }
@@ -44,91 +24,93 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
     const vmin = vals.length ? Math.min(...vals) : 0;
     const vmax = vals.length ? Math.max(...vals) : 1;
 
-    // prepare display orientation (do not mutate original matrix)
-    const colLabels = colIdxs.map(ci => displayLabel(rows2[0][ci], 1));
-    const rowLabels = rowIdxs.map(ri => displayLabel(rows2[ri][0], 0));
+    // Extract labels
+    const colLabels = rows2[0].slice(1);
+    const rowLabels = rows2.slice(1).map(r => r[0]);
 
     const displayRows = transposed ? nCols : nRows;
     const displayCols = transposed ? nRows : nCols;
+    const displayRowLabels = transposed ? colLabels : rowLabels;
 
-    // compute available space from container
+    // Compute cell dimensions
     const containerW = rootEl.clientWidth;
     const containerH = rootEl.clientHeight;
+    const cell_x = containerW / displayCols;
+    const cell_y = containerH / displayRows;
 
-    // layout sizes based on displayed dimensions and available space
-    const leftLabelWidth = 60;
-    const topLabelHeight = 80;
-    const legendHeight = 12;
-    const margins = 20 + 60; // horizontal + vertical margins
-
-    // compute cell size to fit in available space (remove fixed max, let it scale freely)
-    const maxCellX = (containerW - leftLabelWidth - margins) / displayCols;
-    const maxCellY = (containerH - topLabelHeight - margins) / displayRows;
-    const cell_x = maxCellX;
-    const cell_y = maxCellY;
-
-    const svgW = leftLabelWidth + displayCols * cell_x + 20;
-    const svgH = topLabelHeight + displayRows * cell_y + 60;
+    const svgW = displayCols * cell_x;
+    const svgH = displayRows * cell_y;
 
     const svg = d3.create('svg')
+        .attr('class', 'heatmap-svg')
         .attr('width', svgW)
         .attr('height', svgH)
         .attr('viewBox', `0 0 ${svgW} ${svgH}`)
-        .attr('preserveAspectRatio', 'xMidYMid meet')
-        .attr('shape-rendering', 'crispEdges')
-        .style('font-family', 'Arial, Helvetica, sans-serif')
-        .style('font-size', '11px')
-        .style('display', 'block')
-        .style('width', '100%')
-        .style('height', '100%')
-        .style('max-width', '100%')
-        .style('max-height', '100%');
+        .attr('preserveAspectRatio', 'none')
+        .attr('shape-rendering', 'crispEdges');
 
-    // color scale
+    // Color scale
     const color = d3.scaleSequentialSqrt(d3.interpolateViridis).domain([vmin, vmax]);
 
-    // NOTE: column labels are created after the cells so they render on top
-    // choose labels for display orientation
-    const displayRowLabels = transposed ? colLabels : rowLabels;
-    const displayColLabels = transposed ? rowLabels : colLabels;
+    // Render row labels in separate container
+    const labelsContainer = document.getElementById('labels-section');
+    let labelsSvg, labelGroups;
+    if(labelsContainer){
+        labelsContainer.innerHTML = '';
+        const labelContainerH = labelsContainer.clientHeight;
+        const labelCellH = labelContainerH / displayRows;
+        
+        labelsSvg = d3.create('svg')
+            .attr('class', 'labels-svg')
+            .attr('width', '100%')
+            .attr('height', labelContainerH);
+        
+        labelGroups = labelsSvg.selectAll('g.label-row')
+            .data(displayRowLabels)
+            .enter()
+            .append('g')
+            .attr('class', 'label-row')
+            .attr('transform', (_,i) => `translate(0, ${i * labelCellH})`);
+        
+        labelGroups.append('rect')
+            .attr('x', 0)
+            .attr('y', 0)
+            .attr('width', '100%')
+            .attr('height', labelCellH);
+        
+        labelGroups.append('text')
+            .attr('x', '95%')
+            .attr('y', 4)
+            .attr('text-anchor', 'end')
+            .attr('dominant-baseline', 'hanging')
+            .text(d => d);
+        
+        labelsContainer.appendChild(labelsSvg.node());
+    }
 
-    // row labels (for displayed rows)
-    const rowG = svg.append('g').attr('transform', `translate(${leftLabelWidth - 6}, ${topLabelHeight})`);
-    rowG.selectAll('text').data(displayRowLabels).enter().append('text')
-        .attr('x', 0)
-        .attr('y', (_,i) => i * cell_y + cell_y/2)
-        .attr('text-anchor', 'end')
-        .attr('dominant-baseline', 'middle')
-        .text(d => d)
-        .style('font-weight','600');
-
-    // column label group (rotate each label around its own center) - appended after cells so labels are on top
-    const colG = svg.append('g').attr('transform', `translate(${leftLabelWidth}, ${topLabelHeight})`);
-    colG.selectAll('text').data(displayColLabels).enter().append('text')
-        .attr('x', (_,i) => i * cell_x + cell_x/2)
-        .attr('y', -5)
-        .attr('text-anchor', 'start')
-        .attr('dominant-baseline', 'middle')
-        .attr('transform', (_,i) => `rotate(-90, ${i*cell_x + cell_x/2}, ${-5})`)
-        .text(d => d)
-        .style('font-weight','600');
-
-    // cells
-    const cellsG = svg.append('g').attr('transform', `translate(${leftLabelWidth}, ${topLabelHeight})`);
-    // build displayed matrix view on-the-fly (without mutating original matrix)
+    // Build and render heatmap cells
+    const cellsG = svg.append('g');
     const displayMatrix = [];
-    for(let r=0;r<displayRows;r++){
+    for(let r=0; r<displayRows; r++){
         const row = [];
-        for(let c=0;c<displayCols;c++){
+        for(let c=0; c<displayCols; c++){
             const v = transposed ? matrix[c][r] : matrix[r][c];
             row.push(v);
         }
         displayMatrix.push(row);
     }
 
-    const rowsSel = cellsG.selectAll('g.row').data(displayMatrix).enter().append('g').attr('class','row')
+    const rowsSel = cellsG.selectAll('g.row')
+        .data(displayMatrix)
+        .enter()
+        .append('g')
+        .attr('class','row')
         .attr('transform', (_,i) => `translate(0, ${i*cell_y})`);
-    rowsSel.selectAll('rect').data(d => d).enter().append('rect')
+    
+    rowsSel.selectAll('rect')
+        .data(d => d)
+        .enter()
+        .append('rect')
         .attr('x', (_,i) => i * cell_x)
         .attr('y', 0)
         .attr('width', cell_x)
@@ -136,21 +118,33 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
         .attr('fill', d => (!isNaN(d) ? color(d) : '#707070ff'))
         .attr('stroke', 'none');
 
-    // Hover behavior: expand hovered row and shrink others
+    // Row hover expansion behavior
     const expandFactor = 10;
     const smallFactor = (displayRows - expandFactor) / (displayRows - 1);
     let activeExpanded = null;
-
     const rowGroups = cellsG.selectAll('g.row');
 
     function clearExpanded(){
-        rowGroups.selectAll('rect').transition().duration(150).attr('height', cell_y).attr('display', null);
-        rowGroups.transition().duration(150).attr('transform', (_,i) => `translate(0, ${i*cell_y})`);
-        // move y-labels back to their original positions
-        rowG.selectAll('text').transition().duration(150).attr('y', (_,i) => i * cell_y + cell_y/2);
-        svg.transition().duration(150).attr('height', topLabelHeight + displayRows * cell_y + 60);
-        // remove any mini heatmaps inserted into rows
+        rowGroups.selectAll('rect')
+            .transition().duration(150)
+            .attr('height', cell_y)
+            .attr('display', null);
+        rowGroups.transition().duration(150)
+            .attr('transform', (_,i) => `translate(0, ${i*cell_y})`);
+        svg.transition().duration(150).attr('height', svgH);
         rowGroups.selectAll('g.mini').remove();
+        
+        // Reset label boxes
+        if(labelGroups && labelsSvg){
+            const labelContainerH = labelsContainer.clientHeight;
+            const labelCellH = labelContainerH / displayRows;
+            labelGroups.transition().duration(150)
+                .attr('transform', (_,i) => `translate(0, ${i * labelCellH})`);
+            labelGroups.select('rect').transition().duration(150)
+                .attr('height', labelCellH);
+            labelsSvg.transition().duration(150).attr('height', labelContainerH);
+        }
+        
         activeExpanded = null;
     }
 
@@ -171,25 +165,41 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
         let cur = 0;
         for(let r=0;r<displayRows;r++){ yPos.push(cur); cur += heights[r]; }
 
-        // apply new positions and heights
+        // Apply new positions and heights
         rowGroups.each(function(_,idx){
-            const g = d3.select(this);
-            g.transition().duration(150).attr('transform', `translate(0, ${yPos[idx]})`);
-            g.selectAll('rect').transition().duration(150).attr('height', heights[idx]);
+            d3.select(this)
+                .transition().duration(150)
+                .attr('transform', `translate(0, ${yPos[idx]})`);
+            d3.select(this).selectAll('rect')
+                .transition().duration(150)
+                .attr('height', heights[idx]);
         });
-        // move y-labels together with rows
-        rowG.selectAll('text').transition().duration(150).attr('y', (_,idx) => yPos[idx] + heights[idx]/2);
 
-        // resize svg to fit
-        const newH = topLabelHeight + cur + 40;
-        svg.transition().duration(150).attr('height', newH);
-
-        // restore any previously-hidden underlying rects and remove leftover mini maps
-        // before fetching new details, so only one mini map can exist at a time
+        svg.transition().duration(150).attr('height', cur);
         rowGroups.selectAll('rect').attr('display', null);
         rowGroups.selectAll('g.mini').remove();
+        
+        // Sync label boxes with row expansion
+        if(labelGroups && labelsSvg){
+            const labelContainerH = labelsContainer.clientHeight;
+            const scaleFactor = labelContainerH / svgH;
+            const labelHeights = heights.map(h => h * scaleFactor);
+            const labelYPos = yPos.map(y => y * scaleFactor);
+            
+            labelGroups.each(function(_,idx){
+                d3.select(this)
+                    .transition().duration(150)
+                    .attr('transform', `translate(0, ${labelYPos[idx]})`);
+                d3.select(this).select('rect')
+                    .transition().duration(150)
+                    .attr('height', labelHeights[idx]);
+            });
+            
+            const newLabelH = labelYPos[labelYPos.length - 1] + labelHeights[labelHeights.length - 1];
+            labelsSvg.transition().duration(150).attr('height', newLabelH);
+        }
 
-        // fetch detail CSV for this row/topic if basePayload provided
+        // Fetch detail CSV for expanded row
         if(basePayload){
             const topicVal = displayRowLabels[i];
             const payload = JSON.parse(JSON.stringify(basePayload));
@@ -202,46 +212,44 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
 
             const q = encodeURIComponent(JSON.stringify(payload));
             fetch(`/data?attribute=${q}`).then(async res=>{
-                const ct = res.headers.get('content-type')||'';
+                const ct = res.headers.get('content-type') || '';
                 let txt;
-                if(ct.includes('application/json')){ const j = await res.json(); txt = j.csv || ''; }
-                else txt = await res.text();
-                if(!txt) return;
-                // abort if this row is no longer the active expanded row
-                if(activeExpanded !== i) return;
+                if(ct.includes('application/json')){
+                    const j = await res.json();
+                    txt = j.csv || '';
+                } else {
+                    txt = await res.text();
+                }
+                if(!txt || activeExpanded !== i) return;
+                
                 const miniRows = d3.csvParseRows(String(txt).trim());
-                if(!miniRows || miniRows.length<2) return;
+                if(!miniRows || miniRows.length < 2) return;
 
-                // build mini matrix values (time x place: first row times, first column sites)
                 const mCols = miniRows[0].length - 1;
                 const mRows = miniRows.length - 1;
-                if(mCols<=0 || mRows<=0) return;
+                if(mCols <= 0 || mRows <= 0) return;
 
                 const miniVals = [];
                 const miniMat = [];
-                for(let r=1;r<miniRows.length;r++){
+                for(let r=1; r<miniRows.length; r++){
                     const row = [];
-                    for(let c=1;c<miniRows[r].length;c++){
-                        const v = parseFloat(miniRows[r][c]); row.push(v); if(!isNaN(v)) miniVals.push(v);
+                    for(let c=1; c<miniRows[r].length; c++){
+                        const v = parseFloat(miniRows[r][c]);
+                        row.push(v);
+                        if(!isNaN(v)) miniVals.push(v);
                     }
                     miniMat.push(row);
                 }
                 const mvmin = miniVals.length ? Math.min(...miniVals) : 0;
                 const mvmax = miniVals.length ? Math.max(...miniVals) : 1;
-                const mcolor = d3.scaleSequential(d3.interpolateInferno).domain([mvmin,mvmax]);
+                const mcolor = d3.scaleSequential(d3.interpolateInferno).domain([mvmin, mvmax]);
 
-                // compute mini cell sizes to fit into expanded area
-                const hoveredGroup = d3.select(rowGroups.nodes()[i]);
-                // ensure any mini in hovered group removed (redundant but safe)
-                hoveredGroup.selectAll('g.mini').remove();
-                // abort if this row is no longer active (may have changed while fetching)
                 if(activeExpanded !== i) return;
-                // hide the underlying cell rects in the hovered row so the
-                // mini-heatmap completely covers the area (avoids visible gaps)
+                const hoveredGroup = d3.select(rowGroups.nodes()[i]);
+                hoveredGroup.selectAll('g.mini').remove();
                 hoveredGroup.selectAll('rect').attr('display', 'none');
                 const miniG = hoveredGroup.append('g').attr('class','mini');
 
-                // if outer heatmap is transposed, keep inner transposed as well
                 const innerTransposed = !!transposed;
                 const renderCols = innerTransposed ? mRows : mCols;
                 const renderRows = innerTransposed ? mCols : mRows;
@@ -251,72 +259,67 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
 
                 for(let rr=0; rr<renderRows; rr++){
                     for(let cc=0; cc<renderCols; cc++){
-                        // pick value depending on inner transposition
                         const val = innerTransposed ? miniMat[cc][rr] : miniMat[rr][cc];
                         miniG.append('rect')
                             .attr('x', cc * mCellW)
                             .attr('y', rr * mCellH)
                             .attr('width', mCellW)
                             .attr('height', mCellH)
-                            .attr('fill', (!isNaN(val) ? mcolor(val) : '#707070ff'));
+                            .attr('fill', !isNaN(val) ? mcolor(val) : '#707070ff');
                     }
                 }
-
-            }).catch(()=>{});
+            }).catch(() => {});
         }
     });
 
-    // when leaving a specific row, revert expansion if that row was active
-    rowGroups.on('mouseleave', function(event){
-        const nodes = rowGroups.nodes();
-        const i = nodes.indexOf(this);
-        if(i < 0) return;
-        // only clear if leaving the currently expanded row
-        if(activeExpanded === i){
-            clearExpanded();
-        }
+    rowGroups.on('mouseleave', function(){
+        const i = rowGroups.nodes().indexOf(this);
+        if(i >= 0 && activeExpanded === i) clearExpanded();
     });
 
-    // when mouse leaves the whole cells area, clear expanded view
-    cellsG.on('mouseleave', function(){ clearExpanded(); });
-
-    // legend
-    const defs = svg.append('defs');
-    const gid = 'lg1';
-    const grad = defs.append('linearGradient').attr('id', gid).attr('x1','0%').attr('x2','100%');
-    // sample stops
-    const stops = 8;
-    for(let i=0;i<=stops;i++){
-        const t = i / stops;
-        grad.append('stop')
-            .attr('offset', `${t*100}%`)
-            .attr('stop-color', color(vmin + t*(vmax - vmin)));
-    }
-
-    const legendW = Math.min(300, displayCols * cell_x);
-    const legendX = leftLabelWidth;
-    const legendY = topLabelHeight + displayRows * cell_y + 12;
-
-    svg.append('rect')
-        .attr('x', legendX)
-        .attr('y', legendY)
-        .attr('width', legendW)
-        .attr('height', legendHeight)
-        .attr('fill', `url(#${gid})`)
-        .attr('stroke', '#999');
-
-    // legend axis ticks
-    const legendScale = d3.scaleSequentialSqrt()
-        .domain([vmin, vmax])
-        .range([0, legendW]);
-    const ticks = svg.append('g').attr('transform', `translate(${legendX}, ${legendY + legendHeight + 2})`);
-    const tickVals = legendScale.ticks(5);
-    ticks.selectAll('text').data(tickVals).enter().append('text')
-        .attr('x', d => legendScale(d))
-        .attr('y', 10)
-        .attr('text-anchor','middle')
-        .text(d => Math.round(d*1000)/1000);
+    cellsG.on('mouseleave', clearExpanded);
 
     rootEl.appendChild(svg.node());
 
+    // Render legend
+    const legendContainer = document.getElementById('legend-section');
+    if(legendContainer){
+        legendContainer.innerHTML = '';
+        const legendSvg = d3.create('svg')
+            .attr('class', 'legend-svg')
+            .attr('width', '100%')
+            .attr('height', '100%');
+        
+        const gid = 'legend-grad-' + Date.now();
+        const grad = legendSvg.append('defs')
+            .append('linearGradient')
+            .attr('id', gid)
+            .attr('x1', '0%')
+            .attr('x2', '100%');
+        
+        const stops = 8;
+        for(let i=0; i<=stops; i++){
+            grad.append('stop')
+                .attr('offset', `${(i/stops)*100}%`)
+                .attr('stop-color', color(vmin + (i/stops)*(vmax - vmin)));
+        }
+
+        legendSvg.append('rect')
+            .attr('x', '5%')
+            .attr('y', '30%')
+            .attr('width', '90%')
+            .attr('height', '40%')
+            .attr('fill', `url(#${gid})`);
+
+        [vmin, (vmin+vmax)/2, vmax].forEach((val, i) => {
+            legendSvg.append('text')
+                .attr('x', `${5 + i*45}%`)
+                .attr('y', '85%')
+                .attr('text-anchor', 'middle')
+                .attr('dominant-baseline', 'middle')
+                .text(Math.round(val*1000)/1000);
+        });
+        
+        legendContainer.appendChild(legendSvg.node());
+    }
 }

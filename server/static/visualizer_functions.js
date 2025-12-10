@@ -202,12 +202,18 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
             .attr('pointer-events', 'none');
     }
     
-    function showTooltipForCell(event, rowLabel, colLabel, value){
+    function showTooltipForCell(event, rowLabel, colLabel, value, isCollapsed = false){
         if(tooltip) tooltip.remove();
         
         const valueStr = !isNaN(value) ? value.toFixed(3) : 'N/A';
         let content = '';
-        if(rowLabel) content += `<strong>Site:</strong> ${rowLabel}<br>`;
+        if(rowLabel){
+            if(isCollapsed){
+                content += `${rowLabel}<br>`;
+            } else {
+                content += `<strong>Site:</strong> ${rowLabel}<br>`;
+            }
+        }
         content += `<strong>Date:</strong> ${colLabel}<br><strong>Value:</strong> ${valueStr}`;
         
         // Determine tooltip position - switch to left side if near right edge
@@ -258,7 +264,7 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
         const cellData = rect.datum();
         const rowLabel = displayRowLabels[rowIdx] || 'Unknown';
         const colLabel = displayColLabels[colIdx] || 'Unknown';
-        showTooltipForCell(event, rowLabel, colLabel, cellData ? cellData.value : null);
+        showTooltipForCell(event, rowLabel, colLabel, cellData ? cellData.value : null, true);
     }
     
     function highlightCell(rectNode, colIdx, rowIdx, event){

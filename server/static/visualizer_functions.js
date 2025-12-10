@@ -132,6 +132,7 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
     const smallFactor = (displayRows - expandFactor) / (displayRows - 1);
     let activeExpanded = null;
     const rowGroups = cellsG.selectAll('g.row');
+    let collapseTimeout = null;
 
     function clearExpanded(){
         rowGroups.selectAll('rect')
@@ -149,7 +150,7 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
             const labelCellH = labelContainerH / displayRows;
             labelGroups.transition().duration(150)
                 .attr('transform', (_,i) => `translate(0, ${i * labelCellH})`);
-            labelGroups.select('rect').transition().duration(150)
+            labelGroups.select('.label-border').transition().duration(150)
                 .attr('height', labelCellH);
             labelsSvg.transition().duration(150).attr('height', labelContainerH);
             // Clear 1D heatmap backgrounds
@@ -157,13 +158,74 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
         }
         
         activeExpanded = null;
+        expandedRowBounds = null;
     }
 
-    rowGroups.on('mouseenter', function(event, d){
-        const nodes = rowGroups.nodes();
-        const i = nodes.indexOf(this);
-        if(i < 0) return;
-        if(activeExpanded === i) return;
+    // Simple mouse tracking approach - check which row the cursor is over
+    function getRowIndexFromY(containerElement, mouseY, rowCount){
+        const containerRect = containerElement.getBoundingClientRect();
+        const relativeY = mouseY - containerRect.top;
+        const containerHeight = containerRect.height;
+        
+        if(relativeY < 0 || relativeY > containerHeight) return -1;
+        
+        // Simple calculation assuming equal distribution
+        const rowIndex = Math.floor((relativeY / containerHeight) * rowCount);
+        return Math.max(0, Math.min(rowIndex, rowCount - 1));
+    }
+    
+    function checkAndUpdateExpansion(event){
+        // Cancel any pending collapse
+        if(collapseTimeout){
+            clearTimeout(collapseTimeout);
+            collapseTimeout = null;
+        }
+        
+        let targetRow = -1;
+        
+        // Check if mouse is over label container - this triggers expansion
+        if(labelsContainer){
+            const labelRect = labelsContainer.getBoundingClientRect();
+            if(event.clientX >= labelRect.left && event.clientX <= labelRect.right &&
+               event.clientY >= labelRect.top && event.clientY <= labelRect.bottom){
+                targetRow = getRowIndexFromY(labelsContainer, event.clientY, displayRows);
+            }
+        }
+        
+        // If not over labels but something is expanded, check if we're still in the expanded row's heatmap area
+        if(targetRow === -1 && activeExpanded !== null && expandedRowBounds){
+            const heatmapRect = svg.node().getBoundingClientRect();
+            if(event.clientX >= heatmapRect.left && event.clientX <= heatmapRect.right &&
+               event.clientY >= heatmapRect.top && event.clientY <= heatmapRect.bottom){
+                // Use actual expanded bounds instead of calculating from equal distribution
+                const mouseY = event.clientY - heatmapRect.top;
+                if(mouseY >= expandedRowBounds.heatmapTop && mouseY <= expandedRowBounds.heatmapBottom){
+                    targetRow = activeExpanded; // Stay expanded
+                }
+            }
+        }
+        
+        // Update expansion if needed
+        if(targetRow !== -1 && targetRow !== activeExpanded){
+            expandRow(targetRow);
+        } else if(targetRow === -1 && activeExpanded !== null){
+            // Delay collapse slightly to handle gaps between containers
+            collapseTimeout = setTimeout(() => {
+                clearExpanded();
+                collapseTimeout = null;
+            }, 100);
+        }
+    }
+    
+    function expandRow(i){
+        if(i < 0 || i >= displayRows) return;
+        
+        // Clear previous expansion if switching to a different row
+        if(activeExpanded !== null && activeExpanded !== i){
+            labelGroups.selectAll('g.place-heatmap-bg').selectAll('*').remove();
+            rowGroups.selectAll('g.mini').remove();
+        }
+        
         activeExpanded = i;
 
         const expandedH = cell_y * expandFactor;
@@ -175,6 +237,14 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
         const yPos = [];
         let cur = 0;
         for(let r=0;r<displayRows;r++){ yPos.push(cur); cur += heights[r]; }
+
+        // Store the expanded row bounds for accurate mouse tracking
+        expandedRowBounds = {
+            heatmapTop: yPos[i],
+            heatmapBottom: yPos[i] + heights[i],
+            labelTop: 0,
+            labelBottom: 0
+        };
 
         // Apply new positions and heights
         rowGroups.each(function(_,idx){
@@ -197,11 +267,15 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
             const labelHeights = heights.map(h => h * scaleFactor);
             const labelYPos = yPos.map(y => y * scaleFactor);
             
+            // Store label bounds for mouse tracking
+            expandedRowBounds.labelTop = labelYPos[i];
+            expandedRowBounds.labelBottom = labelYPos[i] + labelHeights[i];
+            
             labelGroups.each(function(_,idx){
                 d3.select(this)
                     .transition().duration(150)
                     .attr('transform', `translate(0, ${labelYPos[idx]})`);
-                d3.select(this).select('rect')
+                d3.select(this).select('.label-border')
                     .transition().duration(150)
                     .attr('height', labelHeights[idx]);
             });
@@ -210,39 +284,39 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
             labelsSvg.transition().duration(150).attr('height', newLabelH);
         }
 
-        // Fetch detail CSV for expanded row
-        if(basePayload){
-            const topicVal = displayRowLabels[i];
-            const payload = JSON.parse(JSON.stringify(basePayload));
-            // ensure sample average is false for detail
-            if(payload.specs && payload.specs.sample) payload.specs.sample.average = "false";
-            // set topic to single
-            payload.topic = { type: 'single', value: topicVal };
-            // if original structure has specs.topic, mirror it
-            if(payload.specs) payload.specs.topic = { type: 'single', value: topicVal };
-            
-            // Fetch time-averaged place data for 1D heatmap background
-            const avgPayload = JSON.parse(JSON.stringify(basePayload));
-            avgPayload.topic = { type: 'single', value: topicVal };
-            if(avgPayload.specs){
-                avgPayload.specs.topic = { type: 'single', value: topicVal };
-                if(avgPayload.specs.sample) avgPayload.specs.sample.average = "time";
+    // Fetch detail CSV for expanded row
+    if(basePayload){
+        const topicVal = displayRowLabels[i];
+        const payload = JSON.parse(JSON.stringify(basePayload));
+        // ensure sample average is false for detail
+        if(payload.specs && payload.specs.sample) payload.specs.sample.average = "false";
+        // set topic to single
+        payload.topic = { type: 'single', value: topicVal };
+        // if original structure has specs.topic, mirror it
+        if(payload.specs) payload.specs.topic = { type: 'single', value: topicVal };
+        
+        // Fetch time-averaged place data for 1D heatmap background
+        const avgPayload = JSON.parse(JSON.stringify(basePayload));
+        avgPayload.topic = { type: 'single', value: topicVal };
+        if(avgPayload.specs){
+            avgPayload.specs.topic = { type: 'single', value: topicVal };
+            if(avgPayload.specs.sample) avgPayload.specs.sample.average = "time";
+        }
+        
+        const avgQ = encodeURIComponent(JSON.stringify(avgPayload));
+        fetch(`/data?attribute=${avgQ}`).then(async res=>{
+            const ct = res.headers.get('content-type') || '';
+            let txt;
+            if(ct.includes('application/json')){
+                const j = await res.json();
+                txt = j.csv || '';
+            } else {
+                txt = await res.text();
             }
+            if(!txt || activeExpanded !== i) return;
             
-            const avgQ = encodeURIComponent(JSON.stringify(avgPayload));
-            fetch(`/data?attribute=${avgQ}`).then(async res=>{
-                const ct = res.headers.get('content-type') || '';
-                let txt;
-                if(ct.includes('application/json')){
-                    const j = await res.json();
-                    txt = j.csv || '';
-                } else {
-                    txt = await res.text();
-                }
-                if(!txt || activeExpanded !== i) return;
-                
-                const avgRows = d3.csvParseRows(String(txt).trim());
-                if(!avgRows || avgRows.length < 2) return;
+            const avgRows = d3.csvParseRows(String(txt).trim());
+            if(!avgRows || avgRows.length < 2) return;
                 
                 // Parse averaged values - each row is a place, with one value column
                 const avgVals = [];
@@ -350,16 +424,26 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
                 }
             }).catch(() => {});
         }
-    });
-
-    rowGroups.on('mouseleave', function(){
-        const i = rowGroups.nodes().indexOf(this);
-        if(i >= 0 && activeExpanded === i) clearExpanded();
-    });
-
-    cellsG.on('mouseleave', clearExpanded);
+    }
 
     rootEl.appendChild(svg.node());
+
+    // Set up continuous mouse tracking for expansion
+    const heatmapContainer = svg.node().parentElement;
+    
+    if(heatmapContainer){
+        heatmapContainer.addEventListener('mousemove', checkAndUpdateExpansion);
+        heatmapContainer.addEventListener('mouseleave', () => {
+            checkAndUpdateExpansion({clientX: -9999, clientY: -9999});
+        });
+    }
+    
+    if(labelsContainer){
+        labelsContainer.addEventListener('mousemove', checkAndUpdateExpansion);
+        labelsContainer.addEventListener('mouseleave', () => {
+            checkAndUpdateExpansion({clientX: -9999, clientY: -9999});
+        });
+    }
 
     // Render legend
     const legendContainer = document.getElementById('legend-section');
@@ -401,5 +485,89 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
         });
         
         legendContainer.appendChild(legendSvg.node());
+    }
+    
+    // Render timeline in timescale section
+    const timeContainer = document.getElementById('timescale-section');
+    // Use colLabels for time data (these represent time points across columns)
+    const timeLabels = transposed ? rowLabels : colLabels;
+    if(timeContainer && timeLabels && timeLabels.length > 0){
+        timeContainer.innerHTML = '';
+        
+        // Parse dates from time labels
+        const dates = timeLabels.map(label => {
+            const d = new Date(label);
+            return isNaN(d.getTime()) ? null : d;
+        }).filter(d => d !== null);
+        
+        if(dates.length > 0){
+            const minDate = new Date(Math.min(...dates));
+            const maxDate = new Date(Math.max(...dates));
+            
+            const timeSvg = d3.create('svg')
+                .attr('class', 'timeline-svg')
+                .attr('width', '100%')
+                .attr('height', '100%');
+            
+            // Create scale that maps to percentage positions
+            const timeScale = d3.scaleTime()
+                .domain([minDate, maxDate])
+                .range([0, 100]);
+            
+            // Timeline axis - full width
+            timeSvg.append('line')
+                .attr('x1', '0%')
+                .attr('x2', '100%')
+                .attr('y1', '30%')
+                .attr('y2', '30%')
+                .attr('stroke', 'var(--text)')
+                .attr('stroke-width', 2);
+            
+            // Find first occurrence of each month
+            const monthTicks = [];
+            const seenMonths = new Set();
+            dates.forEach(date => {
+                const monthKey = `${date.getFullYear()}-${date.getMonth()}`;
+                if(!seenMonths.has(monthKey)){
+                    seenMonths.add(monthKey);
+                    monthTicks.push(date);
+                }
+            });
+            
+            // Remove first tick if it's not at the start of the month
+            if(monthTicks.length > 0){
+                const firstDate = dates[0];
+                if(firstDate.getDate() !== 1){
+                    monthTicks.shift(); // Remove first element
+                }
+            }
+            
+            const formatter = d3.timeFormat('%b %Y');
+            
+            monthTicks.forEach(tick => {
+                const xPos = timeScale(tick);
+                
+                // Tick mark
+                timeSvg.append('line')
+                    .attr('x1', `${xPos}%`)
+                    .attr('x2', `${xPos}%`)
+                    .attr('y1', '20%')
+                    .attr('y2', '40%')
+                    .attr('stroke', 'var(--text)')
+                    .attr('stroke-width', 1);
+                
+                // Tick label
+                timeSvg.append('text')
+                    .attr('x', `${xPos}%`)
+                    .attr('y', '50%')
+                    .attr('text-anchor', 'middle')
+                    .attr('dominant-baseline', 'hanging')
+                    .style('font-size', '11px')
+                    .style('fill', 'var(--text)')
+                    .text(formatter(tick));
+            });
+            
+            timeContainer.appendChild(timeSvg.node());
+        }
     }
 }

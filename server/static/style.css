@@ -180,7 +180,6 @@ body {
   grid-row: 1;
   display: none;
   align-items: center;
-  padding: 0 12px;
 }
 
 #labels-section {
@@ -213,7 +212,6 @@ body {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding-top: 8px;
 }
 
 #timescale-section {
@@ -222,7 +220,7 @@ body {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding-top: 8px;
+  background-color: var(--primary-contrast);
 }
 
 #dropdowns-section {
@@ -231,7 +229,6 @@ body {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 12px;
 }
 
 #linegraph-section {
@@ -265,6 +262,7 @@ body {
   fill: none;
   stroke: var(--text);
   stroke-width: 1px;
+  pointer-events: all;
 }
 
 .label-row text {
@@ -273,6 +271,7 @@ body {
   fill: var(--text);
   position: relative;
   z-index: 10;
+  pointer-events: none;
 }
 
 .place-heatmap-bg rect {

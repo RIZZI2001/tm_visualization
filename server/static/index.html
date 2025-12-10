@@ -32,7 +32,46 @@
     <div class="left-handle panel-handle">▶</div>
 
     <!-- Main Chart Area -->
-    <div id="chart-container" class="chart-container"></div>
+    <div id="chart-container" class="chart-container">
+      <!-- Row 1 -->
+      <div class="toggle-cell">
+        <button id="toggle-btn" class="header-btn">Toggle</button>
+      </div>
+      <div class="slider-cell">
+        <input type="range" id="main-slider" min="0" max="100" value="50" style="width: 100%;">
+      </div>
+
+      <!-- Row 2 -->
+      <div class="labels-cell" id="labels-section">
+        Labels
+      </div>
+      <div class="heatmap-cell" id="heatmap-section">
+        <!-- Heatmap will be inserted here -->
+      </div>
+
+      <!-- Row 3 -->
+      <div class="legend-cell" id="legend-section">
+        Legend
+      </div>
+      <div class="timescale-cell" id="timescale-section">
+        Time Scale
+      </div>
+
+      <!-- Row 4 -->
+      <div class="dropdowns-cell">
+        <select id="dropdown1" class="header-btn" style="width: 100%;">
+          <option>Option 1</option>
+          <option>Option 2</option>
+        </select>
+        <select id="dropdown2" class="header-btn" style="width: 100%;">
+          <option>Option A</option>
+          <option>Option B</option>
+        </select>
+      </div>
+      <div class="linegraph-cell" id="linegraph-section">
+        Line Graph
+      </div>
+    </div>
 
     <!-- Right Handle -->
     <div class="right-handle panel-handle">◀</div>

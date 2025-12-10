@@ -7,7 +7,7 @@ var axis_categories = ['topic', 'time', 'place'];
 
 (async function(){
   const API = '/data';
-  const root = document.getElementById('chart-container') || document.getElementById('chart') || document.body;
+  const root = document.getElementById('heatmap-section') || document.getElementById('chart-container') || document.body;
 
   const payload = {
     "file": `Output/${dataSet}/TM_Topics/${topicSet}_topics.csv`,

@@ -9,8 +9,6 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
     const cols = rows.columns;
     if(!cols || cols.length < 2){ rootEl.textContent = 'Unexpected CSV format'; return; }
 
-    // displayLabel: frontend no longer decodes or renames time/sample tokens;
-    // backend provides already-decoded labels and sorting.
     const displayLabel = (token, axisPos) => {
         if(token === null || token === undefined) return '';
         return String(token);
@@ -21,11 +19,6 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
 
     const nRows = rows2.length - 1; // original data rows
     const nCols = rows2[0].length - 1; // original data cols
-
-    // determine axis types and optionally sort by date when axis is 'time' or 'sample'
-    const axis = Array.isArray(resp && resp.axis) ? resp.axis : [null, null];
-
-    // No client-side date parsing/sorting — backend performs decoding and ordering.
 
     // build ordered index arrays for rows and columns
     const colIdxs = [];
@@ -59,9 +52,8 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
     const displayCols = transposed ? nRows : nCols;
 
     // compute available space from container
-    const containerW = rootEl.clientWidth - 24; // subtract padding
-    const containerH = rootEl.clientHeight - 24;
-    console.log('Container size:', containerW, containerH);
+    const containerW = rootEl.clientWidth;
+    const containerH = rootEl.clientHeight;
 
     // layout sizes based on displayed dimensions and available space
     const leftLabelWidth = 60;

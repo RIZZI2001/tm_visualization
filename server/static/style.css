@@ -155,12 +155,92 @@ body {
 /* Chart Container - Takes remaining space */
 .chart-container {
   flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: auto;
+  display: grid;
+  grid-template-columns: 10% 90%;
+  grid-template-rows: 0px 1fr 50px 100px;
+  gap: 0px;
   width: 100%;
   height: 100%;
+  overflow: auto;
+}
+
+/* Grid cells */
+.toggle-cell {
+  grid-column: 1;
+  grid-row: 1;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black;
+}
+
+.slider-cell {
+  grid-column: 2;
+  grid-row: 1;
+  display: none;
+  align-items: center;
+  padding: 0 12px;
+  border: 1px solid black;
+}
+
+.labels-cell {
+  grid-column: 1;
+  grid-row: 2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 8px;
+  border: 1px solid black;
+}
+
+.heatmap-cell {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid black;
+}
+
+.legend-cell {
+  grid-column: 1;
+  grid-row: 3;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 8px;
+  border: 1px solid black;
+}
+
+.timescale-cell {
+  grid-column: 2;
+  grid-row: 3;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 8px;
+  border: 1px solid black;
+}
+
+.dropdowns-cell {
+  grid-column: 1;
+  grid-row: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid black;
+}
+
+.linegraph-cell {
+  grid-column: 2;
+  grid-row: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid black;
 }
 
 .axis text {

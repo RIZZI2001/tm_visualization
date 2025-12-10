@@ -2,15 +2,12 @@
 function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
     // Try to parse CSV using d3 (handles quoted fields)
     const txt = String(resp.csv || '').trim();
-    const container = document.createElement('div');
-    container.style.margin = '8px 0';
-    rootEl.appendChild(container);
-    if(!txt){ container.textContent = 'Empty CSV'; return; }
-    if(txt.startsWith('Error')){ container.textContent = txt; return; }
+    if(!txt){ rootEl.textContent = 'Empty CSV'; return; }
+    if(txt.startsWith('Error')){ rootEl.textContent = txt; return; }
 
     const rows = d3.csvParse(txt);
     const cols = rows.columns;
-    if(!cols || cols.length < 2){ container.textContent = 'Unexpected CSV format'; return; }
+    if(!cols || cols.length < 2){ rootEl.textContent = 'Unexpected CSV format'; return; }
 
     // displayLabel: frontend no longer decodes or renames time/sample tokens;
     // backend provides already-decoded labels and sorting.
@@ -20,7 +17,7 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
     };
 
     const rows2 = d3.csvParseRows(txt);
-    if(!rows2 || rows2.length < 2 || rows2[0].length < 2){ container.textContent = 'Unexpected CSV format'; return; }
+    if(!rows2 || rows2.length < 2 || rows2[0].length < 2){ rootEl.textContent = 'Unexpected CSV format'; return; }
 
     const nRows = rows2.length - 1; // original data rows
     const nCols = rows2[0].length - 1; // original data cols
@@ -68,7 +65,7 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
 
     // layout sizes based on displayed dimensions and available space
     const leftLabelWidth = 60;
-    const topLabelHeight = 180;
+    const topLabelHeight = 80;
     const legendHeight = 12;
     const margins = 20 + 60; // horizontal + vertical margins
 
@@ -328,6 +325,6 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
         .attr('text-anchor','middle')
         .text(d => Math.round(d*1000)/1000);
 
-    container.appendChild(svg.node());
+    rootEl.appendChild(svg.node());
 
 }

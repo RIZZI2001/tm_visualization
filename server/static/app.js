@@ -1,6 +1,6 @@
 //GLOBALS:
 var dataSet = '18s';
-var topicSet = 25;
+var topicSet = 30;
 
 //row, column, depth
 var axis_categories = ['topic', 'time', 'place'];

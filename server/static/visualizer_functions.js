@@ -72,17 +72,26 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
             .attr('class', 'label-row')
             .attr('transform', (_,i) => `translate(0, ${i * labelCellH})`);
         
+        // Border rect (transparent, just for outline)
         labelGroups.append('rect')
+            .attr('class', 'label-border')
             .attr('x', 0)
             .attr('y', 0)
             .attr('width', '100%')
             .attr('height', labelCellH);
         
+        // Background group for 1D heatmap (time-averaged place data) - added after border
+        labelGroups.append('g')
+            .attr('class', 'place-heatmap-bg');
+        
+        // Text on top - font size relative to cell height
+        const fontSize = Math.max(8, Math.min(labelCellH * 0.5, 20));
         labelGroups.append('text')
             .attr('x', '95%')
             .attr('y', 4)
             .attr('text-anchor', 'end')
             .attr('dominant-baseline', 'hanging')
+            .style('font-size', `${fontSize}px`)
             .text(d => d);
         
         labelsContainer.appendChild(labelsSvg.node());
@@ -119,7 +128,7 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
         .attr('stroke', 'none');
 
     // Row hover expansion behavior
-    const expandFactor = 10;
+    const expandFactor = displayRows / 4;
     const smallFactor = (displayRows - expandFactor) / (displayRows - 1);
     let activeExpanded = null;
     const rowGroups = cellsG.selectAll('g.row');
@@ -143,6 +152,8 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
             labelGroups.select('rect').transition().duration(150)
                 .attr('height', labelCellH);
             labelsSvg.transition().duration(150).attr('height', labelContainerH);
+            // Clear 1D heatmap backgrounds
+            labelGroups.selectAll('g.place-heatmap-bg').selectAll('*').remove();
         }
         
         activeExpanded = null;
@@ -209,6 +220,75 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
             payload.topic = { type: 'single', value: topicVal };
             // if original structure has specs.topic, mirror it
             if(payload.specs) payload.specs.topic = { type: 'single', value: topicVal };
+            
+            // Fetch time-averaged place data for 1D heatmap background
+            const avgPayload = JSON.parse(JSON.stringify(basePayload));
+            avgPayload.topic = { type: 'single', value: topicVal };
+            if(avgPayload.specs){
+                avgPayload.specs.topic = { type: 'single', value: topicVal };
+                if(avgPayload.specs.sample) avgPayload.specs.sample.average = "time";
+            }
+            
+            const avgQ = encodeURIComponent(JSON.stringify(avgPayload));
+            fetch(`/data?attribute=${avgQ}`).then(async res=>{
+                const ct = res.headers.get('content-type') || '';
+                let txt;
+                if(ct.includes('application/json')){
+                    const j = await res.json();
+                    txt = j.csv || '';
+                } else {
+                    txt = await res.text();
+                }
+                if(!txt || activeExpanded !== i) return;
+                
+                const avgRows = d3.csvParseRows(String(txt).trim());
+                if(!avgRows || avgRows.length < 2) return;
+                
+                // Parse averaged values - each row is a place, with one value column
+                const avgVals = [];
+                for(let r=1; r<avgRows.length; r++){
+                    // Try all columns after the first (label) column
+                    for(let c=1; c<avgRows[r].length; c++){
+                        const v = parseFloat(avgRows[r][c]);
+                        if(!isNaN(v)){
+                            avgVals.push(v);
+                            break; // Only take first valid value per row
+                        }
+                    }
+                }
+                
+                if(avgVals.length === 0 || activeExpanded !== i) return;
+                
+                const avgMin = Math.min(...avgVals);
+                const avgMax = Math.max(...avgVals);
+                const avgColor = d3.scaleSequential(d3.interpolateViridis).domain([avgMin, avgMax]);
+                
+                // Render 1D heatmap in the label background
+                if(labelGroups && activeExpanded === i){
+                    const labelGroup = d3.select(labelGroups.nodes()[i]);
+                    const bgGroup = labelGroup.select('g.place-heatmap-bg');
+                    bgGroup.selectAll('*').remove();
+                    
+                    const labelContainerH = labelsContainer.clientHeight;
+                    const scaleFactor = labelContainerH / svgH;
+                    const expandedLabelH = expandedH * scaleFactor;
+                    const cellH = expandedLabelH / avgVals.length;
+                    
+                    avgVals.forEach((val, idx) => {
+                        bgGroup.append('rect')
+                            .attr('x', 0)
+                            .attr('y', idx * cellH)
+                            .attr('width', '100%')
+                            .attr('height', cellH)
+                            .attr('fill', avgColor(val))
+                            .attr('opacity', 0.3)
+                            .attr('stroke', 'none');
+                    });
+                    
+                    // Move background group to back so it's behind border and text
+                    labelGroup.node().insertBefore(bgGroup.node(), labelGroup.node().firstChild);
+                }
+            }).catch(() => {});
 
             const q = encodeURIComponent(JSON.stringify(payload));
             fetch(`/data?attribute=${q}`).then(async res=>{

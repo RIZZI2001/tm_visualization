@@ -1,4 +1,4 @@
-function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
+function visualizeCSV(rootEl, resp, basePayload=null){
     const txt = String(resp.csv || '').trim();
     if(!txt){ rootEl.textContent = 'Empty CSV'; return; }
     if(txt.startsWith('Error')){ rootEl.textContent = txt; return; }
@@ -6,8 +6,9 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
     const rows2 = d3.csvParseRows(txt);
     if(!rows2 || rows2.length < 2 || rows2[0].length < 2){ rootEl.textContent = 'Unexpected CSV format'; return; }
 
-    const nRows = rows2.length - 1;
-    const nCols = rows2[0].length - 1;
+    // Reading dimensions (data is transposed)
+    const nCols = rows2.length - 1;
+    const nRows = rows2[0].length - 1;
     
     // Variables for cell hover tracking
     let hoveredCell = null;
@@ -19,36 +20,33 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
 
     // Parse numeric matrix and compute domain
     const matrix = [];
-    const vals = [];
-    for(let r=1; r<rows2.length; r++){
-        const row = [];
-        for(let c=1; c<rows2[r].length; c++){
+    let vmin = Infinity;
+    let vmax = -Infinity;
+
+    // Build matrix column-wise (necessary for svg rendering later)
+    for(let c=1; c<=nRows; c++){
+        const col = [];
+        for(let r=1; r<=nCols; r++){
             const v = parseFloat(rows2[r][c]);
-            row.push(v);
-            if(!isNaN(v)) vals.push(v);
+            col.push(v);
+            if(!isNaN(v)) {
+                if(v < vmin) vmin = v;
+                if(v > vmax) vmax = v;
+            }
         }
-        matrix.push(row);
+        matrix.push(col);
     }
-    const vmin = vals.length ? Math.min(...vals) : 0;
-    const vmax = vals.length ? Math.max(...vals) : 1;
 
     // Extract labels
-    const colLabels = rows2[0].slice(1);
-    const rowLabels = rows2.slice(1).map(r => r[0]);
-
-    const displayRows = transposed ? nCols : nRows;
-    const displayCols = transposed ? nRows : nCols;
-    const displayRowLabels = transposed ? colLabels : rowLabels;
-    const displayColLabels = transposed ? rowLabels : colLabels;
+    const rowLabels = rows2[0].slice(1);
+    const colLabels = rows2.slice(1).map(r => r[0]);
 
     // Compute cell dimensions
-    const containerW = rootEl.clientWidth;
-    const containerH = rootEl.clientHeight;
-    const cell_x = containerW / displayCols;
-    const cell_y = containerH / displayRows;
+    const cell_x = rootEl.clientWidth / nCols;
+    const cell_y = rootEl.clientHeight / nRows;
 
-    const svgW = displayCols * cell_x;
-    const svgH = displayRows * cell_y;
+    const svgW = nCols * cell_x;
+    const svgH = nRows * cell_y;
 
     const svg = d3.create('svg')
         .attr('class', 'heatmap-svg')
@@ -59,67 +57,46 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
         .attr('shape-rendering', 'crispEdges');
 
     // Color scale
-    const color = d3.scaleSequentialSqrt(d3.interpolateViridis).domain([vmin, vmax]);
+    const color = d3.scaleSequentialSqrt(d3.interpolateInferno).domain([vmin, vmax]);
 
     // Render row labels in separate container
     const labelsContainer = document.getElementById('labels-section');
     let labelsSvg, labelGroups;
-    if(labelsContainer){
-        labelsContainer.innerHTML = '';
-        const labelContainerH = labelsContainer.clientHeight;
-        const labelCellH = labelContainerH / displayRows;
-        
-        labelsSvg = d3.create('svg')
-            .attr('class', 'labels-svg')
-            .attr('width', '100%')
-            .attr('height', labelContainerH);
-        
-        labelGroups = labelsSvg.selectAll('g.label-row')
-            .data(displayRowLabels)
-            .enter()
-            .append('g')
-            .attr('class', 'label-row')
-            .attr('transform', (_,i) => `translate(0, ${i * labelCellH})`);
-        
-        // Border rect (transparent, just for outline)
-        labelGroups.append('rect')
-            .attr('class', 'label-border')
-            .attr('x', 0)
-            .attr('y', 0)
-            .attr('width', '100%')
-            .attr('height', labelCellH);
-        
-        // Background group for 1D heatmap (time-averaged place data) - added after border
-        labelGroups.append('g')
-            .attr('class', 'place-heatmap-bg');
-        
-        // Text on top - font size relative to cell height
-        const fontSize = Math.max(8, Math.min(labelCellH * 0.5, 20));
-        labelGroups.append('text')
-            .attr('x', '95%')
-            .attr('y', 4)
-            .attr('text-anchor', 'end')
-            .attr('dominant-baseline', 'hanging')
-            .style('font-size', `${fontSize}px`)
-            .text(d => d);
-        
-        labelsContainer.appendChild(labelsSvg.node());
-    }
+    labelsContainer.innerHTML = '';
+    const labelCellH = labelsContainer.clientHeight / nRows;
+    
+    labelsSvg = d3.create('svg')
+        .attr('class', 'labels-svg')
+        .attr('width', '100%')
+        .attr('height', labelsContainer.clientHeight);
+    
+    labelGroups = labelsSvg.selectAll('g.label-row')
+        .data(rowLabels)
+        .enter()
+        .append('g')
+        .attr('class', 'label-row')
+        .attr('transform', (_,i) => `translate(0, ${i * labelCellH})`);
+    
+    // Background group for 1D heatmap (time-averaged place data) - added after border
+    labelGroups.append('g')
+        .attr('class', 'place-heatmap-bg');
+    
+    // Text on top - font size relative to cell height
+    const fontSize = Math.max(8, Math.min(labelCellH * 0.5, 20));
+    labelGroups.append('text')
+        .attr('x', '95%')
+        .attr('y', 4)
+        .attr('text-anchor', 'end')
+        .attr('dominant-baseline', 'hanging')
+        .style('font-size', `${fontSize}px`)
+        .text(d => d);
+    
+    labelsContainer.appendChild(labelsSvg.node());
 
     // Build and render heatmap cells
     const cellsG = svg.append('g');
-    const displayMatrix = [];
-    for(let r=0; r<displayRows; r++){
-        const row = [];
-        for(let c=0; c<displayCols; c++){
-            const v = transposed ? matrix[c][r] : matrix[r][c];
-            row.push(v);
-        }
-        displayMatrix.push(row);
-    }
-
     const rowsSel = cellsG.selectAll('g.row')
-        .data(displayMatrix)
+        .data(matrix)
         .enter()
         .append('g')
         .attr('class','row')
@@ -138,8 +115,8 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
         .datum((d, i) => ({col: i, value: d}));
 
     // Row hover expansion behavior
-    const expandFactor = displayRows / 4;
-    const smallFactor = (displayRows - expandFactor) / (displayRows - 1);
+    const expandFactor = nRows / 4;
+    const smallFactor = (nRows - expandFactor) / (nRows - 1);
     let activeExpanded = null;
     const rowGroups = cellsG.selectAll('g.row');
     let collapseTimeout = null;
@@ -157,7 +134,7 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
         // Reset label boxes
         if(labelGroups && labelsSvg){
             const labelContainerH = labelsContainer.clientHeight;
-            const labelCellH = labelContainerH / displayRows;
+            const labelCellH = labelContainerH / nRows;
             labelGroups.transition().duration(150)
                 .attr('transform', (_,i) => `translate(0, ${i * labelCellH})`);
             labelGroups.select('.label-border').transition().duration(150)
@@ -217,9 +194,8 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
         content += `<strong>Date:</strong> ${colLabel}<br><strong>Value:</strong> ${valueStr}`;
         
         // Determine tooltip position - switch to left side if near right edge
-        const tooltipOffset = 15;
-        const screenWidth = window.innerWidth;
-        const nearRightEdge = event.clientX > screenWidth * 0.7;
+        const tooltipOffset = 5;
+        const nearRightEdge = event.clientX > window.innerWidth * 0.9;
         
         tooltip = d3.select('body').append('div')
             .attr('class', 'heatmap-tooltip')
@@ -245,160 +221,123 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
             .style('top', (event.clientY + tooltipOffset) + 'px');
     }
     
-    function highlightCollapsedCell(rowGroup, colIdx, rowIdx, event){
-        const cellKey = `collapsed-${colIdx}`;
+    function highlightCellCommon(rect, parent, colIdx, rowIdx, event, isCollapsed){
+        const cellKey = isCollapsed ? `collapsed-${colIdx}` : `${colIdx},${rowIdx}`;
         if(hoveredCell === cellKey && cellHighlight) return;
         
         hoveredCell = cellKey;
         if(cellHighlight) cellHighlight.remove();
         
-        const rects = d3.select(rowGroup).selectAll('rect');
-        const rect = d3.select(rects.nodes()[colIdx]);
         const x = parseFloat(rect.attr('x'));
         const y = parseFloat(rect.attr('y'));
         const width = parseFloat(rect.attr('width'));
         const height = parseFloat(rect.attr('height'));
         
-        cellHighlight = createHighlightBorder(d3.select(rowGroup), x, y, width, height);
+        cellHighlight = createHighlightBorder(parent, x, y, width, height);
         
         const cellData = rect.datum();
-        const rowLabel = displayRowLabels[rowIdx] || 'Unknown';
-        const colLabel = displayColLabels[colIdx] || 'Unknown';
-        showTooltipForCell(event, rowLabel, colLabel, cellData ? cellData.value : null, true);
+        const rowLabel = isCollapsed 
+            ? (rowLabels[rowIdx] || 'Unknown')
+            : (storedRowLabels[cellData.row] || 'Unknown');
+        const colLabel = colLabels[isCollapsed ? colIdx : cellData.col] || 'Unknown';
+        
+        showTooltipForCell(event, rowLabel, colLabel, cellData ? cellData.value : null, isCollapsed);
+    }
+    
+    function highlightCollapsedCell(rowGroup, colIdx, rowIdx, event){
+        const rects = d3.select(rowGroup).selectAll('rect');
+        const rect = d3.select(rects.nodes()[colIdx]);
+        highlightCellCommon(rect, d3.select(rowGroup), colIdx, rowIdx, event, true);
     }
     
     function highlightCell(rectNode, colIdx, rowIdx, event){
         const rect = d3.select(rectNode);
-        const x = parseFloat(rect.attr('x'));
-        const y = parseFloat(rect.attr('y'));
-        const width = parseFloat(rect.attr('width'));
-        const height = parseFloat(rect.attr('height'));
-        
-        const cellKey = `${colIdx},${rowIdx}`;
-        if(hoveredCell === cellKey && cellHighlight) return;
-        
-        hoveredCell = cellKey;
-        if(cellHighlight) cellHighlight.remove();
-        
         const expandedGroup = d3.select(rowGroups.nodes()[activeExpanded]);
-        cellHighlight = createHighlightBorder(expandedGroup, x, y, width, height);
-        
-        const cellData = rect.datum();
-        const rowLabel = storedRowLabels[cellData.row] || 'Unknown';
-        const colLabel = displayColLabels[cellData.col] || 'Unknown';
-        showTooltipForCell(event, rowLabel, colLabel, cellData.value);
+        highlightCellCommon(rect, expandedGroup, colIdx, rowIdx, event, false);
     }
 
-    // Simple mouse tracking approach - check which row the cursor is over
+    // Simple mouse tracking approach - check which row the mouse is over (in the original unexpanded layout)
     function getRowIndexFromY(containerElement, mouseY, rowCount){
         const containerRect = containerElement.getBoundingClientRect();
         const relativeY = mouseY - containerRect.top;
         const containerHeight = containerRect.height;
         
         if(relativeY < 0 || relativeY > containerHeight) return -1;
-        
-        // Simple calculation assuming equal distribution
+
         const rowIndex = Math.floor((relativeY / containerHeight) * rowCount);
         return Math.max(0, Math.min(rowIndex, rowCount - 1));
     }
     
-    function checkAndUpdateExpansion(event){
-        // Cancel any pending collapse
-        if(collapseTimeout){
+    function checkAndUpdateExpansion(event) {
+        if (collapseTimeout) {
             clearTimeout(collapseTimeout);
             collapseTimeout = null;
         }
         
         let targetRow = -1;
         
-        // Check if mouse is over label container - this triggers expansion
-        if(labelsContainer){
+        // Check if mouse is over label container
+        if (labelsContainer) {
             const labelRect = labelsContainer.getBoundingClientRect();
-            if(event.clientX >= labelRect.left && event.clientX <= labelRect.right &&
-               event.clientY >= labelRect.top && event.clientY <= labelRect.bottom){
-                targetRow = getRowIndexFromY(labelsContainer, event.clientY, displayRows);
+            if (event.clientX >= labelRect.left && event.clientX <= labelRect.right &&
+                event.clientY >= labelRect.top && event.clientY <= labelRect.bottom) {
+                targetRow = getRowIndexFromY(labelsContainer, event.clientY, nRows);
             }
         }
         
-        // If not over labels but something is expanded, check if we're still in the expanded row's heatmap area
-        if(targetRow === -1 && activeExpanded !== null && expandedRowBounds){
-            const heatmapRect = svg.node().getBoundingClientRect();
-            if(event.clientX >= heatmapRect.left && event.clientX <= heatmapRect.right &&
-               event.clientY >= heatmapRect.top && event.clientY <= heatmapRect.bottom){
-                // Use actual expanded bounds instead of calculating from equal distribution
-                const mouseY = event.clientY - heatmapRect.top;
-                if(mouseY >= expandedRowBounds.heatmapTop && mouseY <= expandedRowBounds.heatmapBottom){
-                    targetRow = activeExpanded;
-                    
-                    const mouseX = event.clientX - heatmapRect.left;
-                    const expandedGroup = d3.select(rowGroups.nodes()[activeExpanded]);
-                    const miniG = expandedGroup.select('g.mini');
-                    if(!miniG.empty()){
-                        const miniRects = miniG.selectAll('rect');
-                        if(!miniRects.empty()){
-                            const firstRect = d3.select(miniRects.nodes()[0]);
-                            const rectWidth = parseFloat(firstRect.attr('width'));
-                            const rectHeight = parseFloat(firstRect.attr('height'));
-                            
-                            const rowLocalY = mouseY - expandedRowBounds.heatmapTop;
-                            const miniCol = Math.floor(mouseX / rectWidth);
-                            const miniRow = Math.floor(rowLocalY / rectHeight);
-                            
-                            let targetRect = null;
-                            miniRects.each(function(){
-                                const rectData = d3.select(this).datum();
-                                if(rectData && rectData.row === miniRow && rectData.col === miniCol){
-                                    targetRect = this;
-                                }
-                            });
-                            
-                            if(targetRect){
-                                highlightCell(targetRect, miniCol, miniRow, event);
-                            } else {
-                                clearCellHighlight();
-                            }
-                        }
-                    } else {
-                        clearCellHighlight();
-                    }
-                } else {
-                    clearCellHighlight();
-                }
-            } else {
-                clearCellHighlight();
-            }
-        } else if(targetRow === -1){
-            // Check if hovering over a collapsed row
-            const heatmapRect = svg.node().getBoundingClientRect();
-            if(event.clientX >= heatmapRect.left && event.clientX <= heatmapRect.right &&
-               event.clientY >= heatmapRect.top && event.clientY <= heatmapRect.bottom){
-                const mouseY = event.clientY - heatmapRect.top;
-                const mouseX = event.clientX - heatmapRect.left;
-                const collapsedRowIdx = Math.floor(mouseY / cell_y);
+        // Handle cell hover in heatmap
+        const heatmapRect = svg.node().getBoundingClientRect();
+        if (event.clientX >= heatmapRect.left && event.clientX <= heatmapRect.right &&
+            event.clientY >= heatmapRect.top && event.clientY <= heatmapRect.bottom) {
+            
+            const mouseY = event.clientY - heatmapRect.top;
+            const mouseX = event.clientX - heatmapRect.left;
+            
+            // Expanded row cell hover
+            if (targetRow === -1 && activeExpanded !== null && expandedRowBounds &&
+                mouseY >= expandedRowBounds.heatmapTop && mouseY <= expandedRowBounds.heatmapBottom) {
                 
-                if(collapsedRowIdx >= 0 && collapsedRowIdx < displayRows){
-                    const colIdx = Math.floor(mouseX / cell_x);
-                    if(colIdx >= 0 && colIdx < displayCols){
-                        const rowGroup = rowGroups.nodes()[collapsedRowIdx];
-                        highlightCollapsedCell(rowGroup, colIdx, collapsedRowIdx, event);
-                    } else {
-                        clearCellHighlight();
-                    }
+                targetRow = activeExpanded;
+                const expandedGroup = d3.select(rowGroups.nodes()[activeExpanded]);
+                const miniRects = expandedGroup.select('g.mini').selectAll('rect');
+                
+                if (!miniRects.empty()) {
+                    const firstRect = d3.select(miniRects.nodes()[0]);
+                    const rectWidth = parseFloat(firstRect.attr('width'));
+                    const rectHeight = parseFloat(firstRect.attr('height'));
+                    const miniCol = Math.floor(mouseX / rectWidth);
+                    const miniRow = Math.floor((mouseY - expandedRowBounds.heatmapTop) / rectHeight);
+                    
+                    let targetRect = null;
+                    miniRects.each(function() {
+                        const d = d3.select(this).datum();
+                        if (d && d.row === miniRow && d.col === miniCol) targetRect = this;
+                    });
+                    
+                    targetRect ? highlightCell(targetRect, miniCol, miniRow, event) : clearCellHighlight();
                 } else {
                     clearCellHighlight();
                 }
-            } else {
-                clearCellHighlight();
+            }
+            // Collapsed row cell hover
+            else if (targetRow === -1) {
+                const rowIdx = Math.floor(mouseY / cell_y);
+                const colIdx = Math.floor(mouseX / cell_x);
+                
+                if (rowIdx >= 0 && rowIdx < nRows && colIdx >= 0 && colIdx < nCols) {
+                    highlightCollapsedCell(rowGroups.nodes()[rowIdx], colIdx, rowIdx, event);
+                } else {
+                    clearCellHighlight();
+                }
             }
         } else {
             clearCellHighlight();
         }
         
-        // Update expansion if needed
-        if(targetRow !== -1 && targetRow !== activeExpanded){
+        // Update expansion state
+        if (targetRow !== -1 && targetRow !== activeExpanded) {
             expandRow(targetRow);
-        } else if(targetRow === -1 && activeExpanded !== null){
-            // Delay collapse slightly to handle gaps between containers
+        } else if (targetRow === -1 && activeExpanded !== null) {
             collapseTimeout = setTimeout(() => {
                 clearExpanded();
                 collapseTimeout = null;
@@ -407,7 +346,7 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
     }
     
     function expandRow(i){
-        if(i < 0 || i >= displayRows) return;
+        if(i < 0 || i >= nRows) return;
         
         // Clear previous expansion if switching to a different row
         if(activeExpanded !== null && activeExpanded !== i){
@@ -430,10 +369,10 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
 
         // compute new y positions
         const heights = [];
-        for(let r=0;r<displayRows;r++) heights.push(r===i ? expandedH : smallH);
+        for(let r=0;r<nRows;r++) heights.push(r===i ? expandedH : smallH);
         const yPos = [];
         let cur = 0;
-        for(let r=0;r<displayRows;r++){ yPos.push(cur); cur += heights[r]; }
+        for(let r=0;r<nRows;r++){ yPos.push(cur); cur += heights[r]; }
 
         // Store the expanded row bounds for accurate mouse tracking
         expandedRowBounds = {
@@ -483,7 +422,7 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
 
     // Fetch detail CSV for expanded row
     if(basePayload){
-        const topicVal = displayRowLabels[i];
+        const topicVal = rowLabels[i];
         const payload = JSON.parse(JSON.stringify(basePayload));
         // ensure sample average is false for detail
         if(payload.specs && payload.specs.sample) payload.specs.sample.average = "false";
@@ -626,7 +565,7 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
                 }
                 const mvmin = miniVals.length ? Math.min(...miniVals) : 0;
                 const mvmax = miniVals.length ? Math.max(...miniVals) : 1;
-                const mcolor = d3.scaleSequential(d3.interpolateInferno).domain([mvmin, mvmax]);
+                const mcolor = d3.scaleSequential(d3.interpolateViridis).domain([mvmin, mvmax]);
 
                 if(activeExpanded !== i) return;
                 const hoveredGroup = d3.select(rowGroups.nodes()[i]);
@@ -634,9 +573,8 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
                 hoveredGroup.selectAll('rect').attr('display', 'none');
                 const miniG = hoveredGroup.append('g').attr('class','mini');
 
-                const innerTransposed = !!transposed;
-                const renderCols = innerTransposed ? mRows : mCols;
-                const renderRows = innerTransposed ? mCols : mRows;
+                const renderCols = mRows;
+                const renderRows = mCols;
 
                 // Store mini-heatmap metadata for tooltip
                 const miniPlaceLabels = [];
@@ -647,12 +585,12 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
                 // Store only place labels for tooltip access (dates come from main heatmap)
                 storedRowLabels = miniPlaceLabels;
 
-                const mCellW = Math.max(6, (displayCols * cell_x) / renderCols);
+                const mCellW = Math.max(6, (nCols * cell_x) / renderCols);
                 const mCellH = Math.max(6, (expandedH) / renderRows);
 
                 for(let rr=0; rr<renderRows; rr++){
                     for(let cc=0; cc<renderCols; cc++){
-                        const val = innerTransposed ? miniMat[cc][rr] : miniMat[rr][cc];
+                        const val = miniMat[cc][rr];
                         miniG.append('rect')
                             .attr('x', cc * mCellW)
                             .attr('y', rr * mCellH)
@@ -730,12 +668,11 @@ function visualizeCSV(rootEl, resp, transposed=false, basePayload=null){
     // Render timeline in timescale section
     const timeContainer = document.getElementById('timescale-section');
     // Use colLabels for time data (these represent time points across columns)
-    const timeLabels = transposed ? rowLabels : colLabels;
-    if(timeContainer && timeLabels && timeLabels.length > 0){
+    if(timeContainer && colLabels && colLabels.length > 0){
         timeContainer.innerHTML = '';
         
         // Parse dates from time labels
-        const dates = timeLabels.map(label => {
+        const dates = colLabels.map(label => {
             const d = new Date(label);
             return isNaN(d.getTime()) ? null : d;
         }).filter(d => d !== null);

@@ -329,8 +329,18 @@ function visualizeCSV(rootEl, resp, basePayload=null){
                 const miniRects = expandedGroup.select('g.mini').selectAll('rect');
                 
                 if (!miniRects.empty()) {
+                    // Find number of columns in mini heatmap
+                    let maxCol = 0;
+                    miniRects.each(function() {
+                        const d = d3.select(this).datum();
+                        if (d && d.col > maxCol) maxCol = d.col;
+                    });
+                    
+                    // Recalculate mini cell dimensions based on current heatmap width
+                    const currentHeatmapWidth = heatmapRect.width;
+                    const rectWidth = currentHeatmapWidth / (maxCol + 1);
+                    
                     const firstRect = d3.select(miniRects.nodes()[0]);
-                    const rectWidth = parseFloat(firstRect.attr('width'));
                     const rectHeight = parseFloat(firstRect.attr('height'));
                     // Account for zoom and pan transform (same as main heatmap)
                     const transformedMouseX = (mouseX + panOffset) / zoomScale;

@@ -1040,3 +1040,165 @@ function updateLineGraphs(lineGraphSection, zoomScale, panOffset, svgW){
             .attr('d', line);
     });
 }
+
+// Setup vertical time ruler across right column
+(function setupTimeRuler() {
+    const chartContainer = document.getElementById('chart-container');
+    if(!chartContainer) return;
+    
+    // Create ruler line element
+    const ruler = document.createElement('div');
+    ruler.id = 'time-ruler';
+    ruler.style.position = 'absolute';
+    ruler.style.width = '1px';
+    ruler.style.backgroundColor = 'white';
+    ruler.style.pointerEvents = 'none';
+    ruler.style.display = 'none';
+    ruler.style.zIndex = '10000';
+    chartContainer.appendChild(ruler);
+    
+    // Container for value readouts
+    const readoutsContainer = document.createElement('div');
+    readoutsContainer.id = 'ruler-readouts';
+    readoutsContainer.style.position = 'absolute';
+    readoutsContainer.style.pointerEvents = 'none';
+    readoutsContainer.style.display = 'none';
+    readoutsContainer.style.zIndex = '10001';
+    chartContainer.appendChild(readoutsContainer);
+    
+    // Right column sections
+    const rightColumnSections = [
+        'slider-section',
+        'heatmap-section',
+        'timescale-section',
+        'linegraph-section'
+    ];
+    
+    function updateRuler(event) {
+        const chartRect = chartContainer.getBoundingClientRect();
+        const headerHeight = document.getElementById('header').getBoundingClientRect().height;
+        const mouseX = event.clientX;
+        const mouseY = event.clientY;
+        
+        // Check if mouse is in any of the right column sections
+        let isInRightColumn = false;
+        
+        for(const sectionId of rightColumnSections) {
+            const section = document.getElementById(sectionId);
+            if(!section) continue;
+            
+            const rect = section.getBoundingClientRect();
+            if(mouseX >= rect.left && mouseX <= rect.right &&
+               mouseY >= rect.top && mouseY <= rect.bottom) {
+                isInRightColumn = true;
+                break;
+            }
+        }
+        
+        if(isInRightColumn) {
+            ruler.style.display = 'block';
+            ruler.style.left = mouseX + 'px';
+            ruler.style.top = (chartRect.top - headerHeight) + 'px';
+            ruler.style.height = chartRect.height + 'px';
+            
+            // Update value readouts for line graphs
+            updateValueReadouts(mouseX);
+        } else {
+            ruler.style.display = 'none';
+            readoutsContainer.style.display = 'none';
+        }
+    }
+    
+    function updateValueReadouts(mouseX) {
+        const lineGraphSection = document.getElementById('linegraph-section');
+        if(!lineGraphSection || !lineGraphSection._lineGraphData) {
+            readoutsContainer.style.display = 'none';
+            return;
+        }
+        
+        const data = lineGraphSection._lineGraphData;
+        const { dates, minDate, maxDate, datasets, attributeNames, graphHeight, svgW } = data;
+        
+        // Get current zoom state from heatmap
+        const heatmapSection = document.getElementById('heatmap-section');
+        const heatmapSvg = heatmapSection ? heatmapSection.querySelector('svg') : null;
+        const currentSvgW = heatmapSvg ? parseFloat(heatmapSvg.getAttribute('width')) : svgW;
+        
+        // Get zoom and pan from stored state (we need access to these)
+        // For now, calculate x position relative to line graph section
+        const lineGraphRect = lineGraphSection.getBoundingClientRect();
+        const relativeX = mouseX - lineGraphRect.left;
+        
+        // Calculate which date index we're at
+        // We need to account for zoom - get the actual width being used
+        const xScale = d3.scaleTime()
+            .domain([minDate, maxDate])
+            .range([0, currentSvgW]);
+        
+        // Find closest date
+        const mouseDate = xScale.invert(relativeX);
+        let closestIdx = 0;
+        let minDiff = Infinity;
+        dates.forEach((d, i) => {
+            const diff = Math.abs(d - mouseDate);
+            if(diff < minDiff) {
+                minDiff = diff;
+                closestIdx = i;
+            }
+        });
+        
+        // Clear previous readouts
+        readoutsContainer.innerHTML = '';
+        readoutsContainer.style.display = 'block';
+        
+        // Create readout for each line graph
+        attributeNames.forEach((attrName, idx) => {
+            const graphData = datasets[attrName];
+            const dataPoint = graphData[closestIdx];
+            
+            if(!dataPoint || dataPoint.value === null || isNaN(dataPoint.value)) return;
+            
+            // Calculate Y position for this graph
+            const graphTopY = lineGraphRect.top + (idx * graphHeight);
+            
+            // Find the actual y coordinate of the value
+            const values = graphData.map(d => d.value).filter(v => v !== null);
+            const yMin = Math.min(...values);
+            const yMax = Math.max(...values);
+            const yScale = d3.scaleLinear()
+                .domain([yMin, yMax])
+                .range([graphHeight - 2, 2]);
+            
+            const valueY = graphTopY + yScale(dataPoint.value);
+            
+            // Create readout element
+            const readout = document.createElement('div');
+            readout.style.position = 'absolute';
+            readout.style.left = (mouseX - 20) + 'px';
+            readout.style.top = (valueY - 70) + 'px';
+            readout.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+            readout.style.color = 'white';
+            readout.style.padding = '2px 6px';
+            readout.style.borderRadius = '3px';
+            readout.style.fontSize = '11px';
+            readout.style.whiteSpace = 'nowrap';
+            readout.textContent = dataPoint.value.toFixed(2);
+            
+            readoutsContainer.appendChild(readout);
+        });
+    }
+    
+    function hideRuler() {
+        ruler.style.display = 'none';
+        readoutsContainer.style.display = 'none';
+    }
+    
+    // Add listeners to all right column sections
+    for(const sectionId of rightColumnSections) {
+        const section = document.getElementById(sectionId);
+        if(section) {
+            section.addEventListener('mousemove', updateRuler);
+            section.addEventListener('mouseleave', hideRuler);
+        }
+    }
+})();

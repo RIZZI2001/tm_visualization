@@ -350,10 +350,14 @@ function visualizeCSV(rootEl, resp, basePayload=null){
             }
             // Collapsed row cell hover
             else if (targetRow === -1) {
-                const rowIdx = Math.floor(mouseY / cell_y);
+                // Recalculate cell dimensions based on current container size
+                const currentCellX = heatmapRect.width / nCols;
+                const currentCellY = heatmapRect.height / nRows;
+                
+                const rowIdx = Math.floor(mouseY / currentCellY);
                 // Account for zoom and pan transform
                 const transformedMouseX = (mouseX + panOffset) / zoomScale;
-                const colIdx = Math.floor(transformedMouseX / cell_x);
+                const colIdx = Math.floor(transformedMouseX / currentCellX);
                 
                 if (rowIdx >= 0 && rowIdx < nRows && colIdx >= 0 && colIdx < nCols) {
                     highlightCollapsedCell(rowGroups.nodes()[rowIdx], colIdx, rowIdx, event);

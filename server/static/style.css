@@ -241,7 +241,7 @@ body {
 }
 
 .chart-cell {
-  border: 1px solid var(--primary-dark);
+  border: none;/* 1px solid var(--primary-dark); */
 }
 
 /* Heatmap SVG styling */

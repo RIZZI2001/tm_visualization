@@ -1,18 +1,18 @@
 {
-    "file": "Output/16s/TM_Topics/3_topics.csv",
-    "table_type": "topic",
+    "file": "Input/metadata.csv",
+    "table_type": "metadata",
     "specs": {
         "sample": {
             "time": {
                 "type": "range",
-                "year": [2022, 2022],
-                "week": [30, 32]},
+                "year": [2022, 2023],
+                "week": [17, 20]},
                 "day": "all",
             "place": {
                 "place_type": "site",
                 "site": {
                     "type": "range",
-                    "value": [2, 4]
+                    "value": [2, 15]
                 },
                 "latitude": {
                     "type": "range",
@@ -27,7 +27,7 @@
         },
         "attribute": {
             "type": "list",
-            "value": ["f0"]
+            "value": ["salinity", "temperature"]
         },
         "otu": {
             "type": "list",

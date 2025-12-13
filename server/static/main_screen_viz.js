@@ -671,6 +671,12 @@ function visualizeCSV(rootEl, resp, basePayload=null){
         
         // Update timeline with new zoom
         updateTimeline();
+        
+        // Update line graphs with new zoom
+        const lineGraphSection = document.getElementById('linegraph-section');
+        if(lineGraphSection){
+            updateLineGraphs(lineGraphSection, zoomScale, panOffset, svgW);
+        }
     }
     
     if(heatmapContainer){
@@ -679,6 +685,32 @@ function visualizeCSV(rootEl, resp, basePayload=null){
             checkAndUpdateExpansion({clientX: -9999, clientY: -9999});
         });
         heatmapContainer.addEventListener('wheel', handleZoom, {passive: false});
+        
+        // Watch for container resize to update timeline and line graphs
+        const resizeObserver = new ResizeObserver(() => {
+            const newWidth = heatmapContainer.clientWidth;
+            const scaleRatio = newWidth / svgW;
+            
+            // Update timeline with new width
+            if(timelineScale && timelineG && timelineAxis) {
+                timelineScale.range([0, newWidth * zoomScale]);
+                timelineG.call(timelineAxis);
+                timelineG.selectAll('text')
+                    .style('font-size', '11px')
+                    .style('fill', 'var(--text)');
+                timelineG.selectAll('line, path')
+                    .style('stroke', 'var(--text)');
+            }
+            
+            // Update line graphs with new width
+            const lineGraphSection = document.getElementById('linegraph-section');
+            if(lineGraphSection && lineGraphSection._lineGraphData){
+                lineGraphSection._lineGraphData.svgW = newWidth;
+                updateLineGraphs(lineGraphSection, zoomScale, panOffset, newWidth);
+            }
+        });
+        
+        resizeObserver.observe(heatmapContainer);
     }
     
     if(labelsContainer){
@@ -822,4 +854,189 @@ function visualizeCSV(rootEl, resp, basePayload=null){
         timelineG.selectAll('line, path')
             .style('stroke', 'var(--text)');
     }
+}
+
+// Function to visualize line graphs
+function visualizeLineGraphs(rootEl, resp, lineGraphPayload){
+    if(!rootEl) return;
+    
+    rootEl.innerHTML = '';
+    
+    const txt = String(resp.csv || '').trim();
+    if(!txt){ rootEl.textContent = 'Empty CSV'; return; }
+    if(txt.startsWith('Error')){ rootEl.textContent = txt; return; }
+    
+    const rows = d3.csvParseRows(txt);
+    if(!rows || rows.length < 2){ rootEl.textContent = 'Unexpected CSV format'; return; }
+    
+    // Parse data: first column is time labels, subsequent columns are attribute values
+    const timeLabels = [];
+        const datasets = {};
+        
+        // Get attribute names from first row (skip first cell which is header)
+        const attributeNames = rows[0].slice(1);
+        attributeNames.forEach(name => {
+            datasets[name] = [];
+        });
+        
+        // Parse data rows
+        for(let r = 1; r < rows.length; r++){
+            const timeLabel = rows[r][0];
+            timeLabels.push(timeLabel);
+            
+            for(let c = 1; c < rows[r].length; c++){
+                const val = parseFloat(rows[r][c]);
+                const attrName = attributeNames[c - 1];
+                datasets[attrName].push({
+                    time: timeLabel,
+                    value: isNaN(val) ? null : val
+                });
+            }
+        }
+        
+        // Parse dates
+        const dates = timeLabels.map(label => {
+            const d = new Date(label);
+            return isNaN(d.getTime()) ? null : d;
+        }).filter(d => d !== null);
+        
+        if(dates.length === 0){ rootEl.textContent = 'No valid dates'; return; }
+        
+        const minDate = new Date(Math.min(...dates));
+        const maxDate = new Date(Math.max(...dates));
+        
+        // Get heatmap width to match zoom
+        const heatmapSection = document.getElementById('heatmap-section');
+        const heatmapSvg = heatmapSection ? heatmapSection.querySelector('svg') : null;
+        const svgW = heatmapSvg ? parseFloat(heatmapSvg.getAttribute('width')) : rootEl.clientWidth;
+        
+        // Create container for all line graphs
+        const graphCount = attributeNames.length;
+        const containerHeight = rootEl.clientHeight;
+        const graphHeight = containerHeight / graphCount;
+        
+        const mainSvg = d3.create('svg')
+            .attr('class', 'linegraphs-svg')
+            .attr('width', '100%')
+            .attr('height', '100%');
+        
+        // Create a group for each attribute
+        attributeNames.forEach((attrName, idx) => {
+            const data = datasets[attrName];
+            
+            // Find min/max for y scale
+            const values = data.map(d => d.value).filter(v => v !== null);
+            if(values.length === 0) return;
+            
+            const yMin = Math.min(...values);
+            const yMax = Math.max(...values);
+            
+            // Create scales
+            const xScale = d3.scaleTime()
+                .domain([minDate, maxDate])
+                .range([0, svgW]);
+            
+            const yScale = d3.scaleLinear()
+                .domain([yMin, yMax])
+                .range([graphHeight - 2, 2]);
+            
+            // Create group for this graph
+            const graphG = mainSvg.append('g')
+                .attr('class', `linegraph-${idx}`)
+                .attr('transform', `translate(0, ${idx * graphHeight})`);
+            
+            // Background box
+            graphG.append('rect')
+                .attr('x', 0)
+                .attr('y', 0)
+                .attr('width', '100%')
+                .attr('height', graphHeight)
+                .attr('fill', 'var(--primary-dark)')
+                .attr('stroke', 'var(--primary-light)')
+                .attr('stroke-width', 1);
+            
+            // Create zoomable content group
+            const contentG = graphG.append('g')
+                .attr('class', 'linegraph-content');
+            
+            // Line generator
+            const line = d3.line()
+                .defined(d => d.value !== null)
+                .x((d, i) => xScale(dates[i]))
+                .y(d => yScale(d.value));
+            
+            // Draw line
+            contentG.append('path')
+                .datum(data)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--primary-contrast)')
+                .attr('stroke-width', 2)
+                .attr('d', line);
+            
+            // Label
+            graphG.append('text')
+                .attr('x', 5)
+                .attr('y', 15)
+                .attr('text-anchor', 'start')
+                .style('font-size', '12px')
+                .style('font-weight', 'bold')
+                .style('fill', 'var(--primary-contrast)')
+                .text(attrName);
+        });
+        
+        rootEl.appendChild(mainSvg.node());
+        
+        // Store references for zoom updates
+        rootEl._lineGraphData = {
+            svg: mainSvg,
+            dates: dates,
+            minDate: minDate,
+            maxDate: maxDate,
+            svgW: svgW,
+            datasets: datasets,
+            attributeNames: attributeNames,
+            graphHeight: graphHeight
+        };
+}
+
+// Function to update line graphs on zoom
+function updateLineGraphs(lineGraphSection, zoomScale, panOffset, svgW){
+    if(!lineGraphSection || !lineGraphSection._lineGraphData) return;
+    
+    const data = lineGraphSection._lineGraphData;
+    const { dates, minDate, maxDate, datasets, attributeNames, graphHeight } = data;
+    
+    // Update x scale with zoom
+    const xScale = d3.scaleTime()
+        .domain([minDate, maxDate])
+        .range([0, svgW * zoomScale]);
+    
+    const svg = d3.select(lineGraphSection).select('svg');
+    
+    attributeNames.forEach((attrName, idx) => {
+        const graphData = datasets[attrName];
+        const values = graphData.map(d => d.value).filter(v => v !== null);
+        if(values.length === 0) return;
+        
+        const yMin = Math.min(...values);
+        const yMax = Math.max(...values);
+        
+        const yScale = d3.scaleLinear()
+            .domain([yMin, yMax])
+            .range([graphHeight - 2, 2]);
+        
+        const line = d3.line()
+            .defined(d => d.value !== null)
+            .x((d, i) => xScale(dates[i]))
+            .y(d => yScale(d.value));
+        
+        const contentG = svg.select(`.linegraph-${idx} .linegraph-content`);
+        
+        // Apply transform
+        contentG.attr('transform', `translate(${-panOffset}, 0)`);
+        
+        // Update line
+        contentG.select('path')
+            .attr('d', line);
+    });
 }

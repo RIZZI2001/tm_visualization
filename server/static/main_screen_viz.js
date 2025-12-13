@@ -505,7 +505,7 @@ function visualizeCSV(rootEl, resp, basePayload=null){
                 
                 const avgMin = Math.min(...avgVals);
                 const avgMax = Math.max(...avgVals);
-                const avgColor = d3.scaleSequential(d3.interpolateViridis).domain([avgMin, avgMax]);
+                const avgColor = d3.scaleSequential(d3.interpolateInferno).domain([avgMin, avgMax]);
                 
                 // Render 1D heatmap in the label background
                 if(labelGroups && activeExpanded === i){
@@ -596,7 +596,7 @@ function visualizeCSV(rootEl, resp, basePayload=null){
                 }
                 const mvmin = miniVals.length ? Math.min(...miniVals) : 0;
                 const mvmax = miniVals.length ? Math.max(...miniVals) : 1;
-                const mcolor = d3.scaleSequential(d3.interpolateViridis).domain([mvmin, mvmax]);
+                const mcolor = d3.scaleSequential(d3.interpolateInferno).domain([mvmin, mvmax]);
 
                 if(activeExpanded !== i) return;
                 const hoveredGroup = d3.select(rowGroups.nodes()[i]);
@@ -631,6 +631,17 @@ function visualizeCSV(rootEl, resp, basePayload=null){
                             .datum({row: rr, col: cc, value: val});
                     }
                 }
+                
+                // Add border around mini heatmap
+                miniG.append('rect')
+                    .attr('x', 0.5)
+                    .attr('y', 0.5)
+                    .attr('width', renderCols * mCellW - 1)
+                    .attr('height', renderRows * mCellH - 1)
+                    .attr('fill', 'none')
+                    .attr('stroke', 'white')
+                    .attr('stroke-width', 1)
+                    .attr('pointer-events', 'none');
             }).catch(() => {});
         }
     }

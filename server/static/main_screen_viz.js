@@ -120,6 +120,10 @@ function visualizeCSV(rootEl, resp, basePayload=null){
     let activeExpanded = null;
     const rowGroups = cellsG.selectAll('g.row');
     let collapseTimeout = null;
+    
+    // Horizontal zoom state
+    let zoomScale = 1;
+    let panOffset = 0;
 
     function clearExpanded(){
         rowGroups.selectAll('rect')
@@ -173,16 +177,26 @@ function visualizeCSV(rootEl, resp, basePayload=null){
             .attr('y', y)
             .attr('width', width)
             .attr('height', height)
-            .attr('fill', 'none')
-            .attr('stroke', 'white')
-            .attr('stroke-width', 2)
+            .attr('fill', 'white')
+            .attr('opacity', 0.3)
             .attr('pointer-events', 'none');
     }
     
-    function showTooltipForCell(event, rowLabel, colLabel, value, isCollapsed = false){
+    function showTooltipForCell(event, rowLabel, colLabel, value, isCollapsed = false, cellRect = null){
         if(tooltip) tooltip.remove();
         
         const valueStr = !isNaN(value) ? value.toFixed(3) : 'N/A';
+        
+        // Format date as day-month-year
+        let formattedDate = colLabel;
+        const parsedDate = new Date(colLabel);
+        if(!isNaN(parsedDate.getTime())) {
+            const day = String(parsedDate.getDate()).padStart(2, '0');
+            const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
+            const year = parsedDate.getFullYear();
+            formattedDate = `${day}-${month}-${year}`;
+        }
+        
         let content = '';
         if(rowLabel){
             if(isCollapsed){
@@ -191,11 +205,20 @@ function visualizeCSV(rootEl, resp, basePayload=null){
                 content += `<strong>Site:</strong> ${rowLabel}<br>`;
             }
         }
-        content += `<strong>Date:</strong> ${colLabel}<br><strong>Value:</strong> ${valueStr}`;
+        content += `<strong>Date:</strong> ${formattedDate}<br><strong>Value:</strong> ${valueStr}`;
         
-        // Determine tooltip position - switch to left side if near right edge
+        // Determine tooltip position - use cell boundaries if provided
         const tooltipOffset = 5;
-        const nearRightEdge = event.clientX > window.innerWidth * 0.9;
+        let posX = event.clientX;
+        let posY = event.clientY;
+        
+        // If cell rect provided, use its boundaries for more accurate positioning
+        if(cellRect) {
+            posX = cellRect.right;
+            posY = cellRect.top;
+        }
+        
+        const nearRightEdge = posX > window.innerWidth * 0.9;
         
         tooltip = d3.select('body').append('div')
             .attr('class', 'heatmap-tooltip')
@@ -214,15 +237,15 @@ function visualizeCSV(rootEl, resp, basePayload=null){
         // Position tooltip after creation so we can measure its width
         const tooltipWidth = tooltip.node().offsetWidth;
         const leftPos = nearRightEdge 
-            ? (event.clientX - tooltipWidth - tooltipOffset) + 'px'
-            : (event.clientX + tooltipOffset) + 'px';
+            ? (posX - tooltipWidth - tooltipOffset) + 'px'
+            : (posX + tooltipOffset) + 'px';
         
         tooltip.style('left', leftPos)
-            .style('top', (event.clientY + tooltipOffset) + 'px');
+            .style('top', (posY + tooltipOffset) + 'px');
     }
     
     function highlightCellCommon(rect, parent, colIdx, rowIdx, event, isCollapsed){
-        const cellKey = isCollapsed ? `collapsed-${colIdx}` : `${colIdx},${rowIdx}`;
+        const cellKey = isCollapsed ? `collapsed-${rowIdx}-${colIdx}` : `${colIdx},${rowIdx}`;
         if(hoveredCell === cellKey && cellHighlight) return;
         
         hoveredCell = cellKey;
@@ -241,7 +264,11 @@ function visualizeCSV(rootEl, resp, basePayload=null){
             : (storedRowLabels[cellData.row] || 'Unknown');
         const colLabel = colLabels[isCollapsed ? colIdx : cellData.col] || 'Unknown';
         
-        showTooltipForCell(event, rowLabel, colLabel, cellData ? cellData.value : null, isCollapsed);
+        // Get actual screen boundaries of the rect for tooltip positioning
+        const rectNode = rect.node();
+        const cellRect = rectNode ? rectNode.getBoundingClientRect() : null;
+        
+        showTooltipForCell(event, rowLabel, colLabel, cellData ? cellData.value : null, isCollapsed, cellRect);
     }
     
     function highlightCollapsedCell(rowGroup, colIdx, rowIdx, event){
@@ -305,7 +332,9 @@ function visualizeCSV(rootEl, resp, basePayload=null){
                     const firstRect = d3.select(miniRects.nodes()[0]);
                     const rectWidth = parseFloat(firstRect.attr('width'));
                     const rectHeight = parseFloat(firstRect.attr('height'));
-                    const miniCol = Math.floor(mouseX / rectWidth);
+                    // Account for zoom and pan transform (same as main heatmap)
+                    const transformedMouseX = (mouseX + panOffset) / zoomScale;
+                    const miniCol = Math.floor(transformedMouseX / rectWidth);
                     const miniRow = Math.floor((mouseY - expandedRowBounds.heatmapTop) / rectHeight);
                     
                     let targetRect = null;
@@ -322,7 +351,9 @@ function visualizeCSV(rootEl, resp, basePayload=null){
             // Collapsed row cell hover
             else if (targetRow === -1) {
                 const rowIdx = Math.floor(mouseY / cell_y);
-                const colIdx = Math.floor(mouseX / cell_x);
+                // Account for zoom and pan transform
+                const transformedMouseX = (mouseX + panOffset) / zoomScale;
+                const colIdx = Math.floor(transformedMouseX / cell_x);
                 
                 if (rowIdx >= 0 && rowIdx < nRows && colIdx >= 0 && colIdx < nCols) {
                     highlightCollapsedCell(rowGroups.nodes()[rowIdx], colIdx, rowIdx, event);
@@ -609,11 +640,45 @@ function visualizeCSV(rootEl, resp, basePayload=null){
     // Set up continuous mouse tracking for expansion
     const heatmapContainer = svg.node().parentElement;
     
+    // Horizontal zoom with mousewheel
+    function handleZoom(event) {
+        event.preventDefault();
+        
+        const heatmapRect = svg.node().getBoundingClientRect();
+        const mouseX = event.clientX - heatmapRect.left;
+        
+        // Calculate zoom factor
+        const zoomDelta = event.deltaY > 0 ? 0.9 : 1.1;
+        const newZoomScale = Math.max(1, Math.min(10, zoomScale * zoomDelta));
+        
+        if (newZoomScale === zoomScale) return;
+        
+        // Calculate focal point in unzoomed coordinates
+        const focalPointX = (mouseX + panOffset) / zoomScale;
+        
+        // Calculate new pan offset to keep focal point under cursor
+        panOffset = focalPointX * newZoomScale - mouseX;
+        
+        // Clamp pan offset
+        const maxPan = svgW * newZoomScale - svgW;
+        panOffset = Math.max(0, Math.min(maxPan, panOffset));
+        
+        zoomScale = newZoomScale;
+        
+        // Apply transform to cellsG (mini-heatmaps inherit this automatically)
+        const transform = `translate(${-panOffset}, 0) scale(${zoomScale}, 1)`;
+        cellsG.attr('transform', transform);
+        
+        // Update timeline with new zoom
+        updateTimeline();
+    }
+    
     if(heatmapContainer){
         heatmapContainer.addEventListener('mousemove', checkAndUpdateExpansion);
         heatmapContainer.addEventListener('mouseleave', () => {
             checkAndUpdateExpansion({clientX: -9999, clientY: -9999});
         });
+        heatmapContainer.addEventListener('wheel', handleZoom, {passive: false});
     }
     
     if(labelsContainer){
@@ -667,6 +732,11 @@ function visualizeCSV(rootEl, resp, basePayload=null){
     
     // Render timeline in timescale section
     const timeContainer = document.getElementById('timescale-section');
+    let timelineG = null;  // Store reference for zoom updates
+    let timelineAxis = null;
+    let timelineScale = null;
+    let timelineDates = null;
+    
     // Use colLabels for time data (these represent time points across columns)
     if(timeContainer && colLabels && colLabels.length > 0){
         timeContainer.innerHTML = '';
@@ -678,6 +748,7 @@ function visualizeCSV(rootEl, resp, basePayload=null){
         }).filter(d => d !== null);
         
         if(dates.length > 0){
+            timelineDates = dates;
             const minDate = new Date(Math.min(...dates));
             const maxDate = new Date(Math.max(...dates));
             
@@ -686,65 +757,69 @@ function visualizeCSV(rootEl, resp, basePayload=null){
                 .attr('width', '100%')
                 .attr('height', '100%');
             
-            // Create scale that maps to percentage positions
-            const timeScale = d3.scaleTime()
+            // Create a group for timeline axis
+            timelineG = timeSvg.append('g')
+                .attr('class', 'timeline-content')
+                .attr('transform', 'translate(0, 0)');
+            
+            // Create scale that maps to absolute pixel positions (matching heatmap width)
+            timelineScale = d3.scaleTime()
                 .domain([minDate, maxDate])
-                .range([0, 100]);
+                .range([0, svgW]);
             
-            // Timeline axis - full width
-            timeSvg.append('line')
-                .attr('x1', '0%')
-                .attr('x2', '100%')
-                .attr('y1', '30%')
-                .attr('y2', '30%')
-                .attr('stroke', 'var(--text)')
-                .attr('stroke-width', 2);
+            // Create axis generator
+            timelineAxis = d3.axisBottom(timelineScale)
+                .tickFormat(d3.timeFormat('%d-%m-%Y'))
+                .ticks(d3.timeMonth.every(1));
             
-            // Find first occurrence of each month
-            const monthTicks = [];
-            const seenMonths = new Set();
-            dates.forEach(date => {
-                const monthKey = `${date.getFullYear()}-${date.getMonth()}`;
-                if(!seenMonths.has(monthKey)){
-                    seenMonths.add(monthKey);
-                    monthTicks.push(date);
-                }
-            });
+            // Render initial axis
+            timelineG.call(timelineAxis);
             
-            // Remove first tick if it's not at the start of the month
-            if(monthTicks.length > 0){
-                const firstDate = dates[0];
-                if(firstDate.getDate() !== 1){
-                    monthTicks.shift(); // Remove first element
-                }
-            }
+            // Style the axis
+            timelineG.selectAll('text')
+                .style('font-size', '11px')
+                .style('fill', 'var(--text)');
             
-            const formatter = d3.timeFormat('%b %Y');
-            
-            monthTicks.forEach(tick => {
-                const xPos = timeScale(tick);
-                
-                // Tick mark
-                timeSvg.append('line')
-                    .attr('x1', `${xPos}%`)
-                    .attr('x2', `${xPos}%`)
-                    .attr('y1', '20%')
-                    .attr('y2', '40%')
-                    .attr('stroke', 'var(--text)')
-                    .attr('stroke-width', 1);
-                
-                // Tick label
-                timeSvg.append('text')
-                    .attr('x', `${xPos}%`)
-                    .attr('y', '50%')
-                    .attr('text-anchor', 'middle')
-                    .attr('dominant-baseline', 'hanging')
-                    .style('font-size', '11px')
-                    .style('fill', 'var(--text)')
-                    .text(formatter(tick));
-            });
+            timelineG.selectAll('line, path')
+                .style('stroke', 'var(--text)');
             
             timeContainer.appendChild(timeSvg.node());
         }
+    }
+    
+    // Function to update timeline based on zoom
+    function updateTimeline() {
+        if(!timelineG || !timelineScale || !timelineDates) return;
+        
+        const minDate = new Date(Math.min(...timelineDates));
+        const maxDate = new Date(Math.max(...timelineDates));
+        
+        // Update scale range based on zoom
+        timelineScale.range([0, svgW * zoomScale]);
+        
+        // Adjust tick interval based on zoom level
+        let tickInterval;
+        if(zoomScale > 5) {
+            tickInterval = d3.timeWeek.every(1);
+        } else if(zoomScale > 2) {
+            tickInterval = d3.timeWeek.every(2);
+        } else {
+            tickInterval = d3.timeMonth.every(1);
+        }
+        
+        // Update axis with new interval
+        timelineAxis.ticks(tickInterval);
+        
+        // Apply transform and re-render
+        timelineG.attr('transform', `translate(${-panOffset}, 0)`);
+        timelineG.call(timelineAxis);
+        
+        // Re-style after update
+        timelineG.selectAll('text')
+            .style('font-size', '11px')
+            .style('fill', 'var(--text)');
+        
+        timelineG.selectAll('line, path')
+            .style('stroke', 'var(--text)');
     }
 }

@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.responses import RedirectResponse
 import pandas as pd
 from pathlib import Path
 from typing import Optional, Any, Dict
@@ -40,6 +41,10 @@ try:
         app.mount('/static', StaticFiles(directory=str(static_dir)), name='static')
 except Exception:
     pass
+
+@app.get("/")
+def root():
+    return RedirectResponse(url="/static/index.html")
 
 @app.get("/data")
 def get_data(attribute: str = Query(...)):

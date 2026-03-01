@@ -3,90 +3,127 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>TM_VIZUALIZER</title>
-  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <title>heaTMapper</title>
+  <script src="./d3.v7.min.js"></script>
   <link rel="stylesheet" href="./color_palette.css">
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
   <header id="header">
     <div class="header-content">
-      <h1>TM Visualizer</h1>
-      <div class="header-buttons">
-        <button id="options-btn" class="header-btn">⚙️ Options</button>
-        <button id="menu-btn" class="header-btn">☰ Menu</button>
-      </div>
+      <h1>Hea<span style="color: var(--accent);">TM</span>apper</h1>
+      <button id="back-btn" class="header-btn">← Back</button>
+      <button id="main-view-btn" class="header-btn">Main view</button>
+      <div id="legend-container"></div>
+      <button id="inter-top-btn" class="header-btn">ITSC</button>
+      <button id="info-btn" class="header-btn">ℹ️ Info</button>
+      <button id="options-btn" class="header-btn">⚙️ Options</button>
+      <input type="text" id="search-bar" class="header-search-bar" placeholder="Search...">
     </div>
   </header>
   
   <div class="main-container">
-    <!-- Left Sidebar -->
+    <!-- Left Sidepanel -->
     <div id="left-panel" class="panel left-panel">
       <div class="panel-content">
-        <h3>Left Panel</h3>
-        <p>Filters and options go here</p>
+        <div id="topic-selection-section" class="panel-section">
+          <h3>Topic Selection</h3>
+          <!-- Topic selection UI goes here -->
+        </div>
+        <div id="metadata-selection-section" class="panel-section">
+          <h3>Metadata Selection</h3>
+          <!-- Metadata selection UI goes here -->
+        </div>
       </div>
     </div>
 
     <!-- Left Handle -->
-    <div class="left-handle panel-handle">▶</div>
+    <div class="left-handle panel-handle" style="display: flex; align-items: center; justify-content: center;"><span style="transform: rotate(-90deg); white-space: nowrap;">Topic & Metadata Filters</span></div>
 
-    <!-- Main Chart Area -->
-    <div id="chart-container" class="chart-container">
-      <!-- Row 1 -->
-      <div id="toggle-section" class="chart-cell">
-        <button id="toggle-btn" class="header-btn">Toggle</button>
-      </div>
-      <div id="slider-section" class="chart-cell">
-        <input type="range" id="main-slider" min="0" max="100" value="50" style="width: 100%;">
+    <!-- Central Container with Chart and Detail View -->
+    <div id="central-container">
+      <!-- Main Chart Area -->
+      <div id="chart-container" class="chart-container">
+        <!-- Row 1 -->
+        <div id="toggle-section" class="chart-cell">
+          <button id="toggle-btn" class="header-btn">Toggle</button>
+        </div>
+        <div id="slider-section" class="chart-cell">
+          <input type="range" id="main-slider" min="0" max="100" value="50" style="width: 100%;">
+        </div>
+
+        <!-- Row 2 -->
+        <div id="y-Label-section" class="chart-cell">
+          Labels
+        </div>
+        <div id="heatmap-section" class="chart-cell">
+          <!-- Heatmap will be inserted here -->
+        </div>
+
+        <!-- Row 3 -->
+        <div id="dropdowns-section" class="chart-cell">
+          <select id="place_select" class="header-btn">
+          </select>
+          <button id="swap-axes-btn" class="header-btn">
+            place
+            <!-- <img src="./swap-axes.png" alt="Swap Axes" style="width: 30px; height: 30px;"> -->
+          </button>
+        </div>
+        <div id="x-Label-section" class="chart-cell">
+        </div>
+
+        <!-- Row 4 -->
+        <div class="chart-cell">
+        </div>
+        <div id="linegraph-section" class="chart-cell">
+        </div>
       </div>
 
-      <!-- Row 2 -->
-      <div id="labels-section" class="chart-cell">
-        Labels
-      </div>
-      <div id="heatmap-section" class="chart-cell">
-        <!-- Heatmap will be inserted here -->
-      </div>
-
-      <!-- Row 3 -->
-      <div id="legend-section" class="chart-cell">
-        Legend
-      </div>
-      <div id="timescale-section" class="chart-cell">
-        Time Scale
-      </div>
-
-      <!-- Row 4 -->
-      <div id="dropdowns-section" class="chart-cell">
-        <select id="dropdown1" class="header-btn" style="width: 100%;">
-          <option>Option 1</option>
-          <option>Option 2</option>
-        </select>
-        <select id="dropdown2" class="header-btn" style="width: 100%;">
-          <option>Option A</option>
-          <option>Option B</option>
-        </select>
-      </div>
-      <div id="linegraph-section" class="chart-cell">
-        Line Graph
+      <!-- Detail View (hidden by default) -->
+      <div id="detail-view-container">
+        <!-- Left Panel (30%) -->
+        <div id="detail-left-panel">
+          <!-- Header with back button and title -->
+          <div id="detail-header">
+            <h2 id="detail-title" contenteditable="true" spellcheck="false" class="editable-title"></h2>
+          </div>
+          <!-- Content area -->
+          <div id="detail-left-content">
+            <!-- Bar chart items will be populated here -->
+          </div>
+        </div>
+        
+        <!-- Right Panel (70%) -->
+        <div id="detail-right-panel">
+        </div>
       </div>
     </div>
 
     <!-- Right Handle -->
-    <div class="right-handle panel-handle">◀</div>
+    <div class="right-handle panel-handle" style="display: flex; align-items: center; justify-content: center;"><span style="transform: rotate(90deg); white-space: nowrap;">Site Filter</span></div>
 
-    <!-- Right Sidebar -->
+    <!-- Right Sidepanel -->
     <div id="right-panel" class="panel right-panel">
       <div class="panel-content">
-        <h3>Right Panel</h3>
-        <p>Info and details go here</p>
+        <div id="site-selection-section" class="panel-section">
+          <h3>Site Selection</h3>
+          <!-- Metadata selection UI goes here -->
+        </div>
       </div>
     </div>
   </div>
 
-  <script src="./main_screen_viz.js"></script>
+  <script src="./helper_functions.js"></script>
+  <script src="./sidepanels.js"></script>
+  <script src="./main_linegraph.js"></script>
+  <script src="./main_movement.js"></script>
+  <script src="./detail_movement.js"></script>
+  <script src="./main_heatmap.js"></script>
+  <script src="./detail_view.js"></script>
+  <script src="./options_handler.js"></script>
+  <script src="./info_handler.js"></script>
+  <script src="./inter-topic-set-correlation.js"></script>
+  <script src="./search_bar.js"></script>
   <script src="./app.js"></script>
-  <script src="./sidebar.js"></script>
 </body>
 </html>

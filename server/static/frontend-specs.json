@@ -1,0 +1,60 @@
+{
+  "dataSet": "16s",
+  "topicSet": 10,
+  "metadataOptions": [
+    "PO4",
+    "NOx",
+    "NH4",
+    "NO2",
+    "NO3",
+    "temperature",
+    "salinity",
+    "Chl_a",
+    "Phaeo",
+    "Chl_a_conc",
+    "f0",
+    "fa"
+  ],
+  "customSiteOrder": [
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "7",
+    "6",
+    "5",
+    "4",
+    "3",
+    "2",
+    "1"
+  ],
+  "defaultHiddenSites": [
+    1
+  ],
+  "defaultActiveMetadata": [
+    "salinity",
+    "temperature"
+  ],
+  "defaultPlaceCategory": "site",
+  "defaultPlaceInverted": false,
+  "scaleCellsByDistance": true,
+  "showPlaceNameLabels": true,
+  "sortCorrelations": true,
+  "topicColorScale": "Inferno",
+  "topicColorScaleType": "squareRoot",
+  "metadataColorScale": "Purple",
+  "metadataColorScaleType": "linear",
+  "otuColorScale": "Viridis",
+  "otuColorScaleType": "squareRoot",
+  "invertColorScale": false,
+  "barchartItems": 30,
+  "fetchDelayExpandedRow": 150,
+  "maxZoom": 100,
+  "zoomSpeed": 1.08,
+  "automaticItscRenameThreshold": 0.95,
+  "automaticItscRename": true
+}

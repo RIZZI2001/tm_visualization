@@ -1,18 +1,18 @@
 {
-    "file": "Input/metadata.csv",
-    "table_type": "metadata",
+    "file": "Output/16s/Correlation/top_top/11_top_top_correlation.csv",
+    "data_set": "16s",
+    "table_type": "top_top",
     "specs": {
         "sample": {
             "time": {
-                "type": "range",
-                "year": [2022, 2023],
-                "week": [17, 20]},
-                "day": "all",
+                "from": "12-05-2022",
+                "to": "13-06-2022"
+            },
             "place": {
                 "place_type": "site",
                 "site": {
-                    "type": "range",
-                    "value": [2, 15]
+                    "type": "list",
+                    "value": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
                 },
                 "latitude": {
                     "type": "range",
@@ -23,20 +23,21 @@
                     "value": [11.0, 13.0]
                 }
             },
-            "average": "place"
+            "average": "false"
         },
         "attribute": {
             "type": "list",
-            "value": ["salinity", "temperature"]
+            "value": ["temperature"]
         },
         "otu": {
             "type": "list",
             "prefix": "otu_16s_",
-            "value": [2, 3, 1]
+            "value": [2, 3, 1, 0]
         },
-        "topic": {
-            "type": "all",
-            "value": [1]
+        "id": {
+            "type": "list",
+            "value": [1],
+            "average": "false"
         }
     }
 }

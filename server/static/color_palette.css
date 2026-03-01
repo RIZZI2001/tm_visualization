@@ -3,12 +3,20 @@
   /* Primary */
   --primary: #3d5a73;
   --primary-light: #5f778c;
+  --primary-lighter: #738ba0;
   --primary-dark: #2c3e50;
+  --primary-darker: #141f29;
   --primary-contrast: #c6cfd6;
   --white: #ffffff;
 
   /* Accent */
   --accent: #dd4f39;
+  --accent-light: #ff9913;
+
+  /* Bars */
+  --bar: #7d4ba8;
+  --positive-bar: #3b865d;
+  --negative-bar: #a0271f;
 
   /* Text */
   --text: #1f2f3d;

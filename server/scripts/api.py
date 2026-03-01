@@ -1,32 +1,29 @@
 from fastapi import FastAPI, HTTPException, Query
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, FileResponse
 import pandas as pd
 from pathlib import Path
-from typing import Optional, Any, Dict
+from typing import List
 from fastapi import Response
 import json
-from typing import List
-from datetime import date, datetime, timedelta
 try:
-    # when imported as package (e.g. server.scripts.api)
     from .helper_functions import generateSampleKeys
 except Exception:
-    try:
-        # when run directly from scripts folder
-        from helper_functions import generateSampleKeys
-    except Exception:
-        # fallback to absolute module path
-        from server.scripts.helper_functions import generateSampleKeys
+    from server.scripts.helper_functions import generateSampleKeys
 
 axis_types = {
     "metadata": {"column": "attribute", "row": "sample"},
-    "topic": {"column": "topic", "row": "sample"},
-    "component": {"column": "otu", "row": "topic"},
+    "topic": {"column": "id", "row": "sample"},
+    "component": {"column": "otu", "row": "id"},
     "otu": {"column": "otu", "row": "sample"},
     "taxonomy": {"column": "attribute", "row": "otu"},
+    "site": {"column": "attribute", "row": "id"},
+    "md_top": {"column": "id", "row": "attribute"},
+    "top_top": {"row": "id"},
+    "md_otu": {"column": "otu", "row": "attribute"},
+    "md_md": {"row": "attribute"},
 }
 
-app = FastAPI(title="CSV Query API")
+app = FastAPI(title="TM VISUALIZER API")
 
 # Base directory (the `server` folder)
 # For scripts under `server/scripts`, parents[1] yields the `server` directory.
@@ -46,6 +43,39 @@ except Exception:
 def root():
     return RedirectResponse(url="/static/index.html")
 
+@app.get("/favicon.ico")
+def favicon():
+    favicon_path = BASE_DIR / "static" / "favicon.ico"
+    if favicon_path.is_file():
+        return FileResponse(str(favicon_path), media_type="image/x-icon")
+    raise HTTPException(status_code=404, detail="favicon not found")
+
+@app.get("/data_sets")
+def get_data_sets():
+    data_sets_path = DATA_DIR / "Output"
+    if not data_sets_path.is_dir():
+        raise HTTPException(status_code=404, detail="Data sets directory not found")
+    try:
+        data_sets = [d.name for d in data_sets_path.iterdir() if d.is_dir()]
+        return {"data_sets": data_sets}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to list data sets: {e}")
+
+@app.get("/taxonomy_levels")
+def get_taxonomy_levels(dataSet: str = Query(...)):
+    taxonomy_levels_path = DATA_DIR / "Output" / dataSet / "taxonomy_levels.json"
+    if not taxonomy_levels_path.is_file():
+        raise HTTPException(status_code=404, detail=f"Taxonomy levels file not found for {dataSet}")
+    try:
+        with open(taxonomy_levels_path, 'r') as f:
+            taxonomy_levels_dict = json.load(f)
+        return {
+            "levels": taxonomy_levels_dict.get("levels", []),
+            "dict": taxonomy_levels_dict.get("dict", {})
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to read taxonomy levels: {e}")
+
 @app.get("/data")
 def get_data(attribute: str = Query(...)):
     # Parse JSON string
@@ -55,6 +85,7 @@ def get_data(attribute: str = Query(...)):
         raise HTTPException(status_code=400, detail="Invalid JSON in 'attribute' parameter")
 
     file_rel = payload.get("file")
+    data_set = payload.get("data_set")
     if not isinstance(file_rel, str) or not file_rel:
         raise HTTPException(status_code=400, detail="'file' key must be provided in attribute JSON and be a string")
     
@@ -63,15 +94,10 @@ def get_data(attribute: str = Query(...)):
         raise HTTPException(status_code=400, detail="Invalid 'table_type'. Must be one of: " + ", ".join(axis_types.keys()))
     axis = axis_types.get(table_type)
     row_type = axis["row"]
-    column_type = axis["column"]
+    #column type is optional
+    column_type = axis.get("column") if "column" in axis else None
 
     specs = payload.get("specs", {})
-    samplekeys = []
-    if row_type == "sample":
-        sample = specs.get("sample")
-        if sample is None:
-            raise HTTPException(status_code=400, detail="'sample' spec must be provided under 'specs' when 'sample' is used as the row type")
-        samplekeys = generateSampleKeys(sample)
 
     # Load CSV file
     file_path = DATA_DIR / file_rel
@@ -82,45 +108,57 @@ def get_data(attribute: str = Query(...)):
         df = pd.read_csv(file_path, dtype=str)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to read CSV: {e}")
-    
-    def strip_topic_prefix(col_name: Any) -> str:
-        if not isinstance(col_name, str):
-            return str(col_name)
-        if col_name.startswith("Topic_"):
-            return col_name[6:]
-        return col_name
 
     # Helper to extract allowed labels for an axis
-    def allowed_for_axis(axis_name: str) -> List[str]:
+    def allowed_for_axis(axis_name: str, axis_position: str = "column") -> List[str]:
+        """
+        Extract allowed values for an axis.
+        axis_position: "row" means this axis is for row filtering, "column" means column filtering
+        """
         specs = payload.get("specs", {})
         # sample handled separately
         if axis_name == "sample":
-            return samplekeys
+            sample = specs.get("sample")
+            return generateSampleKeys(sample, data_set)
         spec = specs.get(axis_name, {})
         type_ = spec.get("type", "all")
 
-        if axis_name == "topic":
+        if axis_name == "id":
             if type_ == "all":
-                # pick all columns that are integer-like
-                cols = [c for c in df.columns if c is not None]
-                ints = []
-                for c in cols:
-                    try:
-                        ints.append(str(int(c)))
-                    except Exception:
-                        continue
-                return ints
+                if axis_position == "row":
+                    # When filtering rows by id, look at the first column values
+                    ids = df[df.columns[0]].astype(str).unique().tolist()
+                    # Try to convert to ints and back to strings for consistency
+                    int_ids = []
+                    for val in ids:
+                        try:
+                            int_ids.append(str(int(val)))
+                        except Exception:
+                            int_ids.append(val)
+                    print(f"Identified id rows: {int_ids}")
+                    return int_ids
+                else:
+                    # When filtering columns by id, look at column headers
+                    cols = [c for c in df.columns if c is not None]
+                    ints = []
+                    for c in cols:
+                        try:
+                            ints.append(str(int(c)))
+                        except Exception:
+                            continue
+                    print(f"Identified id columns: {cols}")
+                    return ints
             if type_ == "single":
                 val = spec.get("value")
                 if isinstance(val, list):
-                    return [strip_topic_prefix(val[0])]
-                return [strip_topic_prefix(val)]
+                    return [val[0]]
+                return [val]
             if type_ == "list":
-                return [strip_topic_prefix(v) for v in spec.get("value", [])]
+                return [v for v in spec.get("value", [])]
             if type_ == "range":
                 vals = spec.get("value", [])
                 if len(vals) >= 2:
-                    start, end = int(strip_topic_prefix(vals[0])), int(strip_topic_prefix(vals[1]))
+                    start, end = int(vals[0]), int(vals[1])
                     return [str(i) for i in range(start, end + 1)]
                 return []
 
@@ -147,23 +185,57 @@ def get_data(attribute: str = Query(...)):
             if type_ == "list":
                 return [str(v) for v in spec.get("value", [])]
 
-        # default: return empty (means no filtering)
-        return []
+        # default: return all (no filtering)
+        return list(df.columns)
 
     # Determine allowed rows and columns
     allowed_rows = None
     allowed_cols = None
-    allowed_rows = allowed_for_axis(row_type)
-    allowed_cols = allowed_for_axis(column_type)
+    allowed_rows_data = allowed_for_axis(row_type, "row")
+    allowed_cols = allowed_for_axis(column_type, "column")
+
+    # If rows are samples, extract keys and build metadata lookup from the returned data
+    metadata_lookup = {}
+    if row_type == "sample" and allowed_rows_data is not None:
+        # allowed_rows_data is a list of dicts with 'key', 'location_id', 'date'
+        allowed_rows = [item['key'] for item in allowed_rows_data]
+        for item in allowed_rows_data:
+            metadata_lookup[item['key']] = {
+                'location_id': item['location_id'],
+                'date': item['date']
+            }
+    else:
+        allowed_rows = allowed_rows_data
+
+    # Check if id averaging is requested
+    id_average = False
+    if (row_type == "id" or column_type == "id"):
+        id_spec = specs.get("id", {})
+        id_average = id_spec.get("average", False)
+        if isinstance(id_average, str):
+            id_average = id_average.lower() in ('true', '1', 'yes')
+
+    # Check if attribute averaging is requested
+    attribute_average = False
+    if (row_type == "attribute" or column_type == "attribute"):
+        attribute_spec = specs.get("attribute", {})
+        attribute_average = attribute_spec.get("average", False)
+        if isinstance(attribute_average, str):
+            attribute_average = attribute_average.lower() in ('true', '1', 'yes')
+
+    # Check if otu averaging is requested
+    otu_average = False
+    if (row_type == "otu" or column_type == "otu"):
+        otu_spec = specs.get("otu", {})
+        otu_average = otu_spec.get("average", False)
+        if isinstance(otu_average, str):
+            otu_average = otu_average.lower() in ('true', '1', 'yes')
 
     # Convert allowed lists to strings
     if allowed_rows is not None:
         allowed_rows = [str(x) for x in allowed_rows]
     if allowed_cols is not None:
         allowed_cols = [str(x) for x in allowed_cols]
-
-    #print(f"Filtering rows ({row_type}): {allowed_rows if allowed_rows else 'none'}")
-    #print(f"Filtering columns ({column_type}): {allowed_cols if allowed_cols else 'none'}")
 
     # Filter rows: keep rows where the FIRST column value is in allowed_rows
     if allowed_rows is not None and len(allowed_rows) > 0:
@@ -172,6 +244,14 @@ def get_data(attribute: str = Query(...)):
         except Exception:
             mask = [str(v) in allowed_rows for v in df[df.columns[0]]]
         df = df[mask]
+
+        # Reorder rows to match allowed_rows order (important for sample keys)
+        if row_type == 'sample':
+            key_col = df.columns[0]
+            # Create a categorical with the exact order from allowed_rows
+            df[key_col] = pd.Categorical(df[key_col], categories=allowed_rows, ordered=True)
+            df = df.sort_values(key_col)
+            df[key_col] = df[key_col].astype(str)  # Convert back to string
 
     print(f"Rows after filtering: {len(df)}")
 
@@ -189,45 +269,80 @@ def get_data(attribute: str = Query(...)):
 
     print(f"Columns after filtering: {len(df.columns)}")
 
-    # helper to decode a time token (e.g. 'T3422') into a date object
-    def decode_time_label_py(token: str):
-        try:
-            s = str(token)
-            if not s:
-                return None
-            dayChar = s[0]
-            week = int(s[1:3]) if len(s) >= 3 and s[1:3].isdigit() else 0
-            year2 = int(s[3:5]) if len(s) >= 5 and s[3:5].isdigit() else 0
-            year = 2000 + year2
-            dayMap = { 'M': 1, 'T': 4, 'X': 1 }
-            isoWeekday = dayMap.get(dayChar, 1)
+    # Handle id averaging if requested
+    if id_average:
+        key_col = df.columns[0] if len(df.columns) > 0 else None
+        
+        if row_type == "id" and key_col is not None:
+            # Average rows: convert data to numeric, compute mean, replace with single row labeled "-2"
+            data_cols = list(df.columns[1:])
+            for c in data_cols:
+                df[c] = pd.to_numeric(df[c], errors='coerce')
+            avg_values = df[data_cols].mean()
+            df = pd.DataFrame([["-2"] + avg_values.tolist()], columns=df.columns)
+        
+        elif column_type == "id":
+            # Average columns: convert data to numeric, compute mean across id columns
+            data_cols = [c for c in df.columns[1:]]  # All columns except the first (key)
+            if len(data_cols) > 1:  # Only if there are multiple id columns to average
+                for c in data_cols:
+                    df[c] = pd.to_numeric(df[c], errors='coerce')
+                key_col = df.columns[0]
+                # Compute mean across all id columns for each row
+                avg_col = df[data_cols].mean(axis=1)
+                df = df[[key_col]].copy()
+                df["-2"] = avg_col
 
-            jan4 = date(year, 1, 4)
-            jan4_weekday = jan4.isoweekday()  # 1=Mon .. 7=Sun
-            mon1 = jan4 - timedelta(days=(jan4_weekday - 1))
-            days = (week - 1) * 7 + (isoWeekday - 1)
-            target = mon1 + timedelta(days=days)
-            return target
-        except Exception:
-            return None
+    # Handle attribute averaging if requested
+    if attribute_average:
+        key_col = df.columns[0] if len(df.columns) > 0 else None
+        
+        if row_type == "attribute" and key_col is not None:
+            # Average rows: convert data to numeric, compute mean, replace with single row labeled "-2"
+            data_cols = list(df.columns[1:])
+            for c in data_cols:
+                df[c] = pd.to_numeric(df[c], errors='coerce')
+            avg_values = df[data_cols].mean()
+            df = pd.DataFrame([["-2"] + avg_values.tolist()], columns=df.columns)
+        
+        elif column_type == "attribute":
+            # Average columns: convert data to numeric, compute mean across attribute columns
+            data_cols = [c for c in df.columns[1:]]  # All columns except the first (key)
+            if len(data_cols) > 1:  # Only if there are multiple attribute columns to average
+                for c in data_cols:
+                    df[c] = pd.to_numeric(df[c], errors='coerce')
+                key_col = df.columns[0]
+                # Compute mean across all attribute columns for each row
+                avg_col = df[data_cols].mean(axis=1)
+                df = df[[key_col]].copy()
+                df["-2"] = avg_col
 
-    # --- sample handling: relabeling, optional averaging or pivoting ---
+    # Handle otu averaging if requested
+    if otu_average:
+        key_col = df.columns[0] if len(df.columns) > 0 else None
+        
+        if row_type == "otu" and key_col is not None:
+            # Average rows: convert data to numeric, compute mean, replace with single row labeled "-2"
+            data_cols = list(df.columns[1:])
+            for c in data_cols:
+                df[c] = pd.to_numeric(df[c], errors='coerce')
+            avg_values = df[data_cols].mean()
+            df = pd.DataFrame([["-2"] + avg_values.tolist()], columns=df.columns)
+        
+        elif column_type == "otu":
+            # Average columns: convert data to numeric, compute mean across otu columns
+            data_cols = [c for c in df.columns[1:]]  # All columns except the first (key)
+            if len(data_cols) > 1:  # Only if there are multiple otu columns to average
+                for c in data_cols:
+                    df[c] = pd.to_numeric(df[c], errors='coerce')
+                key_col = df.columns[0]
+                # Compute mean across all otu columns for each row
+                avg_col = df[data_cols].mean(axis=1)
+                df = df[[key_col]].copy()
+                df["-2"] = avg_col
+
+    # --- sample handling: relabeling using metadata, optional averaging or pivoting ---
     # Only handle samples when they are the row type. Samples are never used as columns.
-    if row_type == "topic" or column_type == "topic":
-        # Add "topic_" prefix to topic axis labels
-        topic_prefix = "Topic_"
-        if row_type == "topic":
-            key_col = df.columns[0] if len(df.columns) > 0 else None
-            if key_col is not None:
-                df[key_col] = df[key_col].map(lambda s: f"{topic_prefix}{s}")
-        if column_type == "topic":
-            new_cols = []
-            for c in df.columns:
-                if c == df.columns[0]:
-                    new_cols.append(c)
-                else:
-                    new_cols.append(f"{topic_prefix}{c}")
-            df.columns = new_cols
     if row_type == 'sample':
         # normalize avg spec
         sample_spec = specs.get('sample', {}) if isinstance(specs, dict) else {}
@@ -239,18 +354,14 @@ def get_data(attribute: str = Query(...)):
             else:
                 avg_spec = False
 
-        # helper to split a sample key like 's04T3422' -> (place='s04', tpart='T3422')
-        def split_key_parts(s: str):
-            s = str(s)
-            return s[0:3], s[3:8]
-
-        # helper to make display label 's04:2022-08-25' using decode_time_label_py
-        def make_display_label(token: str):
-            place, tpart = split_key_parts(token)
-            dt = decode_time_label_py(tpart)
-            if dt:
-                return f"{place}:{dt.isoformat()}"
-            return f"{place}:{tpart}"
+        # helper to make display label using cached metadata: location_id:date
+        def make_display_label(key: str):
+            key_str = str(key)
+            if key_str in metadata_lookup:
+                loc_id = metadata_lookup[key_str].get('location_id', 'unknown')
+                date_val = metadata_lookup[key_str].get('date', 'unknown')
+                return f"{loc_id}:{date_val}"
+            return key_str
 
         key_col = df.columns[0] if len(df.columns) > 0 else None
         if key_col is None:
@@ -267,22 +378,26 @@ def get_data(attribute: str = Query(...)):
                     df[c] = pd.to_numeric(df[c], errors='coerce')
                 working = df.copy()
                 # convert sample tokens to display labels first, then split
-                # into place and time for grouping
+                # into location_id and date for grouping
                 display = s_keys.map(lambda s: make_display_label(s))
                 working['__place'] = display.map(lambda dl: dl.split(':', 1)[0])
                 working['__time'] = display.map(lambda dl: dl.split(':', 1)[1])
 
                 if avg_spec == 'time':
-                    # average over time -> group by place
+                    # average over time -> group by place (location_id)
+                    times_agg = working['__time'].unique().tolist()
                     grouped = working.groupby('__place')[data_cols].mean()
+                    # Preserve order of places as they appear in the data
+                    place_order = working['__place'].unique()
+                    grouped = grouped.reindex(place_order)
                     out_row_type = 'place'
                 else:
-                    # average over place -> group by time
+                    # average over place -> group by time (date)
                     grouped = working.groupby('__time')[data_cols].mean()
                     out_row_type = 'time'
                 resp_df = grouped.reset_index()
                 csv_str = resp_df.to_csv(index=False)
-                payload = { 'csv': csv_str, 'axis': [out_row_type, column_type] }
+                payload = { 'csv': csv_str, 'axis': [out_row_type, column_type], 'times' : times_agg if avg_spec == 'time' else None }
                 return Response(content=json.dumps(payload), media_type='application/json')
 
             # If no averaging and data is 1D (only one data column) pivot into time x place
@@ -294,7 +409,11 @@ def get_data(attribute: str = Query(...)):
                 pivot['__place'] = display.map(lambda dl: dl.split(':', 1)[0])
                 pivot['__time'] = display.map(lambda dl: dl.split(':', 1)[1])
                 pivot[val_col] = pd.to_numeric(pivot[val_col], errors='coerce')
-                pt = pivot.pivot_table(index='__time', columns='__place', values=val_col, aggfunc='first')
+                pt = pivot.pivot_table(index='__time', columns='__place', values=val_col, aggfunc='first', dropna=False)
+                
+                place_order = pivot['__place'].unique()
+                pt = pt.reindex(columns=place_order)
+                
                 pt.index = pt.index.astype(str)
                 pt.columns = pt.columns.astype(str)
                 resp_df = pt.reset_index()
@@ -323,3 +442,103 @@ def get_data(attribute: str = Query(...)):
         "axis": [out_row_type, out_col_type]
     }
     return Response(content=json.dumps(payload), media_type="application/json")
+
+@app.post("/topic_name")
+def set_topic_name(dataSet: str = Query(...), topicSet: str = Query(...), topicID: str = Query(...), topicName: str = Query(...), renameThreshold: float = Query(0.5)):
+    """
+    Update or delete a custom topic name in the topic-names.json file
+    
+    Parameters:
+    - dataSet: The data set identifier (e.g., "16s", "18s")
+    - topicSet: The topic set identifier (e.g., "11", "20")
+    - topicID: The topic ID number
+    - topicName: The new name for the topic. If empty string or None, delete the entry
+    - renameThreshold: The threshold for renaming topics based on correlation values
+    """
+    topic_names_path = BASE_DIR / "static" / "topic-names.json"
+    
+    # Load existing topic names
+    try:
+        with open(topic_names_path, 'r') as f:
+            topic_names_file = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError, ValueError):
+        topic_names_file = {}
+    
+    # Ensure the data set exists
+    if dataSet not in topic_names_file:
+        topic_names_file[dataSet] = {}
+
+    setTopicName(dataSet, topicSet, topicID, topicName, topic_names_file, True, True, renameThreshold)
+    
+    # Write back to the file
+    try:
+        with open(topic_names_path, 'w') as f:
+            json.dump(topic_names_file, f, indent=2)
+        return {"status": "success", "message": f"Topic name updated for {dataSet}.{topicSet}.{topicID}", "topic_names": topic_names_file}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to write topic names: {e}")
+
+def setTopicName(dataSet, topicSet, topicID, topicName, topic_names, up=True, down=True, renameThreshold=0.5):
+    # Ensure the topic set exists
+    if topicSet not in topic_names[dataSet]:
+        topic_names[dataSet][topicSet] = {}
+    
+    # If topicName is empty or None, delete the entry
+    if topicName == "" or topicName is None:
+        if str(topicID) in topic_names[dataSet][topicSet]:
+            del topic_names[dataSet][topicSet][str(topicID)]
+            print(f"Deleted topic name for {dataSet}.{topicSet}.{topicID}")
+    else:
+        # Set the new name
+        topic_names[dataSet][topicSet][str(topicID)] = topicName
+        print(f"Set topic name for {dataSet}.{topicSet}.{topicID} to '{topicName}'")
+    if up:
+        path = BASE_DIR / "DATA" / "Output" / dataSet / "Correlation" / "top_top_inter" / f"{int(topicSet)+1}_{topicSet}_inter_top_correlation.csv"
+        try:
+            with open(path, 'r') as f:
+                correlation_values = []
+                lines = f.readlines()
+                col_index = int(topicID) + 1  # +1 to account for the first column being row labels
+                for i in range(1, len(lines)):  # Skip header
+                    line = lines[i].strip()
+                    values = line.strip().split(',')
+                    if len(values) > col_index:
+                        correlation_values.append(values[col_index])
+            max_corr_idx = None
+            if correlation_values:
+                max_corr_idx = max(range(len(correlation_values)), key=lambda i: abs(float(correlation_values[i])))
+                print(correlation_values[max_corr_idx], renameThreshold)
+                if float(correlation_values[max_corr_idx]) >= renameThreshold:
+                    setTopicName(dataSet, str(int(topicSet)+1), max_corr_idx, topicName, topic_names, up=True, down=False, renameThreshold=renameThreshold)
+        except FileNotFoundError:
+            pass
+    if down:
+        path = BASE_DIR / "DATA" / "Output" / dataSet / "Correlation" / "top_top_inter" / f"{topicSet}_{int(topicSet)-1}_inter_top_correlation.csv"
+        try:
+            with open(path, 'r') as f:
+                correlation_values = []
+                lines = f.readlines()
+                row_index = int(topicID) + 1  # +1 to account for the first row being row labels
+                line = lines[row_index].strip()
+                values = line.strip().split(',')
+                correlation_values = values[1:]
+            max_corr_idx = None
+            if correlation_values:
+                max_corr_idx = max(range(len(correlation_values)), key=lambda i: abs(float(correlation_values[i])))
+                print(correlation_values[max_corr_idx], renameThreshold)
+                if float(correlation_values[max_corr_idx]) >= renameThreshold:
+                    setTopicName(dataSet, str(int(topicSet)-1), max_corr_idx, topicName, topic_names, up=False, down=True, renameThreshold=renameThreshold)
+        except FileNotFoundError:
+            pass
+
+@app.post("/save-options")
+async def save_options(options: dict):
+    specs_path = BASE_DIR / "static" / "frontend-specs.json"
+    
+    try:
+        with open(specs_path, 'w') as f:
+            json.dump(options, f, indent=2)
+        return {"status": "success", "message": "Options saved successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to write options: {e}")
+

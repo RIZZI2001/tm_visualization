@@ -1,0 +1,2727 @@
+{
+  "dict": {
+    "Eukaryota": {
+      "": {
+        "Dinophyceae": {
+          "Dinophyceae_unclassified": {
+            "Dinophyceae_unclassified": {
+              "Dinophyceae_unclassified": {
+                "otu_18s_2393": {},
+                "otu_18s_318": {},
+                "otu_18s_347": {},
+                "otu_18s_173": {},
+                "otu_18s_260": {},
+                "otu_18s_287": {},
+                "otu_18s_442": {},
+                "otu_18s_626": {},
+                "otu_18s_877": {},
+                "otu_18s_1157": {},
+                "otu_18s_1190": {},
+                "otu_18s_1392": {},
+                "otu_18s_2193": {},
+                "otu_18s_2208": {},
+                "otu_18s_5608": {},
+                "otu_18s_6592": {},
+                "otu_18s_17916": {},
+                "otu_18s_12396": {},
+                "otu_18s_9101": {}
+              }
+            }
+          },
+          "Suessiales": {
+            "Borghiellaceae": {
+              "Borghiella": {
+                "otu_18s_2401": {},
+                "otu_18s_26399": {}
+              }
+            },
+            "Suessiaceae": {
+              "Biecheleria": {
+                "otu_18s_314": {},
+                "otu_18s_1449": {},
+                "otu_18s_1204": {}
+              },
+              "Ansanella": {
+                "otu_18s_416": {},
+                "otu_18s_3418": {},
+                "otu_18s_5286": {},
+                "otu_18s_5287": {}
+              },
+              "Yihiella": {
+                "otu_18s_5298": {}
+              },
+              "Suessiaceae_unclassified": {
+                "otu_18s_5313": {}
+              },
+              "Protodinium": {
+                "otu_18s_5568": {},
+                "otu_18s_5628": {}
+              }
+            },
+            "Suessiales_X": {
+              "Dactylodinium": {
+                "otu_18s_193": {}
+              }
+            }
+          },
+          "Peridiniales": {
+            "Heterocapsaceae": {
+              "Heterocapsa": {
+                "otu_18s_27": {},
+                "otu_18s_77": {},
+                "otu_18s_155": {},
+                "otu_18s_1013": {},
+                "otu_18s_8936": {},
+                "otu_18s_8974": {},
+                "otu_18s_8994": {}
+              }
+            },
+            "Thoracosphaeraceae": {
+              "Thoracosphaeraceae_X": {
+                "otu_18s_445": {},
+                "otu_18s_462": {},
+                "otu_18s_9595": {}
+              },
+              "Thoracosphaeraceae_unclassified": {
+                "otu_18s_152": {},
+                "otu_18s_169": {},
+                "otu_18s_353": {},
+                "otu_18s_901": {},
+                "otu_18s_1122": {},
+                "otu_18s_1281": {},
+                "otu_18s_5513": {},
+                "otu_18s_9521": {},
+                "otu_18s_20749": {}
+              },
+              "Scrippsiella": {
+                "otu_18s_680": {}
+              },
+              "Luciella": {
+                "otu_18s_1240": {}
+              },
+              "Apocalathium": {
+                "otu_18s_12569": {}
+              }
+            },
+            "Kryptoperidiniaceae": {
+              "Unruhdinium": {
+                "otu_18s_1706": {},
+                "otu_18s_1945": {}
+              }
+            },
+            "Amphidiniopsidaceae": {
+              "Islandinium": {
+                "otu_18s_8889": {}
+              }
+            },
+            "Crypthecodiniaceae": {
+              "Crypthecodinium": {
+                "otu_18s_13809": {}
+              }
+            }
+          },
+          "Gymnodiniales": {
+            "Gymnodiniaceae": {
+              "Gyrodinium": {
+                "otu_18s_365": {},
+                "otu_18s_121": {},
+                "otu_18s_1066": {},
+                "otu_18s_1287": {},
+                "otu_18s_2027": {},
+                "otu_18s_1765": {},
+                "otu_18s_2339": {},
+                "otu_18s_15001": {}
+              },
+              "Gymnodinium": {
+                "otu_18s_109": {},
+                "otu_18s_183": {},
+                "otu_18s_290": {},
+                "otu_18s_1484": {},
+                "otu_18s_5617": {},
+                "otu_18s_17865": {},
+                "otu_18s_17875": {},
+                "otu_18s_21070": {}
+              },
+              "Polykrikos": {
+                "otu_18s_639": {}
+              },
+              "Lepidodinium": {
+                "otu_18s_20736": {}
+              },
+              "Balechina": {
+                "otu_18s_20848": {}
+              }
+            },
+            "Gymnodiniales_unclassified": {
+              "Gymnodiniales_unclassified": {
+                "otu_18s_239": {},
+                "otu_18s_12585": {},
+                "otu_18s_14887": {},
+                "otu_18s_25772": {}
+              }
+            },
+            "Kareniaceae": {
+              "Karlodinium": {
+                "otu_18s_2252": {},
+                "otu_18s_9009": {}
+              }
+            },
+            "Warnowiaceae": {
+              "Proterythropsis": {
+                "otu_18s_19663": {}
+              }
+            }
+          },
+          "Gonyaulacales": {
+            "Goniodomataceae": {
+              "Alexandrium": {
+                "otu_18s_1053": {},
+                "otu_18s_12350": {},
+                "otu_18s_12254": {},
+                "otu_18s_12297": {}
+              }
+            },
+            "Ceratiaceae": {
+              "Tripos": {
+                "otu_18s_631": {},
+                "otu_18s_17883": {},
+                "otu_18s_9291": {}
+              }
+            },
+            "Gonyaulacaceae": {
+              "Gonyaulax": {
+                "otu_18s_12497": {}
+              }
+            }
+          },
+          "Prorocentrales": {
+            "Prorocentraceae": {
+              "Prorocentrum": {
+                "otu_18s_774": {},
+                "otu_18s_1299": {},
+                "otu_18s_1300": {},
+                "otu_18s_12202": {},
+                "otu_18s_12215": {},
+                "otu_18s_20774": {}
+              }
+            }
+          },
+          "Dinophyceae_X": {
+            "Dinophyceae_XX": {
+              "Dinophyceae_XXX": {
+                "otu_18s_1961": {},
+                "otu_18s_9716": {}
+              }
+            }
+          },
+          "Dinophysiales": {
+            "Dinophysiaceae": {
+              "Dinophysis": {
+                "otu_18s_2215": {}
+              }
+            }
+          }
+        },
+        "Bacillariophyta": {
+          "Bacillariophyta_X": {
+            "Polar-centric-Mediophyceae": {
+              "Chaetoceros": {
+                "otu_18s_2407": {},
+                "otu_18s_2429": {},
+                "otu_18s_50": {},
+                "otu_18s_78": {},
+                "otu_18s_6410": {},
+                "otu_18s_7828": {},
+                "otu_18s_10356": {},
+                "otu_18s_10790": {}
+              },
+              "Stephanodiscus": {
+                "otu_18s_856": {},
+                "otu_18s_784": {},
+                "otu_18s_404": {},
+                "otu_18s_6": {},
+                "otu_18s_15": {},
+                "otu_18s_38": {},
+                "otu_18s_67": {},
+                "otu_18s_544": {},
+                "otu_18s_289": {},
+                "otu_18s_292": {},
+                "otu_18s_384": {},
+                "otu_18s_685": {},
+                "otu_18s_708": {},
+                "otu_18s_738": {},
+                "otu_18s_831": {},
+                "otu_18s_914": {},
+                "otu_18s_1180": {},
+                "otu_18s_12459": {},
+                "otu_18s_20904": {},
+                "otu_18s_23010": {},
+                "otu_18s_23184": {},
+                "otu_18s_27428": {},
+                "otu_18s_27457": {},
+                "otu_18s_27464": {},
+                "otu_18s_27465": {},
+                "otu_18s_27467": {},
+                "otu_18s_27482": {},
+                "otu_18s_27481": {},
+                "otu_18s_27484": {},
+                "otu_18s_27490": {},
+                "otu_18s_27495": {},
+                "otu_18s_27522": {},
+                "otu_18s_30256": {},
+                "otu_18s_32542": {},
+                "otu_18s_32655": {},
+                "otu_18s_35953": {},
+                "otu_18s_35962": {},
+                "otu_18s_35965": {},
+                "otu_18s_35969": {},
+                "otu_18s_35980": {},
+                "otu_18s_35985": {},
+                "otu_18s_35995": {},
+                "otu_18s_36014": {},
+                "otu_18s_36033": {},
+                "otu_18s_40870": {},
+                "otu_18s_40872": {},
+                "otu_18s_40873": {},
+                "otu_18s_40875": {},
+                "otu_18s_45778": {}
+              },
+              "Thalassiosira": {
+                "otu_18s_43": {},
+                "otu_18s_73": {},
+                "otu_18s_2038": {},
+                "otu_18s_3725": {},
+                "otu_18s_6986": {},
+                "otu_18s_13723": {},
+                "otu_18s_27499": {},
+                "otu_18s_43483": {}
+              },
+              "Polar-centric-Mediophyceae_unclassified": {
+                "otu_18s_154": {},
+                "otu_18s_282": {}
+              },
+              "Skeletonema": {
+                "otu_18s_164": {},
+                "otu_18s_1779": {},
+                "otu_18s_7003": {},
+                "otu_18s_9485": {},
+                "otu_18s_14813": {}
+              },
+              "Minidiscus": {
+                "otu_18s_542": {},
+                "otu_18s_9470": {}
+              },
+              "Cyclotella": {
+                "otu_18s_465": {},
+                "otu_18s_605": {},
+                "otu_18s_676": {},
+                "otu_18s_817": {},
+                "otu_18s_1143": {},
+                "otu_18s_8895": {},
+                "otu_18s_8904": {},
+                "otu_18s_8906": {},
+                "otu_18s_8909": {},
+                "otu_18s_8910": {},
+                "otu_18s_8915": {},
+                "otu_18s_8916": {},
+                "otu_18s_8918": {},
+                "otu_18s_9124": {},
+                "otu_18s_9330": {}
+              },
+              "Discostella": {
+                "otu_18s_468": {}
+              },
+              "Attheya": {
+                "otu_18s_1345": {}
+              },
+              "Ditylum": {
+                "otu_18s_4101": {}
+              },
+              "Cerataulina": {
+                "otu_18s_4507": {}
+              }
+            },
+            "Bacillariophyta_X_unclassified": {
+              "Bacillariophyta_X_unclassified": {
+                "otu_18s_2449": {}
+              }
+            },
+            "Araphid-pennate": {
+              "Fragilaria": {
+                "otu_18s_322": {},
+                "otu_18s_166": {},
+                "otu_18s_250": {}
+              },
+              "Licmophora": {
+                "otu_18s_41": {},
+                "otu_18s_137": {},
+                "otu_18s_147": {}
+              },
+              "Tabularia": {
+                "otu_18s_61": {},
+                "otu_18s_916": {}
+              },
+              "Synedra": {
+                "otu_18s_91": {},
+                "otu_18s_144": {},
+                "otu_18s_45762": {}
+              },
+              "Grammonema": {
+                "otu_18s_176": {}
+              },
+              "Diatoma": {
+                "otu_18s_186": {}
+              },
+              "Araphid-pennate_unclassified": {
+                "otu_18s_358": {},
+                "otu_18s_14950": {}
+              },
+              "Asterionella": {
+                "otu_18s_636": {}
+              },
+              "Hyalosira": {
+                "otu_18s_1301": {},
+                "otu_18s_5497": {}
+              },
+              "Grammatophora": {
+                "otu_18s_1950": {}
+              }
+            },
+            "Raphid-pennate": {
+              "Navicula": {
+                "otu_18s_111": {},
+                "otu_18s_1712": {}
+              },
+              "Berkeleya": {
+                "otu_18s_146": {}
+              },
+              "Raphid-pennate_unclassified": {
+                "otu_18s_1073": {},
+                "otu_18s_309": {},
+                "otu_18s_659": {},
+                "otu_18s_859": {},
+                "otu_18s_2967": {},
+                "otu_18s_15065": {}
+              },
+              "Nitzschia": {
+                "otu_18s_1077": {},
+                "otu_18s_481": {},
+                "otu_18s_930": {}
+              },
+              "Cylindrotheca": {
+                "otu_18s_17860": {},
+                "otu_18s_17862": {},
+                "otu_18s_17866": {},
+                "otu_18s_17869": {},
+                "otu_18s_17872": {},
+                "otu_18s_14810": {}
+              },
+              "Pseudo-nitzschia": {
+                "otu_18s_4229": {}
+              }
+            },
+            "Radial-centric-basal-Coscinodiscophyceae": {
+              "Rhizosolenia": {
+                "otu_18s_305": {},
+                "otu_18s_4535": {},
+                "otu_18s_5527": {},
+                "otu_18s_5483": {},
+                "otu_18s_5509": {},
+                "otu_18s_5702": {},
+                "otu_18s_5843": {},
+                "otu_18s_8985": {}
+              },
+              "Guinardia": {
+                "otu_18s_464": {}
+              },
+              "Melosira": {
+                "otu_18s_4362": {}
+              },
+              "Proboscia": {
+                "otu_18s_4536": {}
+              }
+            }
+          }
+        },
+        "Metazoa_unclassified": {
+          "Metazoa_unclassified": {
+            "Metazoa_unclassified": {
+              "Metazoa_unclassified": {
+                "otu_18s_2410": {},
+                "otu_18s_730": {},
+                "otu_18s_3849": {}
+              }
+            }
+          }
+        },
+        "Chrysophyceae": {
+          "Chrysophyceae_X": {
+            "Chrysophyceae_Clade-H": {
+              "Chrysophyceae_Clade-H_X": {
+                "otu_18s_2418": {},
+                "otu_18s_378": {},
+                "otu_18s_543": {},
+                "otu_18s_1046": {},
+                "otu_18s_1418": {},
+                "otu_18s_1202": {},
+                "otu_18s_2346": {},
+                "otu_18s_32547": {}
+              }
+            },
+            "Chrysophyceae_Clade-F": {
+              "Chrysophyceae_Clade-F_X": {
+                "otu_18s_509": {},
+                "otu_18s_354": {},
+                "otu_18s_291": {},
+                "otu_18s_682": {},
+                "otu_18s_1458": {}
+              },
+              "Paraphysomonas": {
+                "otu_18s_458": {},
+                "otu_18s_1970": {}
+              },
+              "Chrysophyceae_Clade-F_unclassified": {
+                "otu_18s_536": {}
+              }
+            },
+            "Chrysophyceae_Clade-C": {
+              "Uroglenopsis": {
+                "otu_18s_142": {}
+              },
+              "Dinobryon": {
+                "otu_18s_304": {},
+                "otu_18s_938": {},
+                "otu_18s_1099": {}
+              },
+              "Chrysophyceae_Clade-C_X": {
+                "otu_18s_521": {},
+                "otu_18s_871": {},
+                "otu_18s_1015": {},
+                "otu_18s_5364": {}
+              },
+              "Chromulinospumella": {
+                "otu_18s_1174": {},
+                "otu_18s_21150": {}
+              },
+              "Spumella": {
+                "otu_18s_1523": {},
+                "otu_18s_2091": {},
+                "otu_18s_6814": {},
+                "otu_18s_23195": {},
+                "otu_18s_30949": {}
+              },
+              "Chrysophyceae_Clade-C_unclassified": {
+                "otu_18s_30439": {}
+              }
+            },
+            "Chrysophyceae_Clade-E": {
+              "Chrysophyceae_Clade-E_X": {
+                "otu_18s_249": {},
+                "otu_18s_688": {}
+              },
+              "Chrysophyceae_Clade-E_unclassified": {
+                "otu_18s_21166": {}
+              }
+            },
+            "Chrysophyceae_XX": {
+              "Chrysophyceae_XXX": {
+                "otu_18s_642": {}
+              }
+            },
+            "Chrysophyceae_X_unclassified": {
+              "Chrysophyceae_X_unclassified": {
+                "otu_18s_674": {}
+              }
+            },
+            "Chrysophyceae_Clade-I": {
+              "Chrysophyceae_Clade-I_X": {
+                "otu_18s_1012": {},
+                "otu_18s_3811": {}
+              }
+            },
+            "Chrysophyceae_Clade-G": {
+              "Chrysophyceae_Clade-G_X": {
+                "otu_18s_7067": {}
+              }
+            }
+          }
+        },
+        "Florideophyceae": {
+          "Ceramiales": {
+            "Delesseriaceae": {
+              "Delesseriaceae_unclassified": {
+                "otu_18s_2420": {},
+                "otu_18s_27868": {}
+              }
+            },
+            "Ceramiaceae": {
+              "Ceramium": {
+                "otu_18s_5": {},
+                "otu_18s_8": {},
+                "otu_18s_221": {},
+                "otu_18s_713": {},
+                "otu_18s_1909": {},
+                "otu_18s_5809": {},
+                "otu_18s_8946": {},
+                "otu_18s_14831": {},
+                "otu_18s_32468": {}
+              }
+            },
+            "Callithamniaceae": {
+              "Callithamnion": {
+                "otu_18s_405": {},
+                "otu_18s_37": {},
+                "otu_18s_182": {},
+                "otu_18s_209": {},
+                "otu_18s_27424": {},
+                "otu_18s_27426": {},
+                "otu_18s_27425": {}
+              },
+              "Callithamniaceae_unclassified": {
+                "otu_18s_99": {}
+              }
+            },
+            "Rhodomelaceae": {
+              "Rhodomelaceae_unclassified": {
+                "otu_18s_409": {},
+                "otu_18s_28": {},
+                "otu_18s_48": {},
+                "otu_18s_379": {},
+                "otu_18s_5301": {},
+                "otu_18s_8901": {}
+              }
+            },
+            "Dasyaceae": {
+              "Dasyaceae_unclassified": {
+                "otu_18s_3283": {}
+              }
+            }
+          },
+          "Gigartinales": {
+            "Gigartinales_X": {
+              "Dumontia": {
+                "otu_18s_259": {}
+              }
+            }
+          },
+          "Acrochaetiales": {
+            "Acrochaetiales_X": {
+              "Acrochaetiales_XX": {
+                "otu_18s_766": {},
+                "otu_18s_2202": {},
+                "otu_18s_5365": {}
+              }
+            }
+          },
+          "Nemaliales": {
+            "Nemaliales_X": {
+              "Nemalion": {
+                "otu_18s_2381": {}
+              }
+            }
+          }
+        },
+        "Cryptophyceae": {
+          "Cryptomonadales": {
+            "Cryptomonadales_X": {
+              "Cryptomonas": {
+                "otu_18s_313": {},
+                "otu_18s_13": {},
+                "otu_18s_336": {},
+                "otu_18s_390": {},
+                "otu_18s_153": {},
+                "otu_18s_397": {},
+                "otu_18s_275": {},
+                "otu_18s_420": {},
+                "otu_18s_513": {},
+                "otu_18s_677": {},
+                "otu_18s_1367": {},
+                "otu_18s_1648": {},
+                "otu_18s_8917": {},
+                "otu_18s_9148": {},
+                "otu_18s_9965": {},
+                "otu_18s_12209": {},
+                "otu_18s_12269": {},
+                "otu_18s_35954": {}
+              },
+              "Falcomonas": {
+                "otu_18s_12": {}
+              },
+              "Cryptomonadales_X_unclassified": {
+                "otu_18s_29": {},
+                "otu_18s_415": {}
+              },
+              "Teleaulax": {
+                "otu_18s_33": {},
+                "otu_18s_54": {},
+                "otu_18s_181": {}
+              },
+              "Plagioselmis": {
+                "otu_18s_45": {},
+                "otu_18s_98": {},
+                "otu_18s_5468": {}
+              },
+              "Urgorri": {
+                "otu_18s_3120": {}
+              }
+            },
+            "Hemiselmidaceae": {
+              "Chroomonas": {
+                "otu_18s_364": {}
+              },
+              "Hemiselmis": {
+                "otu_18s_417": {},
+                "otu_18s_1293": {}
+              }
+            }
+          },
+          "Cryptophyceae_X": {
+            "Basal_Cryptophyceae-1": {
+              "Basal_Cryptophyceae-1_X": {
+                "otu_18s_747": {},
+                "otu_18s_890": {},
+                "otu_18s_1170": {}
+              }
+            }
+          },
+          "Pyrenomonadales": {
+            "Pyrenomonadaceae": {
+              "Rhodomonas": {
+                "otu_18s_2737": {}
+              }
+            }
+          }
+        },
+        "Filosa-Thecofilosea": {
+          "Ebriida": {
+            "TAGIRI1-lineage": {
+              "TAGIRI1-lineage_X": {
+                "otu_18s_2479": {},
+                "otu_18s_10": {},
+                "otu_18s_810": {},
+                "otu_18s_5434": {},
+                "otu_18s_8897": {},
+                "otu_18s_8971": {},
+                "otu_18s_9184": {},
+                "otu_18s_32587": {}
+              }
+            },
+            "Ebriidae": {
+              "Ebria": {
+                "otu_18s_3": {},
+                "otu_18s_86": {},
+                "otu_18s_452": {},
+                "otu_18s_9025": {},
+                "otu_18s_14814": {},
+                "otu_18s_32474": {},
+                "otu_18s_45763": {}
+              }
+            },
+            "Botuliformidae": {
+              "Botuliformidae_X": {
+                "otu_18s_25": {},
+                "otu_18s_21337": {}
+              }
+            },
+            "Ebriida_unclassified": {
+              "Ebriida_unclassified": {
+                "otu_18s_886": {}
+              }
+            }
+          },
+          "Cryomonadida": {
+            "Protaspa-lineage": {
+              "Protaspa-lineage_X": {
+                "otu_18s_16": {},
+                "otu_18s_17": {},
+                "otu_18s_36": {},
+                "otu_18s_72": {},
+                "otu_18s_107": {},
+                "otu_18s_108": {},
+                "otu_18s_122": {},
+                "otu_18s_158": {},
+                "otu_18s_163": {},
+                "otu_18s_346": {},
+                "otu_18s_203": {},
+                "otu_18s_205": {},
+                "otu_18s_281": {},
+                "otu_18s_593": {},
+                "otu_18s_861": {},
+                "otu_18s_1251": {},
+                "otu_18s_1366": {},
+                "otu_18s_1515": {},
+                "otu_18s_1525": {},
+                "otu_18s_5290": {},
+                "otu_18s_5294": {},
+                "otu_18s_5612": {},
+                "otu_18s_5311": {},
+                "otu_18s_5392": {},
+                "otu_18s_8894": {},
+                "otu_18s_8896": {},
+                "otu_18s_9114": {},
+                "otu_18s_14815": {},
+                "otu_18s_25467": {},
+                "otu_18s_21035": {},
+                "otu_18s_30528": {},
+                "otu_18s_32489": {},
+                "otu_18s_32521": {},
+                "otu_18s_32531": {},
+                "otu_18s_32831": {}
+              },
+              "Protaspa-lineage_unclassified": {
+                "otu_18s_30576": {}
+              }
+            },
+            "Cryothecomonas-lineage": {
+              "Cryothecomonas-lineage_unclassified": {
+                "otu_18s_362": {}
+              },
+              "Cryothecomonas": {
+                "otu_18s_333": {},
+                "otu_18s_102": {},
+                "otu_18s_115": {},
+                "otu_18s_219": {},
+                "otu_18s_663": {},
+                "otu_18s_696": {},
+                "otu_18s_5397": {},
+                "otu_18s_5663": {},
+                "otu_18s_5706": {},
+                "otu_18s_8925": {},
+                "otu_18s_20873": {},
+                "otu_18s_20924": {}
+              }
+            },
+            "Cryomonadida_X": {
+              "Cryomonadida_XX": {
+                "otu_18s_1469": {},
+                "otu_18s_5322": {},
+                "otu_18s_5584": {},
+                "otu_18s_9014": {},
+                "otu_18s_9416": {}
+              }
+            }
+          },
+          "Filosa-Thecofilosea_X": {
+            "Mataza-lineage": {
+              "Mataza": {
+                "otu_18s_179": {}
+              },
+              "Mataza-lineage_X": {
+                "otu_18s_359": {},
+                "otu_18s_455": {},
+                "otu_18s_850": {},
+                "otu_18s_5288": {},
+                "otu_18s_5304": {},
+                "otu_18s_5494": {},
+                "otu_18s_9575": {},
+                "otu_18s_25595": {}
+              }
+            },
+            "Filosa-Thecofilosea_XX": {
+              "Filosa-Thecofilosea_XXX": {
+                "otu_18s_989": {},
+                "otu_18s_2369": {}
+              }
+            }
+          },
+          "Ventricleftida": {
+            "CCW10-lineage": {
+              "CCW10-lineage_X": {
+                "otu_18s_2739": {},
+                "otu_18s_5707": {},
+                "otu_18s_5999": {}
+              }
+            },
+            "Ventricleftida_X": {
+              "Ventricleftida_XX": {
+                "otu_18s_1045": {},
+                "otu_18s_2044": {}
+              }
+            }
+          },
+          "Filosa-Thecofilosea_unclassified": {
+            "Filosa-Thecofilosea_unclassified": {
+              "Filosa-Thecofilosea_unclassified": {
+                "otu_18s_3127": {},
+                "otu_18s_8887": {},
+                "otu_18s_8941": {}
+              }
+            }
+          }
+        },
+        "Telonemia_X": {
+          "Telonemia_XX": {
+            "Telonemia-Group-2": {
+              "Telonemia-Group-2_X": {
+                "otu_18s_3137": {},
+                "otu_18s_429": {},
+                "otu_18s_49": {},
+                "otu_18s_180": {}
+              }
+            },
+            "Telonemia-Group-1": {
+              "Telonemia-Group-1_unclassified": {
+                "otu_18s_213": {},
+                "otu_18s_302": {}
+              }
+            }
+          }
+        },
+        "Ulvophyceae": {
+          "Ulotrichales": {
+            "Ulotrichales_X": {
+              "Monostroma": {
+                "otu_18s_0": {}
+              },
+              "Ulotrichales_X_unclassified": {
+                "otu_18s_1": {},
+                "otu_18s_96": {},
+                "otu_18s_835": {}
+              },
+              "Capsosiphon": {
+                "otu_18s_428": {}
+              },
+              "Chlorothrix": {
+                "otu_18s_21": {},
+                "otu_18s_486": {}
+              }
+            }
+          },
+          "Ulvales-relatives": {
+            "Ulvales-relatives_X": {
+              "Ulva": {
+                "otu_18s_31": {},
+                "otu_18s_82": {},
+                "otu_18s_1663": {}
+              },
+              "Ulvales-relatives_XX": {
+                "otu_18s_1131": {}
+              },
+              "Ulvales-relatives_X_unclassified": {
+                "otu_18s_1512": {}
+              },
+              "Acrochaete": {
+                "otu_18s_1617": {}
+              },
+              "Dilabifilum": {
+                "otu_18s_1988": {}
+              }
+            }
+          },
+          "Cladophorales": {
+            "Cladophorales_X": {
+              "Cladophora": {
+                "otu_18s_3846": {}
+              }
+            }
+          }
+        },
+        "Arthropoda": {
+          "Crustacea": {
+            "Maxillopoda": {
+              "Pseudocalanus": {
+                "otu_18s_2": {},
+                "otu_18s_5318": {},
+                "otu_18s_32559": {},
+                "otu_18s_36044": {},
+                "otu_18s_36080": {},
+                "otu_18s_40892": {},
+                "otu_18s_45770": {}
+              },
+              "Centropages": {
+                "otu_18s_4": {},
+                "otu_18s_5306": {}
+              },
+              "Eurytemora": {
+                "otu_18s_20": {},
+                "otu_18s_5296": {}
+              },
+              "Temora": {
+                "otu_18s_57": {},
+                "otu_18s_71": {},
+                "otu_18s_8959": {},
+                "otu_18s_30248": {}
+              },
+              "Oithona": {
+                "otu_18s_95": {}
+              },
+              "Acartia": {
+                "otu_18s_104": {},
+                "otu_18s_125": {},
+                "otu_18s_222": {},
+                "otu_18s_506": {},
+                "otu_18s_585": {},
+                "otu_18s_681": {},
+                "otu_18s_707": {},
+                "otu_18s_716": {},
+                "otu_18s_717": {},
+                "otu_18s_772": {},
+                "otu_18s_818": {},
+                "otu_18s_837": {},
+                "otu_18s_1111": {},
+                "otu_18s_9195": {}
+              },
+              "Cyclops": {
+                "otu_18s_195": {},
+                "otu_18s_514": {}
+              },
+              "Maxillopoda_unclassified": {
+                "otu_18s_280": {},
+                "otu_18s_579": {},
+                "otu_18s_1063": {},
+                "otu_18s_5595": {}
+              },
+              "Cyclopidae": {
+                "otu_18s_419": {},
+                "otu_18s_5427": {}
+              },
+              "Tachidius": {
+                "otu_18s_1136": {}
+              },
+              "Tisbe": {
+                "otu_18s_1191": {}
+              },
+              "Paracalanus": {
+                "otu_18s_1472": {}
+              },
+              "Harpacticus": {
+                "otu_18s_7284": {}
+              }
+            },
+            "Crustacea_X": {
+              "Crustacea_XX": {
+                "otu_18s_315": {},
+                "otu_18s_40": {},
+                "otu_18s_97": {},
+                "otu_18s_332": {},
+                "otu_18s_112": {},
+                "otu_18s_128": {},
+                "otu_18s_168": {},
+                "otu_18s_329": {},
+                "otu_18s_225": {},
+                "otu_18s_565": {},
+                "otu_18s_574": {},
+                "otu_18s_5312": {}
+              }
+            },
+            "Ostracoda": {
+              "Howeina": {
+                "otu_18s_373": {},
+                "otu_18s_375": {}
+              }
+            }
+          },
+          "Chelicerata": {
+            "Arachnida": {
+              "Rhombognathides": {
+                "otu_18s_3206": {}
+              }
+            }
+          }
+        },
+        "Katablepharidaceae": {
+          "Katablepharidales": {
+            "Katablepharidales_X": {
+              "Leucocryptos": {
+                "otu_18s_398": {}
+              },
+              "Katablepharidales_XX": {
+                "otu_18s_65": {},
+                "otu_18s_242": {},
+                "otu_18s_425": {},
+                "otu_18s_648": {},
+                "otu_18s_1032": {},
+                "otu_18s_3058": {},
+                "otu_18s_1574": {},
+                "otu_18s_27663": {}
+              },
+              "Katablepharis": {
+                "otu_18s_8960": {}
+              }
+            }
+          }
+        },
+        "Phaeophyceae": {
+          "Phaeophyceae_X": {
+            "Phaeophyceae_XX": {
+              "Phaeophyceae_XX_unclassified": {
+                "otu_18s_402": {},
+                "otu_18s_167": {},
+                "otu_18s_414": {},
+                "otu_18s_615": {},
+                "otu_18s_1526": {},
+                "otu_18s_5293": {},
+                "otu_18s_12813": {}
+              },
+              "Ectocarpus": {
+                "otu_18s_11": {},
+                "otu_18s_508": {}
+              },
+              "Pylaiella": {
+                "otu_18s_162": {}
+              },
+              "Phaeophyceae_XXX": {
+                "otu_18s_258": {},
+                "otu_18s_691": {},
+                "otu_18s_1448": {},
+                "otu_18s_5488": {}
+              },
+              "Heribaudiella": {
+                "otu_18s_1232": {}
+              },
+              "Desmarestia": {
+                "otu_18s_1545": {}
+              },
+              "Saccharina": {
+                "otu_18s_6485": {}
+              }
+            }
+          }
+        },
+        "Craniata": {
+          "Craniata_X": {
+            "Teleostei": {
+              "Teleostei_unclassified": {
+                "otu_18s_7": {},
+                "otu_18s_197": {}
+              },
+              "Salmo": {
+                "otu_18s_12203": {}
+              }
+            },
+            "Craniata_XX": {
+              "Capra": {
+                "otu_18s_81": {}
+              }
+            }
+          }
+        },
+        "Spirotrichea": {
+          "Strombidiida": {
+            "Strombidiidae_R": {
+              "Strombidium_R": {
+                "otu_18s_9": {},
+                "otu_18s_56": {},
+                "otu_18s_767": {},
+                "otu_18s_1828": {},
+                "otu_18s_7304": {}
+              },
+              "Strombidiidae_R_unclassified": {
+                "otu_18s_433": {},
+                "otu_18s_14846": {}
+              }
+            },
+            "Strombidiidae_M": {
+              "Strombidiidae_M_unclassified": {
+                "otu_18s_105": {}
+              },
+              "Strombidiidae_M_X": {
+                "otu_18s_903": {}
+              },
+              "Strombidium_M": {
+                "otu_18s_15289": {}
+              }
+            },
+            "Pelagostrombidiidae": {
+              "Limnostrombidium": {
+                "otu_18s_501": {},
+                "otu_18s_823": {}
+              }
+            },
+            "Strombidiida_unclassified": {
+              "Strombidiida_unclassified": {
+                "otu_18s_505": {},
+                "otu_18s_780": {},
+                "otu_18s_5466": {},
+                "otu_18s_17864": {},
+                "otu_18s_9428": {},
+                "otu_18s_13163": {}
+              }
+            },
+            "Strombidiidae_L": {
+              "Strombidiidae_L_X": {
+                "otu_18s_957": {},
+                "otu_18s_7305": {}
+              }
+            },
+            "Strombidiidae": {
+              "Strombidium": {
+                "otu_18s_1906": {}
+              },
+              "Varistrombidium": {
+                "otu_18s_15191": {}
+              }
+            },
+            "Strombidiidae_C": {
+              "Strombidiidae_C_X": {
+                "otu_18s_3923": {}
+              }
+            },
+            "Tontoniidae_A": {
+              "Laboea": {
+                "otu_18s_4680": {}
+              }
+            },
+            "Strombidiidae_F": {
+              "Strombidium_F": {
+                "otu_18s_7307": {}
+              }
+            },
+            "Strombidiidae_H": {
+              "Strombidiidae_H_X": {
+                "otu_18s_10705": {}
+              }
+            }
+          },
+          "Choreotrichida": {
+            "Strobilidiidae_G": {
+              "Strobilidiidae_G_X": {
+                "otu_18s_35": {},
+                "otu_18s_1490": {},
+                "otu_18s_1889": {}
+              }
+            },
+            "Strobilidiidae_A": {
+              "Rimostrombidium_A": {
+                "otu_18s_74": {},
+                "otu_18s_1946": {},
+                "otu_18s_12362": {},
+                "otu_18s_23008": {},
+                "otu_18s_35996": {}
+              }
+            },
+            "Strobilidiidae_D": {
+              "Rimostrombidium_D": {
+                "otu_18s_366": {}
+              }
+            },
+            "Strobilidiidae_I": {
+              "Pelagostrobilidium": {
+                "otu_18s_151": {},
+                "otu_18s_17861": {}
+              }
+            },
+            "Strobilidiidae": {
+              "Strobilidiidae_X": {
+                "otu_18s_350": {}
+              }
+            },
+            "Strobilidiidae_B": {
+              "Strobilidiidae_B_X": {
+                "otu_18s_283": {}
+              }
+            },
+            "Strobilidiidae_J": {
+              "Strobilidiidae_J_X": {
+                "otu_18s_498": {}
+              }
+            },
+            "Strobilidiidae_C": {
+              "Strobilidiidae_C_X": {
+                "otu_18s_1237": {},
+                "otu_18s_3324": {}
+              }
+            },
+            "Leegaardiellidae_B": {
+              "Leegaardiella": {
+                "otu_18s_4859": {},
+                "otu_18s_17665": {}
+              }
+            },
+            "Strobilidiidae_F": {
+              "Strobilidiidae_F_X": {
+                "otu_18s_8957": {}
+              }
+            }
+          },
+          "Tintinnida": {
+            "Tintinnidiidae": {
+              "Tintinnidium": {
+                "otu_18s_76": {},
+                "otu_18s_634": {},
+                "otu_18s_2847": {},
+                "otu_18s_25517": {}
+              }
+            },
+            "TIN_09": {
+              "Tintinnopsis_09": {
+                "otu_18s_119": {}
+              }
+            },
+            "TIN_11": {
+              "Helicostomella": {
+                "otu_18s_451": {}
+              }
+            },
+            "Stenosemellidae": {
+              "Stenosemella": {
+                "otu_18s_785": {}
+              }
+            },
+            "TIN_05": {
+              "Tintinnopsis_05": {
+                "otu_18s_5741": {}
+              }
+            },
+            "Tintinnida_X": {
+              "Tintinnida_XX": {
+                "otu_18s_5310": {}
+              }
+            },
+            "Eutintinnidae": {
+              "Eutintinnus": {
+                "otu_18s_8893": {},
+                "otu_18s_12201": {}
+              }
+            }
+          },
+          "Strombidiida_G": {
+            "Strombidiida_G_X": {
+              "Strombidiida_G_XX": {
+                "otu_18s_206": {}
+              }
+            }
+          },
+          "Hypotrichia": {
+            "Halteriidae": {
+              "Halteriidae_X": {
+                "otu_18s_563": {}
+              }
+            }
+          },
+          "Strombidiida_B": {
+            "Strombidiida_B_X": {
+              "Strombidiida_B_XX": {
+                "otu_18s_727": {}
+              }
+            }
+          }
+        },
+        "Dictyochophyceae": {
+          "Dictyochophyceae_X": {
+            "Dictyochales": {
+              "Dictyocha": {
+                "otu_18s_949": {}
+              }
+            },
+            "Pedinellales": {
+              "Pedinellales_X": {
+                "otu_18s_344": {},
+                "otu_18s_357": {},
+                "otu_18s_294": {},
+                "otu_18s_538": {},
+                "otu_18s_891": {},
+                "otu_18s_5535": {}
+              },
+              "Pseudopedinella": {
+                "otu_18s_389": {},
+                "otu_18s_740": {}
+              },
+              "Pedinellales_unclassified": {
+                "otu_18s_185": {}
+              },
+              "Helicopedinella": {
+                "otu_18s_594": {}
+              },
+              "Apedinella": {
+                "otu_18s_792": {},
+                "otu_18s_978": {},
+                "otu_18s_5501": {}
+              }
+            },
+            "Florenciellales": {
+              "Florenciella": {
+                "otu_18s_1373": {}
+              },
+              "Pseudochattonella": {
+                "otu_18s_3294": {}
+              }
+            }
+          }
+        },
+        "Trebouxiophyceae": {
+          "Trebouxiophyceae_X": {
+            "Trebouxiophyceae_XX": {
+              "Choricystis": {
+                "otu_18s_14": {},
+                "otu_18s_19": {},
+                "otu_18s_32": {},
+                "otu_18s_189": {},
+                "otu_18s_5324": {}
+              }
+            }
+          },
+          "Chlorellales": {
+            "Chlorellales_X": {
+              "Picochlorum": {
+                "otu_18s_52": {},
+                "otu_18s_199": {},
+                "otu_18s_557": {},
+                "otu_18s_822": {},
+                "otu_18s_1352": {},
+                "otu_18s_2013": {}
+              },
+              "Chlorellales_X_unclassified": {
+                "otu_18s_68": {},
+                "otu_18s_363": {},
+                "otu_18s_131": {},
+                "otu_18s_141": {},
+                "otu_18s_214": {},
+                "otu_18s_245": {},
+                "otu_18s_312": {},
+                "otu_18s_388": {},
+                "otu_18s_439": {},
+                "otu_18s_692": {},
+                "otu_18s_827": {},
+                "otu_18s_1975": {},
+                "otu_18s_5345": {},
+                "otu_18s_9886": {}
+              },
+              "Chlorella": {
+                "otu_18s_79": {},
+                "otu_18s_177": {},
+                "otu_18s_300": {},
+                "otu_18s_301": {}
+              },
+              "Nannochloris": {
+                "otu_18s_94": {},
+                "otu_18s_113": {},
+                "otu_18s_5344": {}
+              },
+              "Chlorellales_XX": {
+                "otu_18s_114": {}
+              },
+              "Micractinium": {
+                "otu_18s_116": {}
+              },
+              "Meyerella": {
+                "otu_18s_288": {}
+              }
+            }
+          },
+          "Prasiolales": {
+            "Prasiolales_X": {
+              "Prasiolales_X_unclassified": {
+                "otu_18s_2545": {},
+                "otu_18s_123": {},
+                "otu_18s_641": {}
+              },
+              "Koliella": {
+                "otu_18s_263": {},
+                "otu_18s_1678": {}
+              }
+            }
+          },
+          "Trebouxiophyceae_unclassified": {
+            "Trebouxiophyceae_unclassified": {
+              "Trebouxiophyceae_unclassified": {
+                "otu_18s_207": {}
+              }
+            }
+          },
+          "Microthamniales": {
+            "Microthamniales_X": {
+              "Trebouxia": {
+                "otu_18s_1034": {},
+                "otu_18s_6259": {},
+                "otu_18s_6718": {}
+              },
+              "Microthamniales_XX": {
+                "otu_18s_21182": {}
+              }
+            }
+          },
+          "Watanabea-Clade": {
+            "Watanabea-Clade_X": {
+              "Apatococcus": {
+                "otu_18s_6203": {}
+              }
+            }
+          }
+        },
+        "Chlorophyceae": {
+          "Chlamydomonadales": {
+            "Chlamydomonadales_X": {
+              "Chloromonas": {
+                "otu_18s_316": {},
+                "otu_18s_1621": {}
+              },
+              "Carteria": {
+                "otu_18s_321": {},
+                "otu_18s_5632": {}
+              },
+              "Chlamydomonas": {
+                "otu_18s_431": {},
+                "otu_18s_87": {},
+                "otu_18s_110": {},
+                "otu_18s_136": {},
+                "otu_18s_251": {},
+                "otu_18s_467": {},
+                "otu_18s_356": {},
+                "otu_18s_423": {},
+                "otu_18s_466": {},
+                "otu_18s_487": {},
+                "otu_18s_500": {},
+                "otu_18s_603": {},
+                "otu_18s_669": {},
+                "otu_18s_836": {},
+                "otu_18s_5285": {},
+                "otu_18s_5292": {},
+                "otu_18s_6027": {},
+                "otu_18s_8898": {},
+                "otu_18s_9286": {}
+              },
+              "Chlamydomonadales_XX": {
+                "otu_18s_143": {}
+              },
+              "Chlamydomonadales_X_unclassified": {
+                "otu_18s_156": {},
+                "otu_18s_255": {},
+                "otu_18s_548": {},
+                "otu_18s_604": {},
+                "otu_18s_797": {},
+                "otu_18s_1155": {},
+                "otu_18s_1859": {},
+                "otu_18s_2170": {},
+                "otu_18s_9062": {},
+                "otu_18s_21008": {}
+              },
+              "Pascherina": {
+                "otu_18s_972": {}
+              },
+              "Golenkinia": {
+                "otu_18s_1863": {}
+              }
+            }
+          },
+          "Sphaeropleales": {
+            "Sphaeropleales_X": {
+              "Desmodesmus": {
+                "otu_18s_324": {},
+                "otu_18s_246": {},
+                "otu_18s_722": {},
+                "otu_18s_5338": {}
+              },
+              "Mychonastes": {
+                "otu_18s_134": {},
+                "otu_18s_868": {}
+              },
+              "Scenedesmus": {
+                "otu_18s_140": {},
+                "otu_18s_190": {},
+                "otu_18s_852": {},
+                "otu_18s_1399": {}
+              },
+              "Sphaeropleales_X_unclassified": {
+                "otu_18s_352": {},
+                "otu_18s_629": {},
+                "otu_18s_725": {}
+              },
+              "Raphidocelis": {
+                "otu_18s_224": {}
+              },
+              "Podohedriella": {
+                "otu_18s_230": {}
+              }
+            },
+            "Selenastraceae": {
+              "Monoraphidium": {
+                "otu_18s_106": {},
+                "otu_18s_139": {},
+                "otu_18s_355": {}
+              }
+            },
+            "Scenedesmaceae": {
+              "Tetrastrum": {
+                "otu_18s_392": {}
+              }
+            },
+            "Sphaeropleales_unclassified": {
+              "Sphaeropleales_unclassified": {
+                "otu_18s_1471": {},
+                "otu_18s_8973": {}
+              }
+            }
+          },
+          "Chlorophyceae_X": {
+            "Chlorophyceae_XX": {
+              "Treubaria": {
+                "otu_18s_473": {}
+              }
+            }
+          }
+        },
+        "Variosea": {
+          "ATCC50593-Flamella-WIM80-lineage": {
+            "Flamella-lineage": {
+              "Flamella": {
+                "otu_18s_410": {}
+              }
+            }
+          }
+        },
+        "MAST-6": {
+          "MAST-6_X": {
+            "MAST-6_XX": {
+              "MAST-6_XXX": {
+                "otu_18s_23": {},
+                "otu_18s_371": {},
+                "otu_18s_569": {},
+                "otu_18s_23031": {},
+                "otu_18s_32495": {}
+              }
+            }
+          }
+        },
+        "Syndiniales": {
+          "Dino-Group-I": {
+            "Dino-Group-I-Clade-1": {
+              "Dino-Group-I-Clade-1_X": {
+                "otu_18s_24": {},
+                "otu_18s_59": {},
+                "otu_18s_444": {},
+                "otu_18s_475": {},
+                "otu_18s_1274": {},
+                "otu_18s_2046": {},
+                "otu_18s_6708": {}
+              }
+            },
+            "Dino-Group-I-Clade-4": {
+              "Dino-Group-I-Clade-4_unclassified": {
+                "otu_18s_700": {}
+              },
+              "Dino-Group-I-Clade-4_X": {
+                "otu_18s_1125": {},
+                "otu_18s_3876": {},
+                "otu_18s_5308": {},
+                "otu_18s_5854": {}
+              }
+            }
+          },
+          "Dino-Group-II": {
+            "Dino-Group-II-Clade-1": {
+              "Dino-Group-II-Clade-1_X": {
+                "otu_18s_69": {},
+                "otu_18s_1634": {},
+                "otu_18s_12568": {},
+                "otu_18s_14809": {}
+              }
+            },
+            "Dino-Group-II_unclassified": {
+              "Dino-Group-II_unclassified": {
+                "otu_18s_709": {},
+                "otu_18s_858": {},
+                "otu_18s_1249": {},
+                "otu_18s_1333": {},
+                "otu_18s_1487": {},
+                "otu_18s_9117": {}
+              }
+            },
+            "Dino-Group-II-Clade-2": {
+              "Dino-Group-II-Clade-2_X": {
+                "otu_18s_1374": {},
+                "otu_18s_21090": {},
+                "otu_18s_20841": {}
+              }
+            },
+            "Dino-Group-II-Clade-32": {
+              "Dino-Group-II-Clade-32_X": {
+                "otu_18s_5289": {}
+              }
+            },
+            "Dino-Group-II-Clade-12": {
+              "Dino-Group-II-Clade-12_X": {
+                "otu_18s_5340": {}
+              }
+            },
+            "Dino-Group-II-Clade-10-and-11": {
+              "Dino-Group-II-Clade-10-and-11_X": {
+                "otu_18s_30566": {}
+              }
+            }
+          }
+        },
+        "Picozoa_X": {
+          "Picozoa_XX": {
+            "Picozoa_XXX": {
+              "Picozoa_XXXX": {
+                "otu_18s_320": {},
+                "otu_18s_1499": {},
+                "otu_18s_3733": {}
+              },
+              "Picozoa_XXX_unclassified": {
+                "otu_18s_90": {}
+              }
+            }
+          }
+        },
+        "Rotifera": {
+          "Rotifera_X": {
+            "Rotifera_XX": {
+              "Rotifera_XX_unclassified": {
+                "otu_18s_39": {},
+                "otu_18s_44": {},
+                "otu_18s_100": {},
+                "otu_18s_101": {},
+                "otu_18s_118": {},
+                "otu_18s_148": {},
+                "otu_18s_232": {},
+                "otu_18s_512": {},
+                "otu_18s_570": {},
+                "otu_18s_660": {},
+                "otu_18s_993": {},
+                "otu_18s_1079": {},
+                "otu_18s_17936": {},
+                "otu_18s_12639": {}
+              },
+              "Proales": {
+                "otu_18s_194": {},
+                "otu_18s_520": {},
+                "otu_18s_515": {}
+              },
+              "Brachionus": {
+                "otu_18s_210": {},
+                "otu_18s_276": {},
+                "otu_18s_577": {},
+                "otu_18s_687": {},
+                "otu_18s_1254": {},
+                "otu_18s_8938": {}
+              },
+              "Keratella": {
+                "otu_18s_227": {},
+                "otu_18s_437": {}
+              },
+              "Conochilus": {
+                "otu_18s_610": {}
+              },
+              "Filinia": {
+                "otu_18s_829": {}
+              }
+            }
+          }
+        },
+        "Annelida": {
+          "Annelida_X": {
+            "Annelida_XX": {
+              "Platynereis": {
+                "otu_18s_51": {}
+              },
+              "Capitella": {
+                "otu_18s_3451": {}
+              },
+              "Arenicola": {
+                "otu_18s_7019": {}
+              },
+              "Eteone": {
+                "otu_18s_10402": {}
+              }
+            }
+          }
+        },
+        "Mamiellophyceae": {
+          "Mamiellales": {
+            "Bathycoccaceae": {
+              "Bathycoccus": {
+                "otu_18s_53": {},
+                "otu_18s_130": {}
+              }
+            },
+            "Mamiellaceae": {
+              "Micromonas": {
+                "otu_18s_75": {},
+                "otu_18s_85": {},
+                "otu_18s_507": {},
+                "otu_18s_1481": {}
+              },
+              "Mantoniella": {
+                "otu_18s_391": {}
+              },
+              "Mamiella": {
+                "otu_18s_2348": {}
+              }
+            }
+          }
+        },
+        "Chytridiomycota": {
+          "Chytridiomycotina": {
+            "Chytridiomycetes": {
+              "Rhyzophidiales_X": {
+                "otu_18s_62": {},
+                "otu_18s_92": {},
+                "otu_18s_2565": {},
+                "otu_18s_253": {},
+                "otu_18s_262": {},
+                "otu_18s_575": {},
+                "otu_18s_982": {},
+                "otu_18s_1083": {},
+                "otu_18s_20769": {},
+                "otu_18s_30252": {}
+              },
+              "Chytridiomycetes_unclassified": {
+                "otu_18s_64": {},
+                "otu_18s_330": {},
+                "otu_18s_370": {},
+                "otu_18s_573": {},
+                "otu_18s_651": {},
+                "otu_18s_1116": {},
+                "otu_18s_1858": {},
+                "otu_18s_8913": {},
+                "otu_18s_9029": {},
+                "otu_18s_12218": {},
+                "otu_18s_22993": {}
+              },
+              "Chytridiomycetes_X": {
+                "otu_18s_83": {}
+              },
+              "Rhizophydium": {
+                "otu_18s_233": {},
+                "otu_18s_14806": {}
+              },
+              "Chytridium": {
+                "otu_18s_9027": {}
+              },
+              "Rhyzophidiales": {
+                "otu_18s_12511": {}
+              }
+            },
+            "Chytridiomycotina_X": {
+              "Chytridiomycotina_XX": {
+                "otu_18s_387": {},
+                "otu_18s_640": {},
+                "otu_18s_782": {}
+              }
+            },
+            "Chytridiomycotina_unclassified": {
+              "Chytridiomycotina_unclassified": {
+                "otu_18s_2879": {}
+              }
+            }
+          }
+        },
+        "Nematoda": {
+          "Chromadorea": {
+            "Chromadorea_X": {
+              "Theristus": {
+                "otu_18s_63": {}
+              },
+              "Halomonhystera": {
+                "otu_18s_126": {}
+              },
+              "Pellioditis": {
+                "otu_18s_449": {},
+                "otu_18s_1365": {}
+              }
+            },
+            "Chromadorea_unclassified": {
+              "Chromadorea_unclassified": {
+                "otu_18s_2250": {}
+              }
+            }
+          }
+        },
+        "Prymnesiophyceae": {
+          "Prymnesiales": {
+            "Prymnesiaceae": {
+              "Prymnesium": {
+                "otu_18s_432": {},
+                "otu_18s_88": {},
+                "otu_18s_1733": {},
+                "otu_18s_5560": {}
+              },
+              "Haptolina": {
+                "otu_18s_138": {}
+              },
+              "Dicrateria": {
+                "otu_18s_165": {}
+              }
+            },
+            "Chrysochromulinaceae": {
+              "Chrysochromulina": {
+                "otu_18s_103": {},
+                "otu_18s_335": {},
+                "otu_18s_192": {},
+                "otu_18s_201": {},
+                "otu_18s_266": {},
+                "otu_18s_435": {},
+                "otu_18s_652": {},
+                "otu_18s_718": {}
+              }
+            },
+            "Prymnesiales_unclassified": {
+              "Prymnesiales_unclassified": {
+                "otu_18s_256": {}
+              }
+            },
+            "Prymnesiophyceae_Clade_B4": {
+              "Prymnesiophyceae_Clade_B4_X": {
+                "otu_18s_8922": {}
+              }
+            }
+          },
+          "Isochrysidales": {
+            "Isochrysidales_unclassified": {
+              "Isochrysidales_unclassified": {
+                "otu_18s_187": {}
+              }
+            },
+            "Noelaerhabdaceae": {
+              "Gephyrocapsa": {
+                "otu_18s_1514": {}
+              }
+            }
+          },
+          "Coccolithales": {
+            "Hymenomonadaceae": {
+              "Hymenomonadaceae_unclassified": {
+                "otu_18s_463": {}
+              }
+            }
+          },
+          "Prymnesiophyceae_unclassified": {
+            "Prymnesiophyceae_unclassified": {
+              "Prymnesiophyceae_unclassified": {
+                "otu_18s_2209": {}
+              }
+            }
+          },
+          "Phaeocystales": {
+            "Phaeocystaceae": {
+              "Phaeocystis": {
+                "otu_18s_5671": {}
+              }
+            }
+          },
+          "Prymnesiophyceae_X": {
+            "Braarudosphaeraceae": {
+              "Braarudosphaera": {
+                "otu_18s_6432": {}
+              }
+            }
+          }
+        },
+        "Pyramimonadophyceae": {
+          "Pyramimonadales": {
+            "Pyramimonadaceae": {
+              "Pyramimonas": {
+                "otu_18s_70": {},
+                "otu_18s_145": {},
+                "otu_18s_8911": {},
+                "otu_18s_20883": {}
+              }
+            },
+            "Pyramimonadales_X": {
+              "Pyramimonadales_XX": {
+                "otu_18s_8908": {}
+              }
+            }
+          },
+          "Pseudoscourfieldiales": {
+            "Pycnococcaceae": {
+              "Pycnococcaceae_X": {
+                "otu_18s_3126": {}
+              }
+            }
+          }
+        },
+        "Cnidaria": {
+          "Cnidaria_X": {
+            "Hydrozoa": {
+              "Opercularella": {
+                "otu_18s_443": {}
+              },
+              "Gonothyraea": {
+                "otu_18s_340": {}
+              },
+              "Hydractinia": {
+                "otu_18s_715": {}
+              },
+              "Cordylophora": {
+                "otu_18s_873": {}
+              }
+            },
+            "Scyphozoa": {
+              "Cyanea": {
+                "otu_18s_625": {}
+              },
+              "Aurelia": {
+                "otu_18s_1387": {},
+                "otu_18s_1463": {}
+              }
+            }
+          }
+        },
+        "Mollusca": {
+          "Bivalvia": {
+            "Palaeoheterodonta": {
+              "Elliptio": {
+                "otu_18s_80": {}
+              }
+            },
+            "Heteroconchia": {
+              "Mya": {
+                "otu_18s_93": {}
+              },
+              "Macoma": {
+                "otu_18s_490": {}
+              },
+              "Congeria": {
+                "otu_18s_756": {}
+              },
+              "Cerastoderma": {
+                "otu_18s_811": {}
+              },
+              "Mytilopsis": {
+                "otu_18s_2302": {}
+              },
+              "Heteroconchia_unclassified": {
+                "otu_18s_6198": {}
+              }
+            },
+            "Mytiloida": {
+              "Mytilus": {
+                "otu_18s_170": {},
+                "otu_18s_12200": {}
+              }
+            }
+          },
+          "Gastropoda": {
+            "Caenogastropoda": {
+              "Hydrobia": {
+                "otu_18s_1967": {},
+                "otu_18s_2262": {}
+              },
+              "Caenogastropoda_unclassified": {
+                "otu_18s_7164": {}
+              }
+            }
+          }
+        },
+        "Cercozoa_unclassified": {
+          "Cercozoa_unclassified": {
+            "Cercozoa_unclassified": {
+              "Cercozoa_unclassified": {
+                "otu_18s_369": {},
+                "otu_18s_595": {},
+                "otu_18s_986": {},
+                "otu_18s_2211": {},
+                "otu_18s_5740": {},
+                "otu_18s_9039": {},
+                "otu_18s_15050": {},
+                "otu_18s_20747": {}
+              }
+            }
+          }
+        },
+        "Filosa-Imbricatea": {
+          "Filosa-Imbricatea_X": {
+            "Novel-clade-2": {
+              "Novel-clade-2_X": {
+                "otu_18s_337": {},
+                "otu_18s_149": {},
+                "otu_18s_218": {},
+                "otu_18s_240": {},
+                "otu_18s_751": {},
+                "otu_18s_1165": {},
+                "otu_18s_4827": {},
+                "otu_18s_8891": {},
+                "otu_18s_8899": {},
+                "otu_18s_45773": {}
+              }
+            },
+            "Novel-clade-3": {
+              "Novel-clade-3_X": {
+                "otu_18s_7277": {}
+              }
+            }
+          },
+          "Thaumatomonadida": {
+            "Thaumatomonadidae": {
+              "Reckertia": {
+                "otu_18s_720": {},
+                "otu_18s_2966": {}
+              },
+              "Thaumatomastix": {
+                "otu_18s_1496": {}
+              }
+            },
+            "Peregriniidae": {
+              "Peregrinia": {
+                "otu_18s_3885": {}
+              }
+            }
+          },
+          "Marimonadida": {
+            "Marimonadida_X": {
+              "Marimonadida_XX": {
+                "otu_18s_2849": {}
+              }
+            }
+          }
+        },
+        "Rhodellophyceae": {
+          "Rhodellales": {
+            "Rhodellales_X": {
+              "Rhodella": {
+                "otu_18s_120": {}
+              }
+            }
+          }
+        },
+        "Perkinsida": {
+          "Perkinsida_X": {
+            "Perkinsida_XX": {
+              "Perkinsida_XXX": {
+                "otu_18s_133": {},
+                "otu_18s_191": {},
+                "otu_18s_198": {}
+              }
+            }
+          }
+        },
+        "Ichthyosporea": {
+          "Ichthyosphonida": {
+            "Pseudoperkinsidae": {
+              "Pseudoperkinsidae_unclassified": {
+                "otu_18s_150": {}
+              },
+              "Pseudoperkinsus": {
+                "otu_18s_1193": {}
+              }
+            },
+            "Ichthyophonidae_Freshwater": {
+              "Ichthyophonidae_Freshwater_X": {
+                "otu_18s_293": {}
+              }
+            },
+            "Ichthyosphonida_X": {
+              "Ichthyosphonida_XX": {
+                "otu_18s_621": {},
+                "otu_18s_6518": {}
+              }
+            }
+          }
+        },
+        "Fungi_unclassified": {
+          "Fungi_unclassified": {
+            "Fungi_unclassified": {
+              "Fungi_unclassified": {
+                "otu_18s_396": {},
+                "otu_18s_285": {},
+                "otu_18s_635": {},
+                "otu_18s_1640": {},
+                "otu_18s_3587": {}
+              }
+            }
+          }
+        },
+        "Centroheliozoa_X": {
+          "Pterocystida": {
+            "Choanocystidae": {
+              "Choanocystis": {
+                "otu_18s_160": {}
+              }
+            },
+            "Pterocystidae": {
+              "Pterocystidae_unclassified": {
+                "otu_18s_200": {}
+              }
+            }
+          },
+          "Centroheliozoa_XX": {
+            "Centroheliozoa_XXX": {
+              "Centroheliozoa_XXXX": {
+                "otu_18s_3141": {}
+              }
+            }
+          }
+        },
+        "Pirsonia_Clade": {
+          "Pirsonia_Clade_X": {
+            "Pirsonia_Clade_XX": {
+              "Pirsonia": {
+                "otu_18s_184": {}
+              },
+              "Pirsonia_Clade__XXX": {
+                "otu_18s_578": {},
+                "otu_18s_1264": {},
+                "otu_18s_5597": {},
+                "otu_18s_5393": {}
+              }
+            }
+          }
+        },
+        "MAST-1": {
+          "MAST-1C": {
+            "MAST-1C_X": {
+              "MAST-1C_XX": {
+                "otu_18s_208": {},
+                "otu_18s_979": {},
+                "otu_18s_9144": {}
+              }
+            }
+          },
+          "MAST-1A": {
+            "MAST-1A_X": {
+              "MAST-1A_XX": {
+                "otu_18s_976": {}
+              }
+            }
+          },
+          "MAST-1B": {
+            "MAST-1B_X": {
+              "MAST-1B_XX": {
+                "otu_18s_2285": {}
+              }
+            }
+          }
+        },
+        "Platyhelminthes": {
+          "Turbellaria": {
+            "Seriata": {
+              "Seriata_unclassified": {
+                "otu_18s_215": {}
+              }
+            },
+            "Acoelomorpha": {
+              "Convoluta": {
+                "otu_18s_491": {}
+              }
+            },
+            "Polycladida": {
+              "Paraplanocera": {
+                "otu_18s_4200": {}
+              },
+              "Notoplana": {
+                "otu_18s_14855": {}
+              }
+            }
+          }
+        },
+        "Choanoflagellatea": {
+          "Acanthoecida": {
+            "Acanthoecida_X": {
+              "Acanthoecida_XX": {
+                "otu_18s_351": {}
+              }
+            },
+            "Stephanoecidae_Group_D": {
+              "Stephanoecidae_Group_D_X": {
+                "otu_18s_584": {},
+                "otu_18s_1124": {},
+                "otu_18s_3385": {}
+              }
+            },
+            "Stephanoecidae_Group_H": {
+              "Diaphanoeca": {
+                "otu_18s_22995": {}
+              }
+            }
+          },
+          "Craspedida": {
+            "Monosigidae_Group_M": {
+              "Monosigidae_Group_M_X": {
+                "otu_18s_377": {}
+              }
+            },
+            "Monosigidae_Group_O": {
+              "Monosigidae_Group_O_X": {
+                "otu_18s_482": {}
+              }
+            },
+            "Salpingoecidae_Group_C2": {
+              "Salpingoecidae_Group_C2_X": {
+                "otu_18s_8992": {}
+              }
+            }
+          }
+        },
+        "Endomyxa": {
+          "Vampyrellida": {
+            "Vampyrellida_X": {
+              "Vampyrellida_X_unclassified": {
+                "otu_18s_237": {}
+              }
+            },
+            "Leptophryidae": {
+              "Leptophryidae_X": {
+                "otu_18s_2096": {}
+              }
+            }
+          },
+          "Novel-clade-9": {
+            "Novel-clade-9_X": {
+              "Novel-clade-9_XX": {
+                "otu_18s_3877": {}
+              }
+            }
+          }
+        },
+        "Synurophyceae": {
+          "Synurales": {
+            "Synurales_X": {
+              "Synura": {
+                "otu_18s_238": {},
+                "otu_18s_311": {},
+                "otu_18s_812": {}
+              },
+              "Mallomonas": {
+                "otu_18s_483": {},
+                "otu_18s_571": {},
+                "otu_18s_956": {},
+                "otu_18s_2923": {}
+              }
+            }
+          }
+        },
+        "MAST-2": {
+          "MAST-2D": {
+            "MAST-2D_X": {
+              "MAST-2D_XX": {
+                "otu_18s_243": {}
+              }
+            }
+          },
+          "MAST-2A": {
+            "MAST-2A_X": {
+              "MAST-2A_XX": {
+                "otu_18s_523": {}
+              }
+            }
+          }
+        },
+        "Embryophyceae": {
+          "Embryophyceae_X": {
+            "Embryophyceae_XX": {
+              "Picea": {
+                "otu_18s_261": {}
+              },
+              "Embryophyceae_XX_unclassified": {
+                "otu_18s_454": {}
+              },
+              "Zostera": {
+                "otu_18s_798": {},
+                "otu_18s_9529": {}
+              },
+              "Pinus": {
+                "otu_18s_1200": {}
+              }
+            }
+          }
+        },
+        "Cercozoa_X": {
+          "Cercozoa_XX": {
+            "Cercozoa_XXX": {
+              "Cercozoa_XXXX": {
+                "otu_18s_270": {},
+                "otu_18s_744": {},
+                "otu_18s_2686": {},
+                "otu_18s_3908": {},
+                "otu_18s_20761": {}
+              }
+            }
+          }
+        },
+        "Oomycota": {
+          "Oomycota_X": {
+            "Oomycota_X_unclassified": {
+              "Oomycota_X_unclassified": {
+                "otu_18s_286": {},
+                "otu_18s_630": {},
+                "otu_18s_5736": {},
+                "otu_18s_22999": {}
+              }
+            },
+            "Peronosporales": {
+              "Pythium": {
+                "otu_18s_296": {},
+                "otu_18s_809": {},
+                "otu_18s_9727": {}
+              },
+              "Peronosporales_X": {
+                "otu_18s_1001": {}
+              }
+            },
+            "Saprolegniales": {
+              "Saprolegniales_unclassified": {
+                "otu_18s_1049": {},
+                "otu_18s_5372": {}
+              }
+            },
+            "Haliphthorales": {
+              "Halocrusticida": {
+                "otu_18s_8934": {}
+              }
+            },
+            "Olpidophydiales": {
+              "Olpidiopsis": {
+                "otu_18s_9097": {}
+              }
+            },
+            "Oomycota_XX": {
+              "Oomycota_XXX": {
+                "otu_18s_12479": {},
+                "otu_18s_15288": {}
+              }
+            }
+          }
+        },
+        "Zygnemophyceae": {
+          "Zygnemophyceae_X": {
+            "Zygnemophyceae_XX": {
+              "Spirotaenia": {
+                "otu_18s_298": {},
+                "otu_18s_308": {}
+              }
+            }
+          }
+        },
+        "Chlorodendrophyceae": {
+          "Chlorodendrales": {
+            "Chlorodendraceae": {
+              "Tetraselmis": {
+                "otu_18s_306": {},
+                "otu_18s_386": {}
+              },
+              "Chlorodendrales_XX": {
+                "otu_18s_1257": {},
+                "otu_18s_2179": {}
+              },
+              "Chlorodendraceae_unclassified": {
+                "otu_18s_9995": {}
+              }
+            }
+          }
+        },
+        "Bryozoa": {
+          "Bryozoa_X": {
+            "Bryozoa_XX": {
+              "Bryozoa_XX_unclassified": {
+                "otu_18s_418": {},
+                "otu_18s_2815": {}
+              },
+              "Alcyonidioides": {
+                "otu_18s_2234": {}
+              },
+              "Electra": {
+                "otu_18s_4313": {}
+              }
+            }
+          }
+        },
+        "Entomophthoromycota": {
+          "Entomophthoromycotina": {
+            "Entomophthorales": {
+              "Basidiobolus": {
+                "otu_18s_460": {}
+              }
+            }
+          }
+        },
+        "Eustigmatophyceae": {
+          "Eustigmatophyceae_X": {
+            "Eustigmatophyceae_XX": {
+              "Nannochloropsis": {
+                "otu_18s_517": {},
+                "otu_18s_1457": {}
+              }
+            }
+          }
+        },
+        "Cryptomycota": {
+          "Cryptomycotina": {
+            "Cryptomycotina_X": {
+              "Rozella": {
+                "otu_18s_518": {},
+                "otu_18s_632": {}
+              }
+            }
+          }
+        },
+        "Ctenophora": {
+          "Ctenophora_X": {
+            "Ctenophora_XX": {
+              "Ctenophora_XXX": {
+                "otu_18s_592": {},
+                "otu_18s_7657": {}
+              },
+              "Ctenophora_XX_unclassified": {
+                "otu_18s_3560": {}
+              }
+            }
+          }
+        },
+        "Colpodellidea": {
+          "Colpodellida": {
+            "Colpodellida_CHR1": {
+              "Colpodellida_CHR1_X": {
+                "otu_18s_649": {},
+                "otu_18s_657": {},
+                "otu_18s_3307": {}
+              }
+            }
+          }
+        },
+        "Bolidophyceae": {
+          "Parmales": {
+            "Parmales_env_3": {
+              "Parmales_env_3A": {
+                "otu_18s_547": {}
+              }
+            },
+            "Triparmaceae": {
+              "Triparma": {
+                "otu_18s_9278": {}
+              }
+            },
+            "Parmales_env_2": {
+              "Parmales_env_2_X": {
+                "otu_18s_30260": {}
+              }
+            }
+          }
+        },
+        "MAST-4": {
+          "MAST-4D": {
+            "MAST-4D_X": {
+              "MAST-4D_XX": {
+                "otu_18s_551": {}
+              }
+            }
+          }
+        },
+        "Eukaryota_unclassified": {
+          "Eukaryota_unclassified": {
+            "Eukaryota_unclassified": {
+              "Eukaryota_unclassified": {
+                "otu_18s_559": {},
+                "otu_18s_611": {},
+                "otu_18s_1206": {},
+                "otu_18s_1661": {},
+                "otu_18s_5014": {},
+                "otu_18s_7541": {},
+                "otu_18s_8288": {},
+                "otu_18s_17877": {}
+              }
+            }
+          }
+        },
+        "Gregarinomorphea": {
+          "Eugregarinorida": {
+            "Lecudinidae": {
+              "Lecudina": {
+                "otu_18s_650": {},
+                "otu_18s_670": {}
+              },
+              "Lecudinidae_unclassified": {
+                "otu_18s_1078": {}
+              }
+            }
+          }
+        },
+        "Streptophyta_X": {
+          "Streptophyta_XX": {
+            "Streptophyta_XXX": {
+              "Streptophyta_XXXX": {
+                "otu_18s_1047": {}
+              }
+            }
+          }
+        },
+        "Labyrinthulomycetes": {
+          "Labyrinthulida": {
+            "Labyrinthulaceae": {
+              "Aplanochytrium": {
+                "otu_18s_1118": {}
+              }
+            }
+          },
+          "Oblongichytrida": {
+            "Oblongichytridiaceae": {
+              "Oblongichytrium": {
+                "otu_18s_1138": {}
+              }
+            }
+          }
+        },
+        "Basidiomycota": {
+          "Agaricomycotina": {
+            "Tremellomycetes": {
+              "Cryptococcus": {
+                "otu_18s_2830": {}
+              }
+            }
+          },
+          "Pucciniomycotina": {
+            "Cystobasidiomycetes": {
+              "Rhodotorula": {
+                "otu_18s_5291": {},
+                "otu_18s_21023": {}
+              }
+            }
+          }
+        },
+        "MOCH-2": {
+          "MOCH-2_X": {
+            "MOCH-2_XX": {
+              "MOCH-2_XXX": {
+                "otu_18s_1354": {}
+              }
+            }
+          }
+        },
+        "MAST-3": {
+          "MAST-3J": {
+            "MAST-3J_X": {
+              "MAST-3J_XX": {
+                "otu_18s_1488": {},
+                "otu_18s_10319": {}
+              }
+            }
+          },
+          "MAST-3E": {
+            "MAST-3E_X": {
+              "MAST-3E_XX": {
+                "otu_18s_3596": {}
+              }
+            }
+          }
+        },
+        "Ochrophyta_unclassified": {
+          "Ochrophyta_unclassified": {
+            "Ochrophyta_unclassified": {
+              "Ochrophyta_unclassified": {
+                "otu_18s_2081": {}
+              }
+            }
+          }
+        },
+        "Haptophyta_unclassified": {
+          "Haptophyta_unclassified": {
+            "Haptophyta_unclassified": {
+              "Haptophyta_unclassified": {
+                "otu_18s_3532": {}
+              }
+            }
+          }
+        },
+        "MAST-12": {
+          "MAST-12B": {
+            "MAST-12B_X": {
+              "MAST-12B_XX": {
+                "otu_18s_3609": {}
+              }
+            }
+          },
+          "MAST-12A": {
+            "MAST-12A_X": {
+              "MAST-12A_XX": {
+                "otu_18s_29389": {}
+              }
+            }
+          }
+        },
+        "Haptophyta_Clade_HAP3": {
+          "Haptophyta_Clade_HAP3_X": {
+            "Haptophyta_Clade_HAP3_XX": {
+              "Haptophyta_Clade_HAP3_XXX": {
+                "otu_18s_4102": {}
+              }
+            }
+          }
+        },
+        "MAST-9": {
+          "MAST-9D": {
+            "MAST-9D_X": {
+              "MAST-9D_XX": {
+                "otu_18s_4210": {}
+              }
+            }
+          }
+        },
+        "Opisthokonta_unclassified": {
+          "Opisthokonta_unclassified": {
+            "Opisthokonta_unclassified": {
+              "Opisthokonta_unclassified": {
+                "otu_18s_4873": {},
+                "otu_18s_9839": {}
+              }
+            }
+          }
+        },
+        "Gastrotricha": {
+          "Gastrotricha_X": {
+            "Gastrotricha_XX": {
+              "Heterolepidoderma": {
+                "otu_18s_6418": {}
+              }
+            }
+          }
+        },
+        "Raphidophyceae": {
+          "Raphidophyceae_X": {
+            "Raphidophyceae_XX": {
+              "Heterosigma": {
+                "otu_18s_6610": {},
+                "otu_18s_8990": {}
+              }
+            }
+          }
+        },
+        "Oxyrrhea": {
+          "Oxyrrhinales": {
+            "Oxyrrhinaceae": {
+              "Oxyrrhis": {
+                "otu_18s_17857": {}
+              }
+            }
+          }
+        },
+        "Stramenopiles_unclassified": {
+          "Stramenopiles_unclassified": {
+            "Stramenopiles_unclassified": {
+              "Stramenopiles_unclassified": {
+                "otu_18s_8892": {}
+              }
+            }
+          }
+        },
+        "Alveolata_unclassified": {
+          "Alveolata_unclassified": {
+            "Alveolata_unclassified": {
+              "Alveolata_unclassified": {
+                "otu_18s_8953": {}
+              }
+            }
+          }
+        },
+        "Chlorarachniophyceae": {
+          "Chlorarachnida": {
+            "Minorisa-lineage": {
+              "Minorisa-lineage_X": {
+                "otu_18s_14921": {}
+              }
+            }
+          }
+        },
+        "Stramenopiles_X-Group-7": {
+          "Stramenopiles_X-Group-7_X": {
+            "Stramenopiles_X-Group-7_XX": {
+              "Stramenopiles_X-Group-7_XXX": {
+                "otu_18s_15502": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "levels": [
+    "biodomain",
+    "phylum",
+    "class",
+    "bioorder",
+    "family",
+    "genus",
+    "name"
+  ]
+}

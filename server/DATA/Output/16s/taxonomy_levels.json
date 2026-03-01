@@ -1,0 +1,2623 @@
+{
+  "dict": {
+    "Bacteria": {
+      "Actinobacteriota": {
+        "Actinobacteria": {
+          "Micrococcales": {
+            "Microbacteriaceae": {
+              "Candidatus Aquiluna": {
+                "otu_16s_2": {},
+                "otu_16s_21": {},
+                "otu_16s_30": {},
+                "otu_16s_34": {},
+                "otu_16s_162": {},
+                "otu_16s_305": {},
+                "otu_16s_322": {},
+                "otu_16s_100308": {}
+              },
+              "ML602J-51": {
+                "otu_16s_6": {},
+                "otu_16s_175": {},
+                "otu_16s_166": {}
+              },
+              "Candidatus Limnoluna": {
+                "otu_16s_13": {},
+                "otu_16s_14": {},
+                "otu_16s_77": {}
+              },
+              "Aurantimicrobium": {
+                "otu_16s_407": {},
+                "otu_16s_139": {}
+              },
+              "Microbacteriaceae_unclassified": {
+                "otu_16s_415": {},
+                "otu_16s_292": {},
+                "otu_16s_516": {},
+                "otu_16s_875": {},
+                "otu_16s_1158": {},
+                "otu_16s_1288": {},
+                "otu_16s_1753": {},
+                "otu_16s_3068": {},
+                "otu_16s_12459": {}
+              },
+              "MWH-Ta3": {
+                "otu_16s_115": {},
+                "otu_16s_428": {}
+              },
+              "Rhodoluna": {
+                "otu_16s_442": {},
+                "otu_16s_192": {},
+                "otu_16s_324": {},
+                "otu_16s_353": {}
+              },
+              "Microbacterium": {
+                "otu_16s_245": {},
+                "otu_16s_320": {},
+                "otu_16s_1424": {},
+                "otu_16s_12367": {},
+                "otu_16s_25345": {}
+              },
+              "Candidatus Planktoluna": {
+                "otu_16s_294": {},
+                "otu_16s_492": {},
+                "otu_16s_646": {}
+              },
+              "Salinibacterium": {
+                "otu_16s_995": {}
+              },
+              "Agrococcus": {
+                "otu_16s_12390": {}
+              }
+            },
+            "Sanguibacteraceae": {
+              "Sanguibacter-Flavimobilis": {
+                "otu_16s_400": {}
+              }
+            },
+            "Micrococcales_unclassified": {
+              "Micrococcales_unclassified": {
+                "otu_16s_1237": {},
+                "otu_16s_35402": {}
+              }
+            },
+            "Dermabacteraceae": {
+              "Brachybacterium": {
+                "otu_16s_652": {},
+                "otu_16s_12387": {},
+                "otu_16s_20039": {},
+                "otu_16s_50761": {}
+              }
+            },
+            "Intrasporangiaceae": {
+              "Aquipuribacter": {
+                "otu_16s_1764": {}
+              },
+              "Ornithinimicrobium": {
+                "otu_16s_53654": {}
+              }
+            },
+            "Micrococcaceae": {
+              "Citricoccus": {
+                "otu_16s_1913": {}
+              },
+              "Nesterenkonia": {
+                "otu_16s_46680": {}
+              }
+            },
+            "Bogoriellaceae": {
+              "Georgenia": {
+                "otu_16s_2448": {}
+              }
+            },
+            "Brevibacteriaceae": {
+              "Brevibacterium": {
+                "otu_16s_3778": {},
+                "otu_16s_18966": {}
+              }
+            },
+            "Cellulomonadaceae": {
+              "Actinotalea": {
+                "otu_16s_13298": {}
+              }
+            },
+            "Demequinaceae": {
+              "Demequina": {
+                "otu_16s_18767": {},
+                "otu_16s_19791": {},
+                "otu_16s_20182": {}
+              }
+            }
+          },
+          "PeM15": {
+            "PeM15_unclassified": {
+              "PeM15_unclassified": {
+                "otu_16s_5": {},
+                "otu_16s_12": {},
+                "otu_16s_82": {},
+                "otu_16s_88": {},
+                "otu_16s_103": {},
+                "otu_16s_177": {},
+                "otu_16s_303": {},
+                "otu_16s_327": {},
+                "otu_16s_505": {},
+                "otu_16s_344": {},
+                "otu_16s_514": {},
+                "otu_16s_379": {},
+                "otu_16s_581": {},
+                "otu_16s_734": {},
+                "otu_16s_1791": {},
+                "otu_16s_2261": {},
+                "otu_16s_12341": {}
+              }
+            }
+          },
+          "Corynebacteriales": {
+            "Mycobacteriaceae": {
+              "Mycobacterium": {
+                "otu_16s_44": {},
+                "otu_16s_11": {},
+                "otu_16s_15": {},
+                "otu_16s_61": {},
+                "otu_16s_51": {},
+                "otu_16s_35": {},
+                "otu_16s_66": {},
+                "otu_16s_140": {},
+                "otu_16s_451": {},
+                "otu_16s_195": {},
+                "otu_16s_213": {},
+                "otu_16s_308": {},
+                "otu_16s_653": {},
+                "otu_16s_714": {},
+                "otu_16s_6893": {},
+                "otu_16s_20571": {}
+              }
+            },
+            "Dietziaceae": {
+              "Dietzia": {
+                "otu_16s_285": {},
+                "otu_16s_13819": {}
+              }
+            },
+            "Nocardiaceae": {
+              "Rhodococcus": {
+                "otu_16s_1074": {}
+              }
+            }
+          },
+          "Frankiales": {
+            "Sporichthyaceae": {
+              "Sporichthyaceae_unclassified": {
+                "otu_16s_18": {},
+                "otu_16s_52": {},
+                "otu_16s_170": {},
+                "otu_16s_818": {}
+              },
+              "hgcI clade": {
+                "otu_16s_621": {},
+                "otu_16s_78": {},
+                "otu_16s_81": {},
+                "otu_16s_96": {},
+                "otu_16s_101": {},
+                "otu_16s_110": {},
+                "otu_16s_107": {},
+                "otu_16s_126": {},
+                "otu_16s_154": {},
+                "otu_16s_205": {},
+                "otu_16s_229": {},
+                "otu_16s_232": {},
+                "otu_16s_361": {},
+                "otu_16s_406": {},
+                "otu_16s_671": {},
+                "otu_16s_710": {},
+                "otu_16s_754": {},
+                "otu_16s_784": {},
+                "otu_16s_897": {},
+                "otu_16s_1299": {},
+                "otu_16s_2670": {},
+                "otu_16s_2807": {},
+                "otu_16s_20040": {},
+                "otu_16s_20308": {},
+                "otu_16s_67949": {}
+              },
+              "Candidatus Planktophila": {
+                "otu_16s_208": {},
+                "otu_16s_210": {},
+                "otu_16s_214": {},
+                "otu_16s_1133": {},
+                "otu_16s_1148": {}
+              },
+              "Sporichthya": {
+                "otu_16s_1153": {}
+              }
+            },
+            "Frankiales_unclassified": {
+              "Frankiales_unclassified": {
+                "otu_16s_318": {},
+                "otu_16s_12380": {}
+              }
+            }
+          },
+          "Actinobacteria_unclassified": {
+            "Actinobacteria_unclassified": {
+              "Actinobacteria_unclassified": {
+                "otu_16s_416": {},
+                "otu_16s_1521": {},
+                "otu_16s_340": {},
+                "otu_16s_509": {},
+                "otu_16s_360": {},
+                "otu_16s_389": {},
+                "otu_16s_401": {},
+                "otu_16s_794": {},
+                "otu_16s_1217": {},
+                "otu_16s_34600": {}
+              }
+            }
+          },
+          "Propionibacteriales": {
+            "Nocardioidaceae": {
+              "Nocardioides": {
+                "otu_16s_537": {},
+                "otu_16s_1208": {},
+                "otu_16s_1900": {},
+                "otu_16s_18842": {}
+              }
+            },
+            "Propionibacteriaceae": {
+              "Cutibacterium": {
+                "otu_16s_762": {}
+              },
+              "Tessaracoccus": {
+                "otu_16s_5194": {}
+              }
+            }
+          },
+          "Pseudonocardiales": {
+            "Pseudonocardiaceae": {
+              "Pseudonocardia": {
+                "otu_16s_1649": {},
+                "otu_16s_4440": {}
+              }
+            }
+          },
+          "Nitriliruptorales": {
+            "Nitriliruptoraceae": {
+              "Nitriliruptoraceae_unclassified": {
+                "otu_16s_1844": {},
+                "otu_16s_13556": {}
+              }
+            }
+          }
+        },
+        "Acidimicrobiia": {
+          "Microtrichales": {
+            "Ilumatobacteraceae": {
+              "Ilumatobacter": {
+                "otu_16s_48": {},
+                "otu_16s_22": {},
+                "otu_16s_420": {},
+                "otu_16s_130": {},
+                "otu_16s_427": {},
+                "otu_16s_488": {},
+                "otu_16s_660": {},
+                "otu_16s_1026": {},
+                "otu_16s_765": {},
+                "otu_16s_925": {}
+              },
+              "CL500-29 marine group": {
+                "otu_16s_25": {},
+                "otu_16s_68": {},
+                "otu_16s_151": {},
+                "otu_16s_132": {},
+                "otu_16s_160": {},
+                "otu_16s_223": {},
+                "otu_16s_218": {},
+                "otu_16s_330": {},
+                "otu_16s_508": {},
+                "otu_16s_387": {},
+                "otu_16s_603": {},
+                "otu_16s_797": {},
+                "otu_16s_873": {},
+                "otu_16s_2757": {},
+                "otu_16s_1216": {},
+                "otu_16s_1392": {},
+                "otu_16s_1860": {},
+                "otu_16s_2684": {},
+                "otu_16s_4901": {},
+                "otu_16s_13540": {},
+                "otu_16s_18952": {},
+                "otu_16s_25425": {}
+              },
+              "Ilumatobacteraceae_unclassified": {
+                "otu_16s_2667": {},
+                "otu_16s_4605": {},
+                "otu_16s_12391": {},
+                "otu_16s_12454": {},
+                "otu_16s_25385": {},
+                "otu_16s_34591": {},
+                "otu_16s_30532": {}
+              }
+            },
+            "Microtrichales_unclassified": {
+              "Microtrichales_unclassified": {
+                "otu_16s_64": {},
+                "otu_16s_565": {}
+              }
+            },
+            "Microtrichaceae": {
+              "Microtrichaceae_unclassified": {
+                "otu_16s_201": {},
+                "otu_16s_496": {},
+                "otu_16s_1212": {},
+                "otu_16s_1430": {},
+                "otu_16s_2627": {},
+                "otu_16s_4349": {},
+                "otu_16s_4487": {},
+                "otu_16s_19006": {}
+              },
+              "Sva0996 marine group": {
+                "otu_16s_1314": {},
+                "otu_16s_1595": {},
+                "otu_16s_1335": {}
+              },
+              "IMCC26207": {
+                "otu_16s_1348": {},
+                "otu_16s_1962": {}
+              }
+            }
+          },
+          "Actinomarinales": {
+            "Actinomarinaceae": {
+              "Candidatus Actinomarina": {
+                "otu_16s_841": {}
+              }
+            },
+            "Actinomarinales_unclassified": {
+              "Actinomarinales_unclassified": {
+                "otu_16s_1204": {},
+                "otu_16s_1316": {}
+              }
+            }
+          },
+          "IMCC26256": {
+            "IMCC26256_unclassified": {
+              "IMCC26256_unclassified": {
+                "otu_16s_871": {}
+              }
+            }
+          }
+        },
+        "Thermoleophilia": {
+          "Solirubrobacterales": {
+            "Solirubrobacteraceae": {
+              "Conexibacter": {
+                "otu_16s_111": {}
+              }
+            },
+            "67-14": {
+              "67-14_unclassified": {
+                "otu_16s_182": {},
+                "otu_16s_608": {},
+                "otu_16s_793": {},
+                "otu_16s_2134": {}
+              }
+            }
+          },
+          "Gaiellales": {
+            "Gaiellales_unclassified": {
+              "Gaiellales_unclassified": {
+                "otu_16s_329": {},
+                "otu_16s_522": {},
+                "otu_16s_1206": {}
+              }
+            }
+          }
+        }
+      },
+      "Proteobacteria": {
+        "Alphaproteobacteria": {
+          "Rhodobacterales": {
+            "Rhodobacteraceae": {
+              "Pseudorhodobacter": {
+                "otu_16s_3": {},
+                "otu_16s_16": {},
+                "otu_16s_423": {},
+                "otu_16s_350": {},
+                "otu_16s_382": {},
+                "otu_16s_1017": {},
+                "otu_16s_940": {},
+                "otu_16s_1297": {},
+                "otu_16s_12762": {},
+                "otu_16s_18701": {}
+              },
+              "Tabrizicola": {
+                "otu_16s_4": {}
+              },
+              "Yoonia-Loktanella": {
+                "otu_16s_7": {},
+                "otu_16s_27": {},
+                "otu_16s_127": {},
+                "otu_16s_444": {},
+                "otu_16s_193": {},
+                "otu_16s_216": {},
+                "otu_16s_477": {},
+                "otu_16s_306": {},
+                "otu_16s_373": {},
+                "otu_16s_803": {},
+                "otu_16s_18797": {}
+              },
+              "Planktomarina": {
+                "otu_16s_23": {},
+                "otu_16s_102": {},
+                "otu_16s_188": {},
+                "otu_16s_200": {}
+              },
+              "Lentibacter": {
+                "otu_16s_28": {},
+                "otu_16s_283": {}
+              },
+              "Rhodobacteraceae_unclassified": {
+                "otu_16s_76": {},
+                "otu_16s_203": {},
+                "otu_16s_234": {},
+                "otu_16s_464": {},
+                "otu_16s_244": {},
+                "otu_16s_270": {},
+                "otu_16s_562": {},
+                "otu_16s_593": {},
+                "otu_16s_610": {},
+                "otu_16s_662": {},
+                "otu_16s_813": {},
+                "otu_16s_1091": {},
+                "otu_16s_1135": {},
+                "otu_16s_1293": {},
+                "otu_16s_2109": {},
+                "otu_16s_1441": {},
+                "otu_16s_1696": {},
+                "otu_16s_2208": {},
+                "otu_16s_2584": {},
+                "otu_16s_3028": {},
+                "otu_16s_5816": {},
+                "otu_16s_12358": {},
+                "otu_16s_12419": {},
+                "otu_16s_22233": {},
+                "otu_16s_18775": {},
+                "otu_16s_19014": {},
+                "otu_16s_19147": {},
+                "otu_16s_20379": {},
+                "otu_16s_30570": {},
+                "otu_16s_30625": {}
+              },
+              "Rhodobacter": {
+                "otu_16s_412": {},
+                "otu_16s_979": {},
+                "otu_16s_586": {},
+                "otu_16s_15375": {}
+              },
+              "Tateyamaria": {
+                "otu_16s_547": {},
+                "otu_16s_1942": {},
+                "otu_16s_2047": {}
+              },
+              "Sulfitobacter": {
+                "otu_16s_161": {},
+                "otu_16s_3981": {}
+              },
+              "Roseobacter": {
+                "otu_16s_431": {},
+                "otu_16s_486": {}
+              },
+              "Pelagimonas": {
+                "otu_16s_181": {}
+              },
+              "Amylibacter": {
+                "otu_16s_233": {}
+              },
+              "Albirhodobacter": {
+                "otu_16s_249": {}
+              },
+              "Roseibacterium": {
+                "otu_16s_473": {},
+                "otu_16s_1623": {}
+              },
+              "Seohaeicola": {
+                "otu_16s_276": {}
+              },
+              "Paracoccus": {
+                "otu_16s_370": {},
+                "otu_16s_750": {},
+                "otu_16s_881": {},
+                "otu_16s_2541": {},
+                "otu_16s_2740": {},
+                "otu_16s_4875": {}
+              },
+              "Roseobacter clade NAC11-7 lineage": {
+                "otu_16s_383": {}
+              },
+              "Ponticoccus": {
+                "otu_16s_600": {}
+              },
+              "Oceanibulbus": {
+                "otu_16s_1043": {}
+              },
+              "Defluviimonas": {
+                "otu_16s_748": {}
+              },
+              "Planktotalea": {
+                "otu_16s_782": {}
+              },
+              "Flavimaricola": {
+                "otu_16s_1814": {},
+                "otu_16s_3552": {},
+                "otu_16s_30577": {}
+              },
+              "Litorimicrobium": {
+                "otu_16s_3363": {}
+              },
+              "Ascidiaceihabitans": {
+                "otu_16s_2352": {}
+              },
+              "Marivita": {
+                "otu_16s_2359": {},
+                "otu_16s_18671": {}
+              },
+              "Yangia": {
+                "otu_16s_12478": {}
+              },
+              "Litoreibacter": {
+                "otu_16s_12679": {}
+              },
+              "Tropicimonas": {
+                "otu_16s_20199": {}
+              },
+              "Marivivens": {
+                "otu_16s_25349": {}
+              },
+              "Aestuariicoccus": {
+                "otu_16s_25532": {}
+              }
+            }
+          },
+          "SAR11 clade": {
+            "Clade I": {
+              "Clade Ia": {
+                "otu_16s_8": {},
+                "otu_16s_84": {},
+                "otu_16s_95": {},
+                "otu_16s_149": {},
+                "otu_16s_108": {},
+                "otu_16s_293": {},
+                "otu_16s_338": {},
+                "otu_16s_676": {}
+              }
+            },
+            "Clade III": {
+              "Clade III_unclassified": {
+                "otu_16s_32": {},
+                "otu_16s_202": {},
+                "otu_16s_241": {},
+                "otu_16s_300": {},
+                "otu_16s_375": {},
+                "otu_16s_583": {}
+              }
+            },
+            "SAR11 clade_unclassified": {
+              "SAR11 clade_unclassified": {
+                "otu_16s_69": {}
+              }
+            },
+            "Clade IV": {
+              "Clade IV_unclassified": {
+                "otu_16s_341": {}
+              }
+            },
+            "Clade II": {
+              "Clade II_unclassified": {
+                "otu_16s_763": {}
+              }
+            }
+          },
+          "Sphingomonadales": {
+            "Sphingomonadaceae": {
+              "Sphingorhabdus": {
+                "otu_16s_47": {},
+                "otu_16s_190": {},
+                "otu_16s_280": {},
+                "otu_16s_310": {},
+                "otu_16s_507": {},
+                "otu_16s_693": {},
+                "otu_16s_12346": {},
+                "otu_16s_13222": {}
+              },
+              "Erythrobacter": {
+                "otu_16s_86": {},
+                "otu_16s_727": {},
+                "otu_16s_12352": {},
+                "otu_16s_34927": {}
+              },
+              "Porphyrobacter": {
+                "otu_16s_89": {},
+                "otu_16s_1735": {}
+              },
+              "Sphingomonas": {
+                "otu_16s_141": {}
+              },
+              "Sphingobium": {
+                "otu_16s_168": {},
+                "otu_16s_768": {},
+                "otu_16s_821": {}
+              },
+              "Sphingomonadaceae_unclassified": {
+                "otu_16s_466": {},
+                "otu_16s_506": {},
+                "otu_16s_2872": {},
+                "otu_16s_3298": {},
+                "otu_16s_6627": {},
+                "otu_16s_77117": {}
+              },
+              "Polymorphobacter": {
+                "otu_16s_485": {}
+              },
+              "Parablastomonas": {
+                "otu_16s_538": {}
+              },
+              "Novosphingobium": {
+                "otu_16s_1063": {}
+              },
+              "Altererythrobacter": {
+                "otu_16s_1119": {},
+                "otu_16s_30806": {}
+              }
+            }
+          },
+          "Rhizobiales": {
+            "Rhizobiales_unclassified": {
+              "Rhizobiales_unclassified": {
+                "otu_16s_26": {},
+                "otu_16s_184": {},
+                "otu_16s_457": {},
+                "otu_16s_1861": {}
+              }
+            },
+            "Rhizobiaceae": {
+              "Allorhizobium-Neorhizobium-Pararhizobium-Rhizobium": {
+                "otu_16s_987": {},
+                "otu_16s_732": {}
+              },
+              "Pseudahrensia": {
+                "otu_16s_258": {},
+                "otu_16s_1321": {},
+                "otu_16s_2794": {}
+              },
+              "Aurantimonas": {
+                "otu_16s_1971": {}
+              },
+              "Rhizobiaceae_unclassified": {
+                "otu_16s_18708": {}
+              }
+            },
+            "Beijerinckiaceae": {
+              "Beijerinckiaceae_unclassified": {
+                "otu_16s_250": {},
+                "otu_16s_326": {}
+              },
+              "alphaI cluster": {
+                "otu_16s_259": {}
+              },
+              "Methylocystis": {
+                "otu_16s_860": {}
+              }
+            },
+            "Rhizobiales Incertae Sedis": {
+              "Anderseniella": {
+                "otu_16s_791": {},
+                "otu_16s_3507": {}
+              },
+              "Alsobacter": {
+                "otu_16s_18747": {}
+              }
+            },
+            "Stappiaceae": {
+              "Stappiaceae_unclassified": {
+                "otu_16s_1490": {}
+              }
+            },
+            "Devosiaceae": {
+              "Pelagibacterium": {
+                "otu_16s_18717": {}
+              }
+            },
+            "Hyphomicrobiaceae": {
+              "Filomicrobium": {
+                "otu_16s_19159": {}
+              }
+            }
+          },
+          "Rhodospirillales": {
+            "Magnetospiraceae": {
+              "Magnetospiraceae_unclassified": {
+                "otu_16s_422": {},
+                "otu_16s_807": {}
+              }
+            },
+            "AEGEAN-169 marine group": {
+              "AEGEAN-169 marine group_unclassified": {
+                "otu_16s_122": {},
+                "otu_16s_374": {},
+                "otu_16s_2165": {},
+                "otu_16s_2067": {},
+                "otu_16s_4959": {}
+              }
+            },
+            "Rhodospirillaceae": {
+              "Rhodospirillaceae_unclassified": {
+                "otu_16s_21065": {}
+              }
+            }
+          },
+          "Caulobacterales": {
+            "Caulobacteraceae": {
+              "Brevundimonas": {
+                "otu_16s_106": {},
+                "otu_16s_137": {},
+                "otu_16s_144": {},
+                "otu_16s_354": {},
+                "otu_16s_2258": {}
+              },
+              "Phenylobacterium": {
+                "otu_16s_321": {}
+              },
+              "Caulobacter": {
+                "otu_16s_776": {}
+              }
+            },
+            "Hyphomonadaceae": {
+              "Hyphomonas": {
+                "otu_16s_1272": {},
+                "otu_16s_1303": {},
+                "otu_16s_3721": {}
+              },
+              "UKL13-1": {
+                "otu_16s_480": {}
+              },
+              "Hyphomonadaceae_unclassified": {
+                "otu_16s_518": {}
+              },
+              "Hellea": {
+                "otu_16s_2565": {}
+              },
+              "Robiginitomaculum": {
+                "otu_16s_5009": {}
+              },
+              "Algimonas": {
+                "otu_16s_19877": {}
+              }
+            }
+          },
+          "Puniceispirillales": {
+            "SAR116 clade": {
+              "SAR116 clade_unclassified": {
+                "otu_16s_125": {},
+                "otu_16s_3290": {},
+                "otu_16s_5971": {},
+                "otu_16s_5761": {},
+                "otu_16s_42544": {}
+              },
+              "Candidatus Puniceispirillum": {
+                "otu_16s_220": {},
+                "otu_16s_243": {}
+              }
+            },
+            "Puniceispirillales_unclassified": {
+              "Puniceispirillales_unclassified": {
+                "otu_16s_18728": {}
+              }
+            }
+          },
+          "Acetobacterales": {
+            "Acetobacteraceae": {
+              "Roseomonas": {
+                "otu_16s_312": {}
+              }
+            }
+          },
+          "Kordiimonadales": {
+            "Kordiimonadales_unclassified": {
+              "Kordiimonadales_unclassified": {
+                "otu_16s_853": {},
+                "otu_16s_906": {},
+                "otu_16s_1600": {}
+              }
+            },
+            "Kordiimonadaceae": {
+              "Kordiimonas": {
+                "otu_16s_4516": {}
+              }
+            }
+          },
+          "Rickettsiales": {
+            "Rickettsiaceae": {
+              "Candidatus Megaira": {
+                "otu_16s_1062": {},
+                "otu_16s_25350": {}
+              }
+            },
+            "Fokiniaceae": {
+              "Fokiniaceae_unclassified": {
+                "otu_16s_7554": {}
+              }
+            }
+          },
+          "Paracaedibacterales": {
+            "Paracaedibacteraceae": {
+              "Paracaedibacteraceae_unclassified": {
+                "otu_16s_836": {}
+              }
+            }
+          },
+          "Parvibaculales": {
+            "PS1 clade": {
+              "PS1 clade_unclassified": {
+                "otu_16s_2241": {},
+                "otu_16s_13265": {}
+              }
+            }
+          },
+          "Thalassobaculales": {
+            "Thalassobaculaceae": {
+              "Thalassobaculum": {
+                "otu_16s_2395": {}
+              }
+            }
+          },
+          "Micavibrionales": {
+            "Micavibrionaceae": {
+              "Micavibrionaceae_unclassified": {
+                "otu_16s_12343": {}
+              }
+            }
+          },
+          "Alphaproteobacteria_unclassified": {
+            "Alphaproteobacteria_unclassified": {
+              "Alphaproteobacteria_unclassified": {
+                "otu_16s_18776": {},
+                "otu_16s_50882": {}
+              }
+            }
+          }
+        },
+        "Gammaproteobacteria": {
+          "Burkholderiales": {
+            "Alcaligenaceae": {
+              "Kerstersia": {
+                "otu_16s_9": {}
+              },
+              "GKS98 freshwater group": {
+                "otu_16s_72": {},
+                "otu_16s_70": {},
+                "otu_16s_424": {},
+                "otu_16s_109": {},
+                "otu_16s_271": {},
+                "otu_16s_289": {}
+              },
+              "Alcaligenaceae_unclassified": {
+                "otu_16s_37": {},
+                "otu_16s_1494": {},
+                "otu_16s_3000": {},
+                "otu_16s_12347": {}
+              },
+              "Verticiella": {
+                "otu_16s_1191": {},
+                "otu_16s_2179": {}
+              }
+            },
+            "Burkholderiaceae": {
+              "Polynucleobacter": {
+                "otu_16s_10": {},
+                "otu_16s_622": {},
+                "otu_16s_80": {},
+                "otu_16s_278": {},
+                "otu_16s_368": {},
+                "otu_16s_661": {},
+                "otu_16s_650": {},
+                "otu_16s_788": {},
+                "otu_16s_18754": {}
+              },
+              "Limnobacter": {
+                "otu_16s_439": {},
+                "otu_16s_746": {},
+                "otu_16s_25766": {}
+              }
+            },
+            "Methylophilaceae": {
+              "OM43 clade": {
+                "otu_16s_83": {},
+                "otu_16s_146": {},
+                "otu_16s_690": {},
+                "otu_16s_659": {},
+                "otu_16s_626": {},
+                "otu_16s_905": {}
+              },
+              "Candidatus Methylopumilus": {
+                "otu_16s_651": {}
+              },
+              "Methylophilaceae_unclassified": {
+                "otu_16s_1229": {},
+                "otu_16s_2101": {}
+              },
+              "Methylotenera": {
+                "otu_16s_18019": {}
+              }
+            },
+            "Comamonadaceae": {
+              "RS62 marine group": {
+                "otu_16s_19": {},
+                "otu_16s_105": {},
+                "otu_16s_134": {},
+                "otu_16s_556": {},
+                "otu_16s_197": {},
+                "otu_16s_291": {},
+                "otu_16s_498": {},
+                "otu_16s_561": {},
+                "otu_16s_949": {}
+              },
+              "Limnohabitans": {
+                "otu_16s_418": {},
+                "otu_16s_117": {},
+                "otu_16s_554": {},
+                "otu_16s_337": {},
+                "otu_16s_525": {},
+                "otu_16s_535": {},
+                "otu_16s_405": {},
+                "otu_16s_663": {},
+                "otu_16s_716": {},
+                "otu_16s_736": {},
+                "otu_16s_840": {},
+                "otu_16s_880": {},
+                "otu_16s_1141": {},
+                "otu_16s_1337": {},
+                "otu_16s_1350": {},
+                "otu_16s_12471": {}
+              },
+              "Rhodoferax": {
+                "otu_16s_467": {},
+                "otu_16s_247": {},
+                "otu_16s_722": {},
+                "otu_16s_795": {},
+                "otu_16s_865": {},
+                "otu_16s_1201": {},
+                "otu_16s_1452": {},
+                "otu_16s_2293": {},
+                "otu_16s_3708": {}
+              },
+              "Polaromonas": {
+                "otu_16s_491": {},
+                "otu_16s_929": {},
+                "otu_16s_1869": {},
+                "otu_16s_60784": {}
+              },
+              "Comamonadaceae_unclassified": {
+                "otu_16s_689": {},
+                "otu_16s_1926": {},
+                "otu_16s_12431": {},
+                "otu_16s_18687": {},
+                "otu_16s_25380": {}
+              },
+              "Rhizobacter": {
+                "otu_16s_759": {}
+              }
+            },
+            "MWH-UniP1 aquatic group": {
+              "MWH-UniP1 aquatic group_unclassified": {
+                "otu_16s_421": {},
+                "otu_16s_2028": {},
+                "otu_16s_4048": {}
+              }
+            },
+            "TRA3-20": {
+              "TRA3-20_unclassified": {
+                "otu_16s_1522": {}
+              }
+            },
+            "Nitrosomonadaceae": {
+              "IS-44": {
+                "otu_16s_299": {},
+                "otu_16s_745": {},
+                "otu_16s_1344": {},
+                "otu_16s_25537": {}
+              }
+            },
+            "Oxalobacteraceae": {
+              "Oxalobacteraceae_unclassified": {
+                "otu_16s_349": {}
+              }
+            },
+            "Burkholderiales_unclassified": {
+              "Burkholderiales_unclassified": {
+                "otu_16s_673": {}
+              }
+            },
+            "Rhodocyclaceae": {
+              "Dechloromonas": {
+                "otu_16s_817": {}
+              },
+              "C39": {
+                "otu_16s_1965": {}
+              }
+            }
+          },
+          "Pseudomonadales": {
+            "Moraxellaceae": {
+              "Psychrobacter": {
+                "otu_16s_17": {},
+                "otu_16s_156": {},
+                "otu_16s_143": {},
+                "otu_16s_136": {},
+                "otu_16s_163": {},
+                "otu_16s_238": {},
+                "otu_16s_4247": {},
+                "otu_16s_6749": {},
+                "otu_16s_28024": {},
+                "otu_16s_19142": {},
+                "otu_16s_30693": {},
+                "otu_16s_31183": {},
+                "otu_16s_59334": {},
+                "otu_16s_60288": {},
+                "otu_16s_77112": {}
+              },
+              "Acinetobacter": {
+                "otu_16s_264": {},
+                "otu_16s_279": {},
+                "otu_16s_364": {}
+              },
+              "Paraperlucidibaca": {
+                "otu_16s_476": {}
+              }
+            },
+            "SAR86 clade": {
+              "SAR86 clade_unclassified": {
+                "otu_16s_20": {},
+                "otu_16s_173": {},
+                "otu_16s_263": {},
+                "otu_16s_1045": {},
+                "otu_16s_715": {},
+                "otu_16s_764": {},
+                "otu_16s_884": {},
+                "otu_16s_930": {},
+                "otu_16s_18686": {}
+              }
+            },
+            "Pseudohongiellaceae": {
+              "Pseudohongiella": {
+                "otu_16s_33": {},
+                "otu_16s_352": {},
+                "otu_16s_893": {},
+                "otu_16s_1665": {},
+                "otu_16s_60266": {}
+              }
+            },
+            "Porticoccaceae": {
+              "SAR92 clade": {
+                "otu_16s_100": {},
+                "otu_16s_211": {}
+              },
+              "Porticoccus": {
+                "otu_16s_251": {},
+                "otu_16s_403": {}
+              },
+              "Porticoccaceae_unclassified": {
+                "otu_16s_698": {}
+              }
+            },
+            "Halieaceae": {
+              "OM60(NOR5) clade": {
+                "otu_16s_176": {},
+                "otu_16s_399": {},
+                "otu_16s_2008": {},
+                "otu_16s_7047": {},
+                "otu_16s_34555": {}
+              },
+              "Haliea": {
+                "otu_16s_204": {}
+              },
+              "Halioglobus": {
+                "otu_16s_459": {},
+                "otu_16s_304": {},
+                "otu_16s_500": {},
+                "otu_16s_573": {},
+                "otu_16s_385": {},
+                "otu_16s_619": {},
+                "otu_16s_769": {},
+                "otu_16s_2264": {}
+              },
+              "Halieaceae_unclassified": {
+                "otu_16s_670": {}
+              },
+              "Luminiphilus": {
+                "otu_16s_1639": {}
+              }
+            },
+            "Pseudomonadaceae": {
+              "Pseudomonas": {
+                "otu_16s_231": {},
+                "otu_16s_256": {},
+                "otu_16s_336": {},
+                "otu_16s_907": {},
+                "otu_16s_958": {},
+                "otu_16s_2256": {},
+                "otu_16s_6630": {}
+              },
+              "Pseudomonadaceae_unclassified": {
+                "otu_16s_857": {}
+              }
+            },
+            "Litoricolaceae": {
+              "Litoricola": {
+                "otu_16s_471": {},
+                "otu_16s_12615": {}
+              }
+            },
+            "OM182 clade": {
+              "OM182 clade_unclassified": {
+                "otu_16s_252": {},
+                "otu_16s_495": {},
+                "otu_16s_391": {}
+              }
+            },
+            "Thioglobaceae": {
+              "SUP05 cluster": {
+                "otu_16s_298": {}
+              },
+              "Candidatus Thioglobus": {
+                "otu_16s_878": {}
+              }
+            },
+            "Spongiibacteraceae": {
+              "Spongiibacteraceae_unclassified": {
+                "otu_16s_576": {}
+              },
+              "Zhongshania": {
+                "otu_16s_3271": {}
+              }
+            },
+            "Alcanivoracaceae1": {
+              "Alcanivorax": {
+                "otu_16s_4832": {},
+                "otu_16s_53670": {}
+              }
+            },
+            "Gven-F17": {
+              "Gven-F17_unclassified": {
+                "otu_16s_356": {},
+                "otu_16s_3181": {}
+              }
+            },
+            "Marinomonadaceae": {
+              "Marinomonas": {
+                "otu_16s_365": {}
+              }
+            },
+            "Halomonadaceae": {
+              "Cobetia": {
+                "otu_16s_1053": {}
+              },
+              "Halomonas": {
+                "otu_16s_1401": {},
+                "otu_16s_18913": {},
+                "otu_16s_19172": {}
+              }
+            },
+            "Cellvibrionaceae": {
+              "Marinagarivorans": {
+                "otu_16s_944": {},
+                "otu_16s_12700": {},
+                "otu_16s_12709": {}
+              },
+              "Cellvibrionaceae_unclassified": {
+                "otu_16s_2283": {},
+                "otu_16s_9433": {}
+              },
+              "Umboniibacter": {
+                "otu_16s_12370": {}
+              }
+            },
+            "Marinobacteraceae": {
+              "Marinobacter": {
+                "otu_16s_50828": {}
+              }
+            }
+          },
+          "Enterobacterales": {
+            "Alteromonadaceae": {
+              "Glaciecola": {
+                "otu_16s_75": {}
+              },
+              "Rheinheimera": {
+                "otu_16s_1491": {}
+              }
+            },
+            "Psychromonadaceae": {
+              "Motilimonas": {
+                "otu_16s_411": {},
+                "otu_16s_1323": {}
+              }
+            },
+            "Pseudoalteromonadaceae": {
+              "Pseudoalteromonas": {
+                "otu_16s_113": {},
+                "otu_16s_549": {},
+                "otu_16s_152": {},
+                "otu_16s_381": {},
+                "otu_16s_12449": {}
+              }
+            },
+            "Colwelliaceae": {
+              "Colwellia": {
+                "otu_16s_441": {}
+              }
+            },
+            "Erwiniaceae": {
+              "Erwinia": {
+                "otu_16s_221": {}
+              }
+            },
+            "Shewanellaceae": {
+              "Shewanella": {
+                "otu_16s_675": {},
+                "otu_16s_1415": {},
+                "otu_16s_2053": {},
+                "otu_16s_12729": {}
+              }
+            },
+            "Aeromonadaceae": {
+              "Aeromonas": {
+                "otu_16s_1716": {}
+              }
+            }
+          },
+          "Diplorickettsiales": {
+            "Diplorickettsiaceae": {
+              "Rickettsiella": {
+                "otu_16s_194": {}
+              }
+            }
+          },
+          "Granulosicoccales": {
+            "Granulosicoccaceae": {
+              "Granulosicoccus": {
+                "otu_16s_215": {},
+                "otu_16s_545": {},
+                "otu_16s_681": {},
+                "otu_16s_5758": {}
+              }
+            }
+          },
+          "Thiotrichales": {
+            "Thiotrichaceae": {
+              "Leucothrix": {
+                "otu_16s_254": {},
+                "otu_16s_1689": {},
+                "otu_16s_1834": {}
+              },
+              "Thiothrix": {
+                "otu_16s_2460": {},
+                "otu_16s_30535": {}
+              }
+            }
+          },
+          "Legionellales": {
+            "Legionellaceae": {
+              "Legionella": {
+                "otu_16s_261": {},
+                "otu_16s_1781": {}
+              },
+              "Legionellaceae_unclassified": {
+                "otu_16s_4049": {}
+              }
+            }
+          },
+          "Xanthomonadales": {
+            "Xanthomonadaceae": {
+              "Pseudoxanthomonas": {
+                "otu_16s_1027": {}
+              },
+              "Stenotrophomonas": {
+                "otu_16s_1367": {}
+              },
+              "Lysobacter": {
+                "otu_16s_5820": {}
+              }
+            }
+          },
+          "Steroidobacterales": {
+            "Steroidobacteraceae": {
+              "Steroidobacteraceae_unclassified": {
+                "otu_16s_706": {},
+                "otu_16s_851": {}
+              }
+            },
+            "Woeseiaceae": {
+              "Woeseia": {
+                "otu_16s_942": {},
+                "otu_16s_2733": {}
+              }
+            }
+          },
+          "B2M28": {
+            "B2M28_unclassified": {
+              "B2M28_unclassified": {
+                "otu_16s_931": {}
+              }
+            }
+          },
+          "Salinisphaerales": {
+            "Solimonadaceae": {
+              "Polycyclovorans": {
+                "otu_16s_1817": {}
+              }
+            }
+          },
+          "Methylococcales": {
+            "Methylomonadaceae": {
+              "Methylomonadaceae_unclassified": {
+                "otu_16s_2161": {},
+                "otu_16s_12599": {}
+              },
+              "Methylobacter": {
+                "otu_16s_54109": {},
+                "otu_16s_60274": {}
+              },
+              "Methyloprofundus": {
+                "otu_16s_60285": {}
+              }
+            },
+            "Methylococcaceae": {
+              "Methylococcaceae_unclassified": {
+                "otu_16s_12704": {}
+              }
+            }
+          },
+          "Thiohalorhabdales": {
+            "Thiohalorhabdaceae": {
+              "Thiohalorhabdaceae_unclassified": {
+                "otu_16s_2010": {}
+              }
+            }
+          },
+          "Gammaproteobacteria_unclassified": {
+            "Gammaproteobacteria_unclassified": {
+              "Gammaproteobacteria_unclassified": {
+                "otu_16s_2367": {},
+                "otu_16s_4813": {},
+                "otu_16s_12593": {},
+                "otu_16s_25382": {},
+                "otu_16s_26014": {}
+              }
+            }
+          },
+          "UBA10353 marine group": {
+            "UBA10353 marine group_unclassified": {
+              "UBA10353 marine group_unclassified": {
+                "otu_16s_2957": {}
+              }
+            }
+          },
+          "Chromatiales": {
+            "Chromatiales_unclassified": {
+              "Chromatiales_unclassified": {
+                "otu_16s_14498": {}
+              }
+            }
+          },
+          "Ga0077536": {
+            "Ga0077536_unclassified": {
+              "Ga0077536_unclassified": {
+                "otu_16s_42774": {}
+              }
+            }
+          }
+        }
+      },
+      "Cyanobacteria": {
+        "Cyanobacteriia": {
+          "Synechococcales": {
+            "Cyanobiaceae": {
+              "Cyanobium PCC-6307": {
+                "otu_16s_1": {},
+                "otu_16s_46": {},
+                "otu_16s_38": {},
+                "otu_16s_118": {},
+                "otu_16s_426": {},
+                "otu_16s_169": {},
+                "otu_16s_183": {},
+                "otu_16s_224": {},
+                "otu_16s_226": {},
+                "otu_16s_465": {},
+                "otu_16s_246": {},
+                "otu_16s_487": {},
+                "otu_16s_3197": {},
+                "otu_16s_343": {},
+                "otu_16s_404": {},
+                "otu_16s_567": {},
+                "otu_16s_738": {},
+                "otu_16s_827": {},
+                "otu_16s_1101": {},
+                "otu_16s_1574": {},
+                "otu_16s_2663": {},
+                "otu_16s_2347": {},
+                "otu_16s_3249": {},
+                "otu_16s_2860": {},
+                "otu_16s_2951": {},
+                "otu_16s_6615": {},
+                "otu_16s_12412": {},
+                "otu_16s_12432": {},
+                "otu_16s_12726": {},
+                "otu_16s_12805": {},
+                "otu_16s_25411": {},
+                "otu_16s_25659": {},
+                "otu_16s_30528": {}
+              },
+              "Synechococcus CC9902": {
+                "otu_16s_191": {},
+                "otu_16s_779": {},
+                "otu_16s_1636": {},
+                "otu_16s_2331": {},
+                "otu_16s_30599": {}
+              }
+            },
+            "Synechococcales Incertae Sedis": {
+              "Schizothrix LEGE 07164": {
+                "otu_16s_1725": {}
+              }
+            }
+          },
+          "Cyanobacteriales": {
+            "Phormidiaceae": {
+              "Planktothrix NIVA-CYA 15": {
+                "otu_16s_24": {},
+                "otu_16s_438": {}
+              }
+            },
+            "Nostocaceae": {
+              "Aphanizomenon NIES81": {
+                "otu_16s_789": {},
+                "otu_16s_18874": {},
+                "otu_16s_18907": {}
+              },
+              "Aphanizomenon MDT14a": {
+                "otu_16s_4232": {}
+              },
+              "Nostocaceae_unclassified": {
+                "otu_16s_6922": {}
+              },
+              "Nodularia PCC-9350": {
+                "otu_16s_25059": {},
+                "otu_16s_30541": {}
+              }
+            },
+            "Microcystaceae": {
+              "Atelocyanobacterium (UCYN-A)": {
+                "otu_16s_13963": {}
+              }
+            }
+          },
+          "Pseudanabaenales": {
+            "Pseudanabaenaceae": {
+              "Pseudanabaena PCC-7429": {
+                "otu_16s_172": {},
+                "otu_16s_239": {}
+              }
+            }
+          }
+        }
+      },
+      "Bacteroidota": {
+        "Bacteroidia": {
+          "Flavobacteriales": {
+            "Flavobacteriaceae": {
+              "NS3a marine group": {
+                "otu_16s_0": {},
+                "otu_16s_40": {},
+                "otu_16s_253": {},
+                "otu_16s_297": {},
+                "otu_16s_334": {}
+              },
+              "NS5 marine group": {
+                "otu_16s_43": {},
+                "otu_16s_29": {},
+                "otu_16s_90": {},
+                "otu_16s_123": {},
+                "otu_16s_219": {},
+                "otu_16s_237": {},
+                "otu_16s_257": {},
+                "otu_16s_1000": {},
+                "otu_16s_363": {},
+                "otu_16s_398": {},
+                "otu_16s_582": {},
+                "otu_16s_1055": {},
+                "otu_16s_1283": {},
+                "otu_16s_2013": {},
+                "otu_16s_30905": {}
+              },
+              "Flavobacterium": {
+                "otu_16s_45": {},
+                "otu_16s_59": {},
+                "otu_16s_62": {},
+                "otu_16s_54": {},
+                "otu_16s_36": {},
+                "otu_16s_91": {},
+                "otu_16s_541": {},
+                "otu_16s_92": {},
+                "otu_16s_93": {},
+                "otu_16s_94": {},
+                "otu_16s_124": {},
+                "otu_16s_174": {},
+                "otu_16s_425": {},
+                "otu_16s_147": {},
+                "otu_16s_966": {},
+                "otu_16s_157": {},
+                "otu_16s_429": {},
+                "otu_16s_164": {},
+                "otu_16s_178": {},
+                "otu_16s_186": {},
+                "otu_16s_206": {},
+                "otu_16s_207": {},
+                "otu_16s_461": {},
+                "otu_16s_265": {},
+                "otu_16s_262": {},
+                "otu_16s_269": {},
+                "otu_16s_489": {},
+                "otu_16s_1529": {},
+                "otu_16s_515": {},
+                "otu_16s_377": {},
+                "otu_16s_520": {},
+                "otu_16s_605": {},
+                "otu_16s_640": {},
+                "otu_16s_667": {},
+                "otu_16s_700": {},
+                "otu_16s_713": {},
+                "otu_16s_809": {},
+                "otu_16s_709": {},
+                "otu_16s_724": {},
+                "otu_16s_772": {},
+                "otu_16s_773": {},
+                "otu_16s_780": {},
+                "otu_16s_1067": {},
+                "otu_16s_1071": {},
+                "otu_16s_848": {},
+                "otu_16s_1076": {},
+                "otu_16s_869": {},
+                "otu_16s_899": {},
+                "otu_16s_914": {},
+                "otu_16s_1083": {},
+                "otu_16s_957": {},
+                "otu_16s_1130": {},
+                "otu_16s_1199": {},
+                "otu_16s_1261": {},
+                "otu_16s_1291": {},
+                "otu_16s_1351": {},
+                "otu_16s_1380": {},
+                "otu_16s_1416": {},
+                "otu_16s_1509": {},
+                "otu_16s_2659": {},
+                "otu_16s_1854": {},
+                "otu_16s_1907": {},
+                "otu_16s_1996": {},
+                "otu_16s_4101": {},
+                "otu_16s_5357": {},
+                "otu_16s_5673": {},
+                "otu_16s_12342": {},
+                "otu_16s_20601": {},
+                "otu_16s_29178": {},
+                "otu_16s_30574": {},
+                "otu_16s_42549": {},
+                "otu_16s_60301": {},
+                "otu_16s_60309": {},
+                "otu_16s_60341": {}
+              },
+              "Ulvibacter": {
+                "otu_16s_409": {},
+                "otu_16s_97": {},
+                "otu_16s_620": {}
+              },
+              "Polaribacter": {
+                "otu_16s_53": {},
+                "otu_16s_273": {},
+                "otu_16s_277": {},
+                "otu_16s_295": {},
+                "otu_16s_348": {},
+                "otu_16s_358": {},
+                "otu_16s_517": {},
+                "otu_16s_529": {},
+                "otu_16s_665": {},
+                "otu_16s_711": {},
+                "otu_16s_915": {},
+                "otu_16s_12368": {}
+              },
+              "Flavobacteriaceae_unclassified": {
+                "otu_16s_55": {},
+                "otu_16s_114": {},
+                "otu_16s_248": {},
+                "otu_16s_255": {},
+                "otu_16s_347": {},
+                "otu_16s_612": {},
+                "otu_16s_701": {},
+                "otu_16s_810": {},
+                "otu_16s_1268": {},
+                "otu_16s_1657": {},
+                "otu_16s_1663": {},
+                "otu_16s_4146": {},
+                "otu_16s_3524": {},
+                "otu_16s_5015": {},
+                "otu_16s_7809": {},
+                "otu_16s_12428": {},
+                "otu_16s_18694": {},
+                "otu_16s_25355": {},
+                "otu_16s_25358": {},
+                "otu_16s_30531": {},
+                "otu_16s_53645": {},
+                "otu_16s_60257": {}
+              },
+              "Maribacter": {
+                "otu_16s_67": {},
+                "otu_16s_1019": {},
+                "otu_16s_22524": {},
+                "otu_16s_21614": {}
+              },
+              "Olleya": {
+                "otu_16s_98": {},
+                "otu_16s_531": {},
+                "otu_16s_959": {},
+                "otu_16s_1246": {},
+                "otu_16s_12366": {}
+              },
+              "Leeuwenhoekiella": {
+                "otu_16s_148": {},
+                "otu_16s_47081": {}
+              },
+              "NS4 marine group": {
+                "otu_16s_150": {},
+                "otu_16s_468": {},
+                "otu_16s_570": {},
+                "otu_16s_744": {},
+                "otu_16s_2614": {},
+                "otu_16s_18663": {},
+                "otu_16s_25416": {}
+              },
+              "Subsaxibacter": {
+                "otu_16s_145": {},
+                "otu_16s_55971": {}
+              },
+              "Pibocella": {
+                "otu_16s_135": {}
+              },
+              "Aquibacter": {
+                "otu_16s_153": {},
+                "otu_16s_225": {},
+                "otu_16s_513": {},
+                "otu_16s_1759": {}
+              },
+              "Winogradskyella": {
+                "otu_16s_155": {},
+                "otu_16s_199": {},
+                "otu_16s_288": {},
+                "otu_16s_325": {}
+              },
+              "Actibacter": {
+                "otu_16s_437": {}
+              },
+              "Algibacter": {
+                "otu_16s_185": {},
+                "otu_16s_189": {},
+                "otu_16s_296": {},
+                "otu_16s_1334": {},
+                "otu_16s_1373": {}
+              },
+              "Formosa": {
+                "otu_16s_187": {},
+                "otu_16s_217": {},
+                "otu_16s_230": {},
+                "otu_16s_242": {},
+                "otu_16s_625": {},
+                "otu_16s_946": {},
+                "otu_16s_3717": {},
+                "otu_16s_34572": {},
+                "otu_16s_42520": {}
+              },
+              "Cellulophaga": {
+                "otu_16s_458": {},
+                "otu_16s_519": {}
+              },
+              "Lutibacter": {
+                "otu_16s_463": {},
+                "otu_16s_235": {},
+                "otu_16s_530": {},
+                "otu_16s_3809": {}
+              },
+              "Lutimonas": {
+                "otu_16s_282": {},
+                "otu_16s_575": {},
+                "otu_16s_578": {}
+              },
+              "Flavirhabdus": {
+                "otu_16s_499": {}
+              },
+              "Aurantivirga": {
+                "otu_16s_1008": {}
+              },
+              "NS2b marine group": {
+                "otu_16s_686": {}
+              },
+              "Eudoraea": {
+                "otu_16s_704": {},
+                "otu_16s_920": {}
+              },
+              "Robiginitalea": {
+                "otu_16s_796": {},
+                "otu_16s_1103": {},
+                "otu_16s_4644": {}
+              },
+              "Zobellia": {
+                "otu_16s_1593": {},
+                "otu_16s_30645": {}
+              },
+              "Wenyingzhuangia": {
+                "otu_16s_2022": {},
+                "otu_16s_25620": {}
+              },
+              "Mesonia": {
+                "otu_16s_4312": {},
+                "otu_16s_7356": {},
+                "otu_16s_21412": {}
+              },
+              "Mariniflexile": {
+                "otu_16s_2931": {},
+                "otu_16s_18772": {}
+              },
+              "Salegentibacter": {
+                "otu_16s_3850": {},
+                "otu_16s_6212": {},
+                "otu_16s_5553": {},
+                "otu_16s_53622": {}
+              },
+              "Salinimicrobium": {
+                "otu_16s_4827": {}
+              },
+              "Flavimarina": {
+                "otu_16s_5822": {}
+              },
+              "Gramella": {
+                "otu_16s_8469": {},
+                "otu_16s_18810": {}
+              }
+            },
+            "Cryomorphaceae": {
+              "Cryomorphaceae_unclassified": {
+                "otu_16s_42": {},
+                "otu_16s_165": {},
+                "otu_16s_311": {},
+                "otu_16s_384": {},
+                "otu_16s_395": {},
+                "otu_16s_534": {},
+                "otu_16s_539": {},
+                "otu_16s_677": {},
+                "otu_16s_820": {},
+                "otu_16s_910": {},
+                "otu_16s_2034": {},
+                "otu_16s_3651": {}
+              },
+              "Vicingus": {
+                "otu_16s_212": {},
+                "otu_16s_240": {},
+                "otu_16s_12357": {}
+              }
+            },
+            "Crocinitomicaceae": {
+              "Fluviicola": {
+                "otu_16s_65": {},
+                "otu_16s_112": {},
+                "otu_16s_159": {},
+                "otu_16s_478": {},
+                "otu_16s_331": {},
+                "otu_16s_351": {},
+                "otu_16s_597": {},
+                "otu_16s_523": {},
+                "otu_16s_1545": {},
+                "otu_16s_743": {},
+                "otu_16s_2267": {},
+                "otu_16s_1615": {},
+                "otu_16s_2250": {},
+                "otu_16s_12443": {}
+              },
+              "Crocinitomicaceae_unclassified": {
+                "otu_16s_119": {},
+                "otu_16s_171": {},
+                "otu_16s_302": {},
+                "otu_16s_388": {}
+              },
+              "Salinirepens": {
+                "otu_16s_131": {},
+                "otu_16s_786": {}
+              },
+              "Crocinitomix": {
+                "otu_16s_1540": {},
+                "otu_16s_643": {},
+                "otu_16s_2218": {},
+                "otu_16s_13415": {}
+              },
+              "Brumimicrobium": {
+                "otu_16s_28986": {}
+              }
+            },
+            "NS9 marine group": {
+              "NS9 marine group_unclassified": {
+                "otu_16s_963": {},
+                "otu_16s_275": {},
+                "otu_16s_572": {},
+                "otu_16s_587": {},
+                "otu_16s_798": {},
+                "otu_16s_4993": {},
+                "otu_16s_8327": {},
+                "otu_16s_25343": {},
+                "otu_16s_60255": {}
+              }
+            }
+          },
+          "Cytophagales": {
+            "Cyclobacteriaceae": {
+              "Algoriphagus": {
+                "otu_16s_49": {},
+                "otu_16s_694": {},
+                "otu_16s_1840": {}
+              },
+              "Marinoscillum": {
+                "otu_16s_158": {},
+                "otu_16s_236": {},
+                "otu_16s_284": {}
+              },
+              "Reichenbachiella": {
+                "otu_16s_1607": {}
+              },
+              "Cyclobacteriaceae_unclassified": {
+                "otu_16s_1799": {}
+              }
+            },
+            "Spirosomaceae": {
+              "Lacihabitans": {
+                "otu_16s_419": {},
+                "otu_16s_2290": {}
+              },
+              "Spirosomaceae_unclassified": {
+                "otu_16s_475": {}
+              },
+              "Pseudarcicella": {
+                "otu_16s_287": {},
+                "otu_16s_2578": {}
+              }
+            }
+          },
+          "Sphingobacteriales": {
+            "NS11-12 marine group": {
+              "NS11-12 marine group_unclassified": {
+                "otu_16s_79": {},
+                "otu_16s_443": {},
+                "otu_16s_266": {},
+                "otu_16s_1025": {},
+                "otu_16s_943": {},
+                "otu_16s_1458": {},
+                "otu_16s_2206": {},
+                "otu_16s_12639": {},
+                "otu_16s_30545": {},
+                "otu_16s_31700": {}
+              }
+            },
+            "Sphingobacteriaceae": {
+              "Pedobacter": {
+                "otu_16s_1013": {},
+                "otu_16s_1947": {}
+              },
+              "Solitalea": {
+                "otu_16s_2477": {},
+                "otu_16s_3398": {}
+              }
+            },
+            "env.OPS 17": {
+              "env.OPS 17_unclassified": {
+                "otu_16s_1166": {},
+                "otu_16s_53778": {}
+              }
+            }
+          },
+          "Chitinophagales": {
+            "Chitinophagaceae": {
+              "Sediminibacterium": {
+                "otu_16s_964": {},
+                "otu_16s_831": {},
+                "otu_16s_1807": {},
+                "otu_16s_2408": {},
+                "otu_16s_4125": {}
+              },
+              "Dinghuibacter": {
+                "otu_16s_272": {},
+                "otu_16s_7771": {},
+                "otu_16s_12479": {}
+              },
+              "Chitinophagaceae_unclassified": {
+                "otu_16s_890": {}
+              }
+            },
+            "Saprospiraceae": {
+              "Saprospiraceae_unclassified": {
+                "otu_16s_180": {},
+                "otu_16s_502": {},
+                "otu_16s_1010": {},
+                "otu_16s_563": {},
+                "otu_16s_617": {},
+                "otu_16s_879": {},
+                "otu_16s_894": {},
+                "otu_16s_2365": {},
+                "otu_16s_2735": {},
+                "otu_16s_12434": {},
+                "otu_16s_24224": {},
+                "otu_16s_25372": {},
+                "otu_16s_30550": {}
+              },
+              "Lewinella": {
+                "otu_16s_222": {},
+                "otu_16s_1567": {},
+                "otu_16s_4043": {}
+              },
+              "Candidatus Aquirestis": {
+                "otu_16s_267": {}
+              },
+              "Rubidimonas": {
+                "otu_16s_333": {},
+                "otu_16s_528": {},
+                "otu_16s_1109": {}
+              },
+              "Portibacter": {
+                "otu_16s_1088": {}
+              }
+            },
+            "Chitinophagales_unclassified": {
+              "Chitinophagales_unclassified": {
+                "otu_16s_1054": {},
+                "otu_16s_804": {},
+                "otu_16s_883": {},
+                "otu_16s_19804": {}
+              }
+            }
+          },
+          "Bacteroidales": {
+            "Prolixibacteraceae": {
+              "Prolixibacteraceae_unclassified": {
+                "otu_16s_2814": {}
+              }
+            }
+          }
+        },
+        "Rhodothermia": {
+          "Balneolales": {
+            "Balneolaceae": {
+              "CK06-06-Mud-MAS4B-21": {
+                "otu_16s_2105": {}
+              },
+              "Balneola": {
+                "otu_16s_10599": {}
+              }
+            }
+          },
+          "Rhodothermales": {
+            "Rhodothermaceae": {
+              "Rhodothermaceae_unclassified": {
+                "otu_16s_2016": {}
+              },
+              "Rubrivirga": {
+                "otu_16s_4249": {}
+              }
+            }
+          }
+        },
+        "Kapabacteria": {
+          "Kapabacteriales": {
+            "Kapabacteriales_unclassified": {
+              "Kapabacteriales_unclassified": {
+                "otu_16s_1848": {},
+                "otu_16s_7297": {},
+                "otu_16s_18720": {}
+              }
+            }
+          }
+        }
+      },
+      "Planctomycetota": {
+        "Planctomycetes": {
+          "Isosphaerales": {
+            "Isosphaeraceae": {
+              "Isosphaeraceae_unclassified": {
+                "otu_16s_50": {},
+                "otu_16s_3907": {}
+              }
+            }
+          },
+          "Pirellulales": {
+            "Pirellulaceae": {
+              "Pirellulaceae_unclassified": {
+                "otu_16s_57": {},
+                "otu_16s_71": {},
+                "otu_16s_179": {},
+                "otu_16s_196": {},
+                "otu_16s_228": {},
+                "otu_16s_301": {},
+                "otu_16s_579": {},
+                "otu_16s_630": {},
+                "otu_16s_366": {},
+                "otu_16s_638": {},
+                "otu_16s_1048": {},
+                "otu_16s_858": {},
+                "otu_16s_1078": {},
+                "otu_16s_948": {},
+                "otu_16s_1183": {},
+                "otu_16s_1228": {},
+                "otu_16s_1785": {},
+                "otu_16s_1386": {},
+                "otu_16s_1422": {},
+                "otu_16s_1719": {},
+                "otu_16s_1749": {},
+                "otu_16s_1886": {},
+                "otu_16s_2202": {},
+                "otu_16s_3083": {},
+                "otu_16s_3414": {},
+                "otu_16s_3887": {},
+                "otu_16s_3999": {},
+                "otu_16s_4972": {},
+                "otu_16s_12911": {},
+                "otu_16s_25388": {},
+                "otu_16s_25366": {},
+                "otu_16s_25432": {},
+                "otu_16s_25445": {},
+                "otu_16s_34548": {},
+                "otu_16s_30536": {},
+                "otu_16s_30529": {},
+                "otu_16s_30832": {}
+              },
+              "Pirellula": {
+                "otu_16s_128": {},
+                "otu_16s_639": {},
+                "otu_16s_2211": {},
+                "otu_16s_4409": {},
+                "otu_16s_12978": {},
+                "otu_16s_13263": {},
+                "otu_16s_25718": {}
+              },
+              "Blastopirellula": {
+                "otu_16s_874": {},
+                "otu_16s_1634": {},
+                "otu_16s_1879": {},
+                "otu_16s_2764": {},
+                "otu_16s_6727": {},
+                "otu_16s_13477": {},
+                "otu_16s_20804": {},
+                "otu_16s_25344": {}
+              },
+              "Bythopirellula": {
+                "otu_16s_1637": {}
+              },
+              "Rhodopirellula": {
+                "otu_16s_18718": {},
+                "otu_16s_18730": {}
+              }
+            }
+          },
+          "Gemmatales": {
+            "Gemmataceae": {
+              "Gemmataceae_unclassified": {
+                "otu_16s_116": {},
+                "otu_16s_286": {},
+                "otu_16s_493": {}
+              }
+            }
+          },
+          "Planctomycetales": {
+            "Rubinisphaeraceae": {
+              "Fuerstia": {
+                "otu_16s_440": {},
+                "otu_16s_3252": {}
+              },
+              "Planctomicrobium": {
+                "otu_16s_2358": {},
+                "otu_16s_13838": {}
+              },
+              "Rubinisphaeraceae_unclassified": {
+                "otu_16s_18732": {}
+              }
+            },
+            "Gimesiaceae": {
+              "Gimesiaceae_unclassified": {
+                "otu_16s_1949": {}
+              }
+            }
+          }
+        },
+        "Phycisphaerae": {
+          "Phycisphaerales": {
+            "Phycisphaeraceae": {
+              "CL500-3": {
+                "otu_16s_828": {},
+                "otu_16s_1461": {},
+                "otu_16s_25501": {},
+                "otu_16s_35370": {}
+              }
+            }
+          }
+        }
+      },
+      "Verrucomicrobiota": {
+        "Verrucomicrobiae": {
+          "Chthoniobacterales": {
+            "Terrimicrobiaceae": {
+              "Terrimicrobium": {
+                "otu_16s_58": {},
+                "otu_16s_60": {},
+                "otu_16s_104": {},
+                "otu_16s_120": {},
+                "otu_16s_129": {},
+                "otu_16s_313": {},
+                "otu_16s_1748": {},
+                "otu_16s_12420": {},
+                "otu_16s_18676": {},
+                "otu_16s_25370": {}
+              },
+              "FukuN18 freshwater group": {
+                "otu_16s_483": {}
+              }
+            },
+            "Chthoniobacteraceae": {
+              "LD29": {
+                "otu_16s_39": {},
+                "otu_16s_41": {},
+                "otu_16s_372": {},
+                "otu_16s_390": {},
+                "otu_16s_2504": {}
+              }
+            }
+          },
+          "Verrucomicrobiales": {
+            "Rubritaleaceae": {
+              "Roseibacillus": {
+                "otu_16s_408": {},
+                "otu_16s_474": {},
+                "otu_16s_260": {},
+                "otu_16s_752": {},
+                "otu_16s_1421": {},
+                "otu_16s_4943": {},
+                "otu_16s_12863": {}
+              },
+              "Luteolibacter": {
+                "otu_16s_73": {},
+                "otu_16s_74": {},
+                "otu_16s_56": {},
+                "otu_16s_87": {},
+                "otu_16s_99": {},
+                "otu_16s_133": {},
+                "otu_16s_142": {},
+                "otu_16s_209": {},
+                "otu_16s_392": {},
+                "otu_16s_614": {},
+                "otu_16s_889": {},
+                "otu_16s_2096": {},
+                "otu_16s_1298": {},
+                "otu_16s_1603": {},
+                "otu_16s_1381": {},
+                "otu_16s_4072": {},
+                "otu_16s_18727": {},
+                "otu_16s_25351": {},
+                "otu_16s_85138": {}
+              },
+              "Haloferula": {
+                "otu_16s_577": {},
+                "otu_16s_680": {},
+                "otu_16s_737": {},
+                "otu_16s_3828": {}
+              },
+              "Persicirhabdus": {
+                "otu_16s_380": {},
+                "otu_16s_1058": {}
+              },
+              "Rubritalea": {
+                "otu_16s_12345": {}
+              }
+            },
+            "Verrucomicrobiaceae": {
+              "Verrucomicrobiaceae_unclassified": {
+                "otu_16s_121": {},
+                "otu_16s_138": {},
+                "otu_16s_167": {},
+                "otu_16s_971": {},
+                "otu_16s_290": {},
+                "otu_16s_367": {}
+              },
+              "Prosthecobacter": {
+                "otu_16s_274": {},
+                "otu_16s_332": {},
+                "otu_16s_15335": {}
+              }
+            },
+            "DEV007": {
+              "DEV007_unclassified": {
+                "otu_16s_309": {},
+                "otu_16s_826": {},
+                "otu_16s_3410": {}
+              }
+            }
+          },
+          "Opitutales": {
+            "Opitutaceae": {
+              "Cephaloticoccus": {
+                "otu_16s_446": {}
+              }
+            },
+            "Puniceicoccaceae": {
+              "MB11C04 marine group": {
+                "otu_16s_1042": {}
+              },
+              "Lentimonas": {
+                "otu_16s_12344": {}
+              }
+            }
+          },
+          "Verrucomicrobiae_unclassified": {
+            "Verrucomicrobiae_unclassified": {
+              "Verrucomicrobiae_unclassified": {
+                "otu_16s_1021": {}
+              }
+            }
+          },
+          "Methylacidiphilales": {
+            "Methylacidiphilaceae": {
+              "Methylacidiphilaceae_unclassified": {
+                "otu_16s_1277": {}
+              }
+            }
+          }
+        }
+      },
+      "Firmicutes": {
+        "Bacilli": {
+          "Mycoplasmatales": {
+            "Mycoplasmataceae": {
+              "Mycoplasmataceae_unclassified": {
+                "otu_16s_63": {},
+                "otu_16s_319": {},
+                "otu_16s_339": {},
+                "otu_16s_12359": {}
+              }
+            }
+          },
+          "Bacillales": {
+            "Planococcaceae": {
+              "Planococcaceae_unclassified": {
+                "otu_16s_85": {}
+              }
+            },
+            "Bacillaceae": {
+              "Bacillus": {
+                "otu_16s_1107": {},
+                "otu_16s_771": {},
+                "otu_16s_12353": {},
+                "otu_16s_12355": {}
+              }
+            }
+          },
+          "Lactobacillales": {
+            "Carnobacteriaceae": {
+              "Carnobacterium": {
+                "otu_16s_31": {}
+              },
+              "Trichococcus": {
+                "otu_16s_1460": {}
+              }
+            },
+            "Aerococcaceae": {
+              "Aerococcus": {
+                "otu_16s_17003": {}
+              }
+            }
+          },
+          "Acholeplasmatales": {
+            "Acholeplasmataceae": {
+              "Acholeplasma": {
+                "otu_16s_1095": {},
+                "otu_16s_1492": {}
+              }
+            }
+          },
+          "Staphylococcales": {
+            "Staphylococcaceae": {
+              "Staphylococcus": {
+                "otu_16s_12956": {},
+                "otu_16s_30864": {}
+              }
+            }
+          }
+        },
+        "Clostridia": {
+          "Peptostreptococcales-Tissierellales": {
+            "Peptostreptococcaceae": {
+              "Romboutsia": {
+                "otu_16s_456": {}
+              }
+            }
+          },
+          "Clostridiales": {
+            "Clostridiaceae": {
+              "Clostridium sensu stricto 1": {
+                "otu_16s_281": {}
+              }
+            }
+          },
+          "Lachnospirales": {
+            "Lachnospiraceae": {
+              "Blautia": {
+                "otu_16s_3070": {},
+                "otu_16s_5784": {}
+              },
+              "Agathobacter": {
+                "otu_16s_5283": {}
+              },
+              "Fusicatenibacter": {
+                "otu_16s_12362": {}
+              }
+            }
+          }
+        }
+      },
+      "Armatimonadota": {
+        "Armatimonadia": {
+          "Armatimonadales": {
+            "Armatimonadaceae": {
+              "Armatimonas": {
+                "otu_16s_430": {}
+              }
+            }
+          }
+        }
+      },
+      "Chloroflexi": {
+        "SL56 marine group": {
+          "SL56 marine group_unclassified": {
+            "SL56 marine group_unclassified": {
+              "SL56 marine group_unclassified": {
+                "otu_16s_512": {}
+              }
+            }
+          }
+        },
+        "Chloroflexia": {
+          "Chloroflexales": {
+            "Roseiflexaceae": {
+              "Roseiflexaceae_unclassified": {
+                "otu_16s_644": {},
+                "otu_16s_1255": {},
+                "otu_16s_30534": {}
+              }
+            }
+          },
+          "Thermomicrobiales": {
+            "JG30-KF-CM45": {
+              "JG30-KF-CM45_unclassified": {
+                "otu_16s_902": {}
+              }
+            }
+          }
+        },
+        "KD4-96": {
+          "KD4-96_unclassified": {
+            "KD4-96_unclassified": {
+              "KD4-96_unclassified": {
+                "otu_16s_2926": {}
+              }
+            }
+          }
+        },
+        "Dehalococcoidia": {
+          "SAR202 clade": {
+            "SAR202 clade_unclassified": {
+              "SAR202 clade_unclassified": {
+                "otu_16s_4864": {}
+              }
+            }
+          }
+        },
+        "Anaerolineae": {
+          "Caldilineales": {
+            "Caldilineaceae": {
+              "Caldilineaceae_unclassified": {
+                "otu_16s_5185": {},
+                "otu_16s_5637": {}
+              }
+            }
+          }
+        },
+        "JG30-KF-CM66": {
+          "JG30-KF-CM66_unclassified": {
+            "JG30-KF-CM66_unclassified": {
+              "JG30-KF-CM66_unclassified": {
+                "otu_16s_53669": {}
+              }
+            }
+          }
+        }
+      },
+      "Campylobacterota": {
+        "Campylobacteria": {
+          "Campylobacterales": {
+            "Arcobacteraceae": {
+              "Pseudarcobacter": {
+                "otu_16s_564": {},
+                "otu_16s_717": {},
+                "otu_16s_2318": {},
+                "otu_16s_4752": {}
+              },
+              "Arcobacter": {
+                "otu_16s_2106": {},
+                "otu_16s_12361": {}
+              },
+              "Arcobacteraceae_unclassified": {
+                "otu_16s_7036": {}
+              }
+            },
+            "Sulfurovaceae": {
+              "Sulfurovum": {
+                "otu_16s_1233": {},
+                "otu_16s_1978": {},
+                "otu_16s_42525": {}
+              }
+            },
+            "Sulfurimonadaceae": {
+              "Sulfurimonas": {
+                "otu_16s_2306": {}
+              },
+              "Sulfuricurvum": {
+                "otu_16s_13837": {}
+              }
+            }
+          }
+        }
+      },
+      "Desulfobacterota": {
+        "Desulfobulbia": {
+          "Desulfobulbales": {
+            "Desulfocapsaceae": {
+              "Desulfocapsaceae_unclassified": {
+                "otu_16s_1152": {}
+              },
+              "Desulforhopalus": {
+                "otu_16s_2316": {}
+              }
+            }
+          }
+        },
+        "Desulfuromonadia": {
+          "Bradymonadales": {
+            "Bradymonadales_unclassified": {
+              "Bradymonadales_unclassified": {
+                "otu_16s_19087": {}
+              }
+            }
+          }
+        }
+      },
+      "SAR324 clade(Marine group B)": {
+        "SAR324 clade(Marine group B)_unclassified": {
+          "SAR324 clade(Marine group B)_unclassified": {
+            "SAR324 clade(Marine group B)_unclassified": {
+              "SAR324 clade(Marine group B)_unclassified": {
+                "otu_16s_2647": {},
+                "otu_16s_18840": {}
+              }
+            }
+          }
+        }
+      },
+      "Patescibacteria": {
+        "Parcubacteria": {
+          "Candidatus Moranbacteria": {
+            "Candidatus Moranbacteria_unclassified": {
+              "Candidatus Moranbacteria_unclassified": {
+                "otu_16s_1662": {}
+              }
+            }
+          }
+        },
+        "Saccharimonadia": {
+          "Saccharimonadales": {
+            "Saccharimonadaceae": {
+              "TM7a": {
+                "otu_16s_7956": {},
+                "otu_16s_34549": {}
+              },
+              "Saccharimonadaceae_unclassified": {
+                "otu_16s_53824": {}
+              }
+            }
+          }
+        }
+      },
+      "Deinococcota": {
+        "Deinococci": {
+          "Deinococcales": {
+            "Trueperaceae": {
+              "Truepera": {
+                "otu_16s_2660": {}
+              }
+            }
+          }
+        }
+      },
+      "Marinimicrobia (SAR406 clade)": {
+        "Marinimicrobia (SAR406 clade)_unclassified": {
+          "Marinimicrobia (SAR406 clade)_unclassified": {
+            "Marinimicrobia (SAR406 clade)_unclassified": {
+              "Marinimicrobia (SAR406 clade)_unclassified": {
+                "otu_16s_1831": {}
+              }
+            }
+          }
+        }
+      },
+      "Bdellovibrionota": {
+        "Bdellovibrionia": {
+          "Bdellovibrionales": {
+            "Bdellovibrionaceae": {
+              "OM27 clade": {
+                "otu_16s_4601": {}
+              }
+            }
+          }
+        }
+      },
+      "Acidobacteriota": {
+        "Vicinamibacteria": {
+          "Vicinamibacterales": {
+            "Vicinamibacterales_unclassified": {
+              "Vicinamibacterales_unclassified": {
+                "otu_16s_22126": {}
+              }
+            }
+          }
+        }
+      },
+      "Fusobacteriota": {
+        "Fusobacteriia": {
+          "Fusobacteriales": {
+            "Fusobacteriaceae": {
+              "Ilyobacter": {
+                "otu_16s_12620": {}
+              }
+            }
+          }
+        }
+      },
+      "Myxococcota": {
+        "Polyangia": {
+          "Nannocystales": {
+            "Nannocystaceae": {
+              "Nannocystaceae_unclassified": {
+                "otu_16s_25538": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "levels": [
+    "biodomain",
+    "phylum",
+    "class",
+    "bioorder",
+    "family",
+    "genus",
+    "name"
+  ]
+}

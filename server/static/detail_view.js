@@ -248,7 +248,6 @@ function setupTopicRename(detailTitle, titleText) {
                 TOPIC_NAMES[TOPIC_SET] = {};
             }
             TOPIC_NAMES[TOPIC_SET][topicId] = newName;
-            console.log(`Set topic name for ${DATA_SET}.${TOPIC_SET}.${topicId} to '${newName}'`);
             updateTopicName(topicId, newName);
             // Call server to set the new name
             const params = new URLSearchParams({

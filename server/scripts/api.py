@@ -468,7 +468,18 @@ def set_topic_name(dataSet: str = Query(...), topicSet: str = Query(...), topicI
     if dataSet not in topic_names_file:
         topic_names_file[dataSet] = {}
 
-    setTopicName(dataSet, topicSet, topicID, topicName, topic_names_file, True, True, renameThreshold)
+    
+    # Handle special reset commands
+    if(topicName == "#resetTopicSet"):
+        if topicSet in topic_names_file[dataSet]:
+            del topic_names_file[dataSet][topicSet]
+    elif(topicName == "#resetDataSet"):
+        if dataSet in topic_names_file:
+            del topic_names_file[dataSet]
+    elif(topicName == "#resetAll"):
+        topic_names_file = {}
+    else:
+        setTopicName(dataSet, topicSet, topicID, topicName, topic_names_file, True, True, renameThreshold)
     
     # Write back to the file
     try:
@@ -534,9 +545,16 @@ def setTopicName(dataSet, topicSet, topicID, topicName, topic_names, up=True, do
 @app.post("/save-options")
 async def save_options(options: dict):
     specs_path = BASE_DIR / "static" / "frontend-specs.json"
+    default_options_path = BASE_DIR / "static" / "default-frontend-specs.json"
     
     try:
         with open(specs_path, 'w') as f:
+            #if options in empty json ({})
+            if(options == {}):
+                with open(default_options_path, 'r') as default_f:
+                    default_options = json.load(default_f)
+                json.dump(default_options, f, indent=2)
+                return {"status": "success", "message": "Options reset to defaults"}
             json.dump(options, f, indent=2)
         return {"status": "success", "message": "Options saved successfully"}
     except Exception as e:

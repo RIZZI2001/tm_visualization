@@ -1628,11 +1628,26 @@ function updateTopicName(topicId, newName) {
     }
 }
 
+async function resetTopicNames(type) {
+    const params = new URLSearchParams({
+        dataSet: DATA_SET,
+        topicSet: TOPIC_SET,
+        topicID: '',
+        topicName: type,
+        renameThreshold: 2
+    });
+    postAndFetchTopicName(params);
+    closeOptionsOverlay();
+    // Wait 500ms to ensure file is written on server before reloading
+    await new Promise(resolve => setTimeout(resolve, 500));
+    localStorage.clear();
+    location.reload();
+}
+
 function postAndFetchTopicName(params) {
     fetch(`/topic_name?${params}`, { method: 'POST' })
         .then(response => response.json())
         .then(data => {
-            console.log('Topic name updated:', data);
             const allNames = data.topic_names || {};
             TOPIC_NAMES = allNames[SPECS.dataSet] || {};
         })

@@ -9,7 +9,8 @@ const optionsTabs = {
     Data: ['dataSet', 'topicSet', 'metadataOptions', 'customSiteOrder', 'timeRange', 'placeCategories', 'excludedSites'],
     UI: ['scaleCellsByDistance', 'showPlaceNameLabels', 'sortCorrelations', 'fetchDelayExpandedRow', 'barchartItems', 'maxZoom', 'zoomSpeed'],
     Coloring: ['topicColorScale', 'topicColorScaleType', 'metadataColorScale', 'metadataColorScaleType', 'otuColorScale', 'otuColorScaleType', 'invertColorScale'],
-    Defaults: ['defaultPlaceCategory', 'defaultPlaceInverted', 'defaultHiddenSites', 'defaultActiveMetadata', 'automaticItscRename', 'automaticItscRenameThreshold']
+    Defaults: ['defaultPlaceCategory', 'defaultPlaceInverted', 'defaultHiddenSites', 'defaultActiveMetadata', 'automaticItscRename', 'automaticItscRenameThreshold',],
+    Reset: []
 };
 
 /**
@@ -104,6 +105,31 @@ function createOptionsOverlay() {
         otherGroup.remove();
     }
     
+    // Add Reset buttons to the Reset tab
+    const resetOptions = [
+        { text: 'Reset Options', action: () => saveAndReloadOptions({}), message: 'Are you sure you want to reset all options to defaults?' },
+        { text: 'Reset topic names for Topicset', action: () => resetTopicNames('#resetTopicSet'), message: 'Are you sure you want to reset topic names for the current topicset?' },
+        { text: 'Reset topic names for Dataset', action: () => resetTopicNames('#resetDataSet'), message: 'Are you sure you want to reset topic names for the current dataset?' },
+        { text: 'Reset all topic names', action: () => resetTopicNames('#resetAll'), message: 'Are you sure you want to reset all topic names?' }
+    ];
+    
+    resetOptions.forEach(opt => {
+        const container = document.createElement('div');
+        container.className = 'option-item';
+        
+        const btn = document.createElement('button');
+        btn.className = 'options-save-btn';
+        btn.textContent = opt.text;
+        btn.addEventListener('click', () => {
+            if (confirm(opt.message)) {
+                opt.action();
+            }
+        });
+        
+        container.appendChild(btn);
+        tabGroups['Reset'].appendChild(container);
+    });
+    
     // Create footer with Save & Reload button
     const footer = document.createElement('div');
     footer.className = 'options-footer';
@@ -111,7 +137,7 @@ function createOptionsOverlay() {
     const saveBtn = document.createElement('button');
     saveBtn.className = 'options-save-btn';
     saveBtn.textContent = 'Save & Reload';
-    saveBtn.addEventListener('click', saveAndReloadOptions);
+    saveBtn.addEventListener('click', () => saveAndReloadOptions(optionsData));
     
     footer.appendChild(saveBtn);
     
@@ -121,7 +147,7 @@ function createOptionsOverlay() {
     wrapper.appendChild(tabNav);
     wrapper.appendChild(content);
     
-    optionsOverlay = createOverlay('options-overlay', 'Options', wrapper, footer, closeOptionsOverlay);
+    optionsOverlay = createOverlay('options-overlay', 'Options', wrapper, footer, closeOptionsOverlay, null, '800px');
     document.body.appendChild(optionsOverlay);
     
     // Activate first tab
@@ -417,19 +443,17 @@ function closeOptionsOverlay() {
         optionsOverlay.remove();
         optionsOverlay = null;
     }
-}
-
-/**
+}/**
  * Save options to server and reload
  */
-async function saveAndReloadOptions() {
+async function saveAndReloadOptions(data) {
     try {
         const response = await fetch('/save-options', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(optionsData)
+            body: JSON.stringify(data)
         });
         
         if (response.ok) {
@@ -448,7 +472,5 @@ async function saveAndReloadOptions() {
         console.error('Error saving options:', error);
         alert('Error saving options: ' + error.message);
     }
-}
-
-// Initialize when DOM is ready
+}// Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', initOptionsHandler);

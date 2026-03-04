@@ -1606,7 +1606,7 @@ function nameOfTopic(topicId) {
 
 function renameTopic(topicId, textElement, titleText) {
     console.log('Renaming topic', {topicId, textElement, titleText});
-    const newName = textElement.textContent.trim();
+    let newName = textElement.textContent.trim();
     if(newName === '' || newName === `Topic ${topicId}`) {
         newName = `Topic ${topicId}`;
         textElement.textContent = newName;

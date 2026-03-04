@@ -788,10 +788,9 @@ async function visualizeHeatMap() {
                                 const newText = input.value || currentText;
                                 d3.select(textClone).text(newText);
                                 try{input.remove();}catch(e){}
-                                const oldname = TOPIC_NAMES[TOPIC_SET][i];
+                                const oldname = nameOfTopic(rowLabels[i]);
                                 renameTopic(i, textClone, oldname);
                             };
-                            
                             input.addEventListener('blur', saveEdit);
                             input.addEventListener('keydown', (e) => {
                                 if (e.key === 'Enter') saveEdit();

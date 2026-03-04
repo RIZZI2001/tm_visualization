@@ -1,6 +1,6 @@
 {
   "dataSet": "16s",
-  "topicSet": 10,
+  "topicSet": 5,
   "metadataOptions": [
     "PO4",
     "NOx",
@@ -56,5 +56,6 @@
   "maxZoom": 100,
   "zoomSpeed": 1.08,
   "automaticItscRenameThreshold": 0.95,
-  "automaticItscRename": true
+  "automaticItscRename": true,
+  "initMapCircleRadius": 1500
 }

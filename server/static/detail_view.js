@@ -17,6 +17,7 @@ let metadataCorrelationContainer, topicCorrelationContainer, otuCorrelationConta
 let metadataCorrelationTitle, topicCorrelationTitle, otuCorrelationTitle, compositionTitle
 
 async function showDetailView(detailType, setCheckBoxes, activeElements, historyEntry = true, customTitle = null) {
+    console.log(detailType, setCheckBoxes, activeElements, historyEntry, customTitle);
     const chartContainer = document.getElementById('chart-container');
     const detailViewContainer = document.getElementById('detail-view-container');
     const detailTitle = document.getElementById('detail-title');
@@ -223,42 +224,7 @@ async function showDetailView(detailType, setCheckBoxes, activeElements, history
 
 function setupTopicRename(detailTitle, titleText) {
     detailTitleBlurListener = () => {
-        const topicId = ACTIVE_ELEMENTS_DETAIL[0];
-        let newName = detailTitle.textContent.trim();
-        if(newName === '' || newName === `Topic ${topicId}`) {
-            newName = `Topic ${topicId}`;
-            detailTitle.textContent = newName;
-            // Remove custom name locally and on server
-            delete TOPIC_NAMES[TOPIC_SET][topicId];
-            updateTopicName(topicId, newName)
-            // Call server to delete the name
-            const params = new URLSearchParams({
-                dataSet: DATA_SET,
-                topicSet: TOPIC_SET,
-                topicID: String(topicId),
-                topicName: '',
-                renameThreshold: SPECS.automaticItscRenameThreshold
-            });
-            postAndFetchTopicName(params);
-        }else if (newName !== titleText) {
-            // Add custom name locally and on server
-            // Initialize topic set object if it doesn't exist
-            titleText = newName; // Update titleText variable to newName
-            if (!TOPIC_NAMES[TOPIC_SET]) {
-                TOPIC_NAMES[TOPIC_SET] = {};
-            }
-            TOPIC_NAMES[TOPIC_SET][topicId] = newName;
-            updateTopicName(topicId, newName);
-            // Call server to set the new name
-            const params = new URLSearchParams({
-                dataSet: DATA_SET,
-                topicSet: TOPIC_SET,
-                topicID: String(topicId),
-                topicName: newName,
-                renameThreshold: SPECS.automaticItscRename ? SPECS.automaticItscRenameThreshold : 2 // Set to 2 to effectively disable automatic renaming of intersecting topics when a custom name is set
-            });
-            postAndFetchTopicName(params);
-        }
+        newName = renameTopic(ACTIVE_ELEMENTS_DETAIL[0], detailTitle, titleText);
         HISTORY[HISTORY.length - 1].label = newName + '';
     };
     
@@ -547,6 +513,14 @@ async function initializeMap() {
     }
 
     detailTimeSliderChanged();
+    //Find maximum circle Radius afterwards
+    let maxRadius = 0;
+    MAP_CIRCLES.forEach(circle => {
+        const radius = circle.getRadius();
+        if(radius > maxRadius) maxRadius = radius;
+    });
+    MAP_OPTIONS.size *= (SPECS.initMapCircleRadius / maxRadius);
+    detailTimeSliderChanged(); // Re-apply slider changes to adjust circle sizes based on new base size
     // Trigger map resize to ensure it renders properly
     window.setTimeout(() => {
         map.invalidateSize();

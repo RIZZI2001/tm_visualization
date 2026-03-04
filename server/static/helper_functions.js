@@ -1604,6 +1604,46 @@ function nameOfTopic(topicId) {
     }
 }
 
+function renameTopic(topicId, textElement, titleText) {
+    console.log('Renaming topic', {topicId, textElement, titleText});
+    const newName = textElement.textContent.trim();
+    if(newName === '' || newName === `Topic ${topicId}`) {
+        newName = `Topic ${topicId}`;
+        textElement.textContent = newName;
+        // Remove custom name locally and on server
+        delete TOPIC_NAMES[TOPIC_SET][topicId];
+        updateTopicName(topicId, newName)
+        // Call server to delete the name
+        const params = new URLSearchParams({
+            dataSet: DATA_SET,
+            topicSet: TOPIC_SET,
+            topicID: String(topicId),
+            topicName: '',
+            renameThreshold: SPECS.automaticItscRenameThreshold
+        });
+        postAndFetchTopicName(params);
+    }else if (newName !== titleText) {
+        // Add custom name locally and on server
+        // Initialize topic set object if it doesn't exist
+        titleText = newName; // Update titleText variable to newName
+        if (!TOPIC_NAMES[TOPIC_SET]) {
+            TOPIC_NAMES[TOPIC_SET] = {};
+        }
+        TOPIC_NAMES[TOPIC_SET][topicId] = newName;
+        updateTopicName(topicId, newName);
+        // Call server to set the new name
+        const params = new URLSearchParams({
+            dataSet: DATA_SET,
+            topicSet: TOPIC_SET,
+            topicID: String(topicId),
+            topicName: newName,
+            renameThreshold: SPECS.automaticItscRename ? SPECS.automaticItscRenameThreshold : 2 // Set to 2 to effectively disable automatic renaming of intersecting topics when a custom name is set
+        });
+        postAndFetchTopicName(params);
+    }
+    return newName;
+}
+
 function updateTopicName(topicId, newName) {
     // Update y-labels in the heatmap by finding the label at index topicId
     const yLabelsSvg = document.querySelector('.labels-svg');

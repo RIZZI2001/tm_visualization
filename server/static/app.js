@@ -298,7 +298,7 @@ swapAxesBtn.addEventListener('click', async () => {
     AXES_SWAPPED = !AXES_SWAPPED;
     localStorage.setItem('AXES_SWAPPED', AXES_SWAPPED);
     updateCategories();
-    swapAxesBtn.innerText = AXES_SWAPPED ? 'time' : 'place';
+    swapAxesBtn.innerText = AXES_SWAPPED ? `switch to time` : `switch to place`;
     // Time spacing can be different if sliders are set
     setTimeSpacing();
     await initializeMainView();

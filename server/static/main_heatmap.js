@@ -751,7 +751,8 @@ async function visualizeHeatMap() {
                         const originalFontSize = d3.select(mainTextNode).style('font-size');
                         
                         // Position the text at the top of the overlay
-                        d3.select(textClone)
+                        const textSelection = d3.select(textClone);
+                        textSelection
                             .style('display', 'block')
                             .attr('x', 5)
                             .attr('y', 5)
@@ -762,6 +763,44 @@ async function visualizeHeatMap() {
                             .style('pointer-events', 'auto')
                             .style('cursor', 'pointer');
                         
+                        // Make text editable on double-click
+                        textSelection.on('click', function() {
+                            const currentText = d3.select(this).text();
+                            
+                            // Create input field positioned at same location as text
+                            const input = document.createElement('input');
+                            input.type = 'text';
+                            input.value = currentText;
+                            input.style.position = 'absolute';
+                            input.style.top = (yPos[i] + 5) + 'px';
+                            input.style.left = '5px';
+                            input.style.width = 'auto';
+                            input.style.height = 'auto';
+                            input.style.fontSize = originalFontSize;
+                            input.style.zIndex = '1001';
+                            
+                            heatMapSection.appendChild(input);
+                            input.focus();
+                            input.select();
+                            
+                            // Save on blur or Enter
+                            const saveEdit = () => {
+                                const newText = input.value || currentText;
+                                d3.select(textClone).text(newText);
+                                try{input.remove();}catch(e){}
+                                const oldname = TOPIC_NAMES[TOPIC_SET][i];
+                                renameTopic(i, textClone, oldname);
+                            };
+                            
+                            input.addEventListener('blur', saveEdit);
+                            input.addEventListener('keydown', (e) => {
+                                if (e.key === 'Enter') saveEdit();
+                                if (e.key === 'Escape') {
+                                    input.remove();
+                                }
+                            });
+                        });
+                        
                         // Append overlay to heatmap section
                         heatMapSection.appendChild(expandedTitleOverlaySVG.node());
                         
@@ -769,15 +808,6 @@ async function visualizeHeatMap() {
                         movedMainText = textClone;
                     }
                 }
-                
-                // Add click listener to expanded y-label
-                const labelGroup = d3.select(yLabelGroups.nodes()[i]);
-                labelGroup.on('click', function() {
-                    showDetailView('topic', true, [parseInt(rowLabels[i])]);
-                });
-                
-                // Make expanded label clickable
-                labelGroup.style('cursor', 'pointer');
                 
                 // Add border around mini heatmap (ensure dimensions are not negative)
                 const borderWidth = Math.max(0, heatMapSection.clientWidth - 1);
@@ -912,6 +942,14 @@ async function visualizeHeatMap() {
     yLabelsSVG = yLabels.svg;
     yLabelGroups = yLabels.groups;
     yLabelSection.appendChild(yLabelsSVG.node());
+    
+    // Add click listeners to all y-labels to open detail view
+    // These work regardless of whether the row can expand (i.e., when 0 or 1 sites selected)
+    yLabelGroups.each(function(d, idx) {
+        d3.select(this).on('click', function() {
+            showDetailView('topic', true, [idx]);
+        }).style('cursor', 'pointer');
+    });
 
     // Build and render heatmap cells
     cellsG = mainHeatmapSVG.append('g')

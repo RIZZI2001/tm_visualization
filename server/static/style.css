@@ -728,6 +728,8 @@ body {
 
 .detail-swap-axes-btn,
 .detail-map-btn {
+  height: 40px;
+  min-width: 52.8px;
   flex: 1;
   padding: 6px;
   border: none;
@@ -1589,15 +1591,15 @@ body {
 }
 
 .map-header {
-  padding: 8px;
+  padding: 6px;
   display: flex;
   align-items: center;
   flex-direction: row;
   width: 100%;
   height: 52px;
-  gap: 10px;
+  gap: 4px;
   box-sizing: border-box;
-  background-color: var(--primary-dark);
+  background-color: var(--primary);
 }
 
 .map-time-slider-section {

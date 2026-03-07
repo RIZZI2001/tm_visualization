@@ -274,7 +274,7 @@ async function openMap() {
     mapHeader.className = 'map-header';
 
     const exitButton = document.createElement('button');
-    exitButton.className = 'map-exit-btn header-btn';
+    exitButton.className = 'map-exit-btn detail-map-btn';
     exitButton.style.width = '100px';
     exitButton.textContent = 'Exit Map';
     exitButton.addEventListener('click', () => {
@@ -291,21 +291,19 @@ async function openMap() {
     timeSliderContainer.className = 'map-time-slider-container';
 
     const switchSliderModeButton = document.createElement('button');
-    switchSliderModeButton.className = 'map-switch-slider-mode-btn header-btn';
-    switchSliderModeButton.textContent = DETAIL_MAP_MODE === 'range' ? 'Single' : 'Range';
+    switchSliderModeButton.className = 'map-switch-slider-mode-btn detail-map-btn';
+    switchSliderModeButton.textContent = DETAIL_MAP_MODE === 'range' ? 'Switch Single' : 'Switch Range';
     switchSliderModeButton.addEventListener('click', () => {
         DETAIL_MAP_MODE = (DETAIL_MAP_MODE === 'range') ? 'single' : 'range';
         localStorage.setItem('DETAIL_MAP_MODE', DETAIL_MAP_MODE);
         timeSliderContainer.innerHTML = '';
-        switchSliderModeButton.textContent = DETAIL_MAP_MODE === 'range' ? 'Single' : 'Range';
+        switchSliderModeButton.textContent = DETAIL_MAP_MODE === 'range' ? 'Switch Single' : 'Switch Range';
         initializeDateRangeSlider(ACTIVE_DATES, timeSliderContainer, 'detail', DETAIL_MAP_MODE === 'single');
     });
     timeSliderSection.appendChild(switchSliderModeButton);
     timeSliderSection.appendChild(timeSliderContainer);
 
     mapHeader.appendChild(timeSliderSection);
-
-    container.appendChild(mapHeader);
 
     // Create map container
     const mapContainer = document.createElement('div');
@@ -316,6 +314,8 @@ async function openMap() {
         position: relative;
     `;
     container.appendChild(mapContainer);
+
+    container.appendChild(mapHeader);
     const detailPayload = JSON.parse(JSON.stringify(detailViewBasePayload()));
     MAP_DATA = await fetchCSVData(detailPayload);
     MAP_DATA =  parseAndValidateCSV(MAP_DATA.csv);

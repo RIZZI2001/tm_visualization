@@ -51,7 +51,7 @@ async function createITSC_Overlay() {
         heatmapContainer.innerHTML = '<p style="color: #999;">No inter-topicset correlation data available</p>';
     }
     
-    itscOverlay = createOverlay('itsc-overlay', `Inter-Topic-Set-Correlation: Topic set ${TOPIC_SET}`, content, null, closeITSCOverlay, '95vw', '75vh');
+    itscOverlay = createOverlay('itsc-overlay', `Inter-Topic-Set-Correlation: Topic set ${TOPIC_SET}`, content, null, closeITSCOverlay, '95vw', '85vh');
     document.body.appendChild(itscOverlay);
 }
 
@@ -93,9 +93,9 @@ function createDualHeatmap(heatmapsArray, container) {
     const colCount1 = colLabels1.length;
     const colCount2 = colLabels2.length;
     const rowCount = rowLabels.length;
-    const cellSize = 350 / TOPIC_SET;
+    const cellSize = 300 / TOPIC_SET;
     const labelWidth = 100;
-    const topLabelHeight = 60;
+    const topLabelHeight = 90;
     const headingHeight = 25;
     
     const grid1Width = colCount1 * cellSize;

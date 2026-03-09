@@ -313,7 +313,7 @@ function openSubMenu(data, key, depth, parentElement, pathPrefix = []) {
             const fullPath = [...currentState.path, itemKey];
 
             const name = (key === 'topic') ? nameOfTopic(itemKey) : itemKey;
-            openDetailView(fullPath, name);
+            openDetailView(fullPath, name, depth);
             
             closeDropdown();
             closeAllSubmenus();
@@ -502,7 +502,7 @@ function searchItems(searchText) {
 /**
  * Recursively search through taxonomy tree
  */
-function searchTaxonomyTree(node, searchLower, currentPath, results, maxResults) {
+function searchTaxonomyTree(node, searchLower, currentPath, results, maxResults, seenNames = new Set()) {
     if (results.length >= maxResults) return;
     
     Object.keys(node).forEach(key => {
@@ -511,8 +511,9 @@ function searchTaxonomyTree(node, searchLower, currentPath, results, maxResults)
         const itemValue = node[key];
         const newPath = [...currentPath, key];
         
-        // Check if current item matches
-        if (key.toLowerCase().includes(searchLower)) {
+        // Check if current item matches and hasn't been added yet
+        if (key.toLowerCase().includes(searchLower) && !seenNames.has(key)) {
+            seenNames.add(key);
             results.push({
                 name: key,
                 path: ['taxonomy', ...newPath]
@@ -521,7 +522,7 @@ function searchTaxonomyTree(node, searchLower, currentPath, results, maxResults)
         
         // Recurse into children
         if (typeof itemValue === 'object' && itemValue !== null && Object.keys(itemValue).length > 0) {
-            searchTaxonomyTree(itemValue, searchLower, newPath, results, maxResults);
+            searchTaxonomyTree(itemValue, searchLower, newPath, results, maxResults, seenNames);
         }
     });
 }
@@ -555,7 +556,7 @@ function showSearchResults(results) {
         item.addEventListener('mousedown', (e) => {
             e.preventDefault();
             
-            openDetailView(result.path, result.name);
+            openDetailView(result.path, result.name, result.depth);
             
             closeDropdown();
             closeAllSubmenus();
@@ -571,13 +572,11 @@ function showSearchResults(results) {
 }
 
 
-function openDetailView(fullPath, name = null) {
-    console.log('Opening detail view for path:', fullPath, 'with name:', name);
+function openDetailView(fullPath, name = null, depth = null) {
     if(fullPath[0] === 'taxonomy') {
         const otus = generateOTUList(fullPath.slice(1));
-        showDetailView('otu', false, otus, true, name);
+        showDetailView('otu', false, otus, true, name, depth);
     } else {
         showDetailView(fullPath[0], true, [fullPath[1]], historyEntry = true, customTitle = name);
     }
 }
-

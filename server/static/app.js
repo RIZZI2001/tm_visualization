@@ -285,8 +285,9 @@ async function initializeMainView(historyEntry = true) {
             await initializeMainView();
         } else {
             let customName = localStorage.getItem('DETAIL_VIEW_CUSTOM_NAME');
+            let taxDepth = localStorage.getItem('DETAIL_VIEW_TAXDEPTH');
             if(!customName || customName === '' || customName === 'null') customName = null;
-            await showDetailView(CURRENT_VIEW, true, ACTIVE_ELEMENTS_DETAIL, true, customName);
+            await showDetailView(CURRENT_VIEW, true, ACTIVE_ELEMENTS_DETAIL, true, customName, taxDepth);
         }
         
     }catch(e){ console.error(e); }
@@ -325,7 +326,7 @@ backBtn.addEventListener('click', async () => {
             await initializeMainView(false);
             mainViewButton.style.visibility = 'hidden';
         } else {
-            await showDetailView(previousState.view, true, previousState.elements, false, previousState.label);
+            await showDetailView(previousState.view, true, previousState.elements, false, previousState.label, previousState.taxDepth);
         }
         updateBackButtonLabel();
     } else {
@@ -347,7 +348,11 @@ document.addEventListener('DOMContentLoaded', function() {
 function updateBackButtonLabel() {
     if(HISTORY.length >= 2) {
         backBtn.style.display = 'inline-block';
-        backBtn.textContent = '← ' + HISTORY[HISTORY.length - 2].label;
+        let text = HISTORY[HISTORY.length - 2].label;
+        if(text.length > 20) {
+            text = text.slice(0, 17) + '...';
+        }
+        backBtn.textContent = '← ' + text;
     } else {
         backBtn.style.display = 'none';
     }

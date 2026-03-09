@@ -16,8 +16,8 @@ let BC_COLORS = {}; // Global cache for bar chart colors
 let metadataCorrelationContainer, topicCorrelationContainer, otuCorrelationContainer, compositionContainer
 let metadataCorrelationTitle, topicCorrelationTitle, otuCorrelationTitle, compositionTitle
 
-async function showDetailView(detailType, setCheckBoxes, activeElements, historyEntry = true, customTitle = null) {
-    console.log(detailType, setCheckBoxes, activeElements, historyEntry, customTitle);
+async function showDetailView(detailType, setCheckBoxes, activeElements, historyEntry = true, customTitle = null, taxDepth = null) {
+    console.log(detailType, setCheckBoxes, activeElements, historyEntry, customTitle, taxDepth);
     const chartContainer = document.getElementById('chart-container');
     const detailViewContainer = document.getElementById('detail-view-container');
     const detailTitle = document.getElementById('detail-title');
@@ -50,10 +50,11 @@ async function showDetailView(detailType, setCheckBoxes, activeElements, history
     }
     // Update title with topic ID(s)
     localStorage.setItem('DETAIL_VIEW_CUSTOM_NAME', customTitle);
+    localStorage.setItem('DETAIL_VIEW_TAXDEPTH', taxDepth);
     const titleText = customTitle || label;
 
     if(historyEntry) {
-        HISTORY.push({view: detailType, elements: [...activeElements], label: titleText + ''});
+        HISTORY.push({view: detailType, elements: [...activeElements], label: titleText + '', taxDepth: taxDepth});
     }
     updateBackButtonLabel();
 
@@ -95,7 +96,8 @@ async function showDetailView(detailType, setCheckBoxes, activeElements, history
         // Find the taxonomy path for the selected item
         const searchItem = customTitle || (activeElements.length > 0 ? activeElements[0] : null);
         if (searchItem) {
-            const taxonomyPath = findTaxonomyPath(TAXONOMY_DICT, searchItem);
+            const taxonomyPath = findTaxonomyPath(TAXONOMY_DICT, searchItem, [], taxDepth);
+            console.log('Found taxonomy path:', taxonomyPath);
             if(taxonomyPath && taxonomyPath.length < TAXONOMY_LEVELS.length){
                 detailTitle.textContent += ' (' + TAXONOMY_LEVELS[taxonomyPath.length - 1] + ')';
             }
@@ -129,7 +131,7 @@ async function showDetailView(detailType, setCheckBoxes, activeElements, history
                     valueButton.addEventListener('click', () => {
                         const subPath = taxonomyPath.slice(0, colIdx + 1);
                         const otus = generateOTUList(subPath);
-                        showDetailView('otu', false, otus, true, valueCell.textContent);
+                        showDetailView('otu', false, otus, true, valueCell.textContent, colIdx);
                     });
                     valueCell.appendChild(valueButton);
                     
@@ -172,7 +174,7 @@ async function showDetailView(detailType, setCheckBoxes, activeElements, history
                         subElementButton.addEventListener('click', () => {
                             const subPath = [...taxonomyPath, subElement];
                             const otus = generateOTUList(subPath);
-                            showDetailView('otu', false, otus, true, subElement);
+                            showDetailView('otu', false, otus, true, subElement, taxonomyPath.length);
                         });
                         subElementCell.appendChild(subElementButton);
                         subElementRow.appendChild(subElementCell);
@@ -1698,17 +1700,17 @@ function hideBCTooltip() {
  * @param {Array} currentPath - Current path being built
  * @returns {Array|null} Path to the item, or null if not found
  */
-function findTaxonomyPath(node, searchItem, currentPath = []) {
+function findTaxonomyPath(node, searchItem, currentPath = [], taxDepth = null) {
     // Check if any key at this level matches the search item
     for (const key of Object.keys(node)) {
-        if (key === searchItem) {
+        if (key === searchItem && (taxDepth === null || taxDepth == 0)) {
             return [...currentPath, key];
         }
         
         // Recursively search in children
         const childNode = node[key];
         if (typeof childNode === 'object' && childNode !== null && Object.keys(childNode).length > 0) {
-            const result = findTaxonomyPath(childNode, searchItem, [...currentPath, key]);
+            const result = findTaxonomyPath(childNode, searchItem, [...currentPath, key], taxDepth !== null ? taxDepth - 1 : null);
             if (result) {
                 return result;
             }

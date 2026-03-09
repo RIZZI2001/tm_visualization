@@ -1364,8 +1364,13 @@ function createVerticalLabelBoxes(labels, width, height, idPrefix = '', colors =
  */
 async function fetchCSVData(payload) {
     try {
-        const query = encodeURIComponent(JSON.stringify(payload));
-        const response = await fetch(`/data?attribute=${query}`);
+        const response = await fetch('/data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
         const contentType = response.headers.get('content-type') || '';
 
         if (contentType.includes('application/json')) {

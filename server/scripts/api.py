@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import RedirectResponse, FileResponse
 import pandas as pd
 from pathlib import Path
-from typing import List
+from typing import List, Dict, Any
 from fastapi import Response
 import json
 try:
@@ -76,13 +76,9 @@ def get_taxonomy_levels(dataSet: str = Query(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to read taxonomy levels: {e}")
 
-@app.get("/data")
-def get_data(attribute: str = Query(...)):
-    # Parse JSON string
-    try:
-        payload = json.loads(attribute)
-    except Exception:
-        raise HTTPException(status_code=400, detail="Invalid JSON in 'attribute' parameter")
+@app.post("/data")
+async def post_data(payload: Dict[str, Any]):
+    # Payload is already parsed from JSON body
 
     file_rel = payload.get("file")
     data_set = payload.get("data_set")

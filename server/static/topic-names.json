@@ -1,37 +1,102 @@
 {
   "16s": {
     "5": {
-      "1": "Freshwater"
+      "1": "Freshwater",
+      "4": "Late Summer"
     },
     "6": {
-      "1": "Freshwater"
+      "1": "Freshwater",
+      "4": "Late Summer"
     },
     "7": {
-      "1": "Freshwater"
+      "1": "Freshwater",
+      "4": "Late Summer"
     },
     "8": {
-      "1": "Freshwater"
+      "1": "Freshwater",
+      "4": "Late Summer"
     },
     "9": {
-      "1": "Freshwater"
+      "1": "Freshwater",
+      "4": "Late Summer"
     },
     "10": {
-      "1": "Freshwater"
+      "1": "Freshwater",
+      "4": "Late Summer"
     },
     "11": {
-      "1": "Freshwater"
+      "1": "Freshwater",
+      "4": "Late Summer"
     },
     "12": {
-      "1": "Freshwater"
+      "1": "Freshwater",
+      "4": "Late Summer"
     },
     "13": {
-      "1": "Freshwater"
+      "1": "Freshwater",
+      "4": "Late Summer"
     },
     "14": {
-      "1": "Freshwater"
+      "1": "Freshwater",
+      "4": "Late Summer"
     },
     "15": {
-      "1": "Freshwater"
+      "1": "Freshwater",
+      "4": "Late Summer"
+    },
+    "3": {
+      "1": "Late Summer"
+    },
+    "4": {
+      "3": "Late Summer"
+    },
+    "16": {
+      "6": "Late Summer"
+    },
+    "17": {
+      "6": "Late Summer"
+    },
+    "18": {
+      "6": "Late Summer"
+    },
+    "19": {
+      "6": "Late Summer"
+    },
+    "20": {
+      "6": "Late Summer"
+    },
+    "21": {
+      "6": "Late Summer"
+    },
+    "22": {
+      "6": "Late Summer"
+    },
+    "23": {
+      "6": "Late Summer"
+    },
+    "24": {
+      "6": "Late Summer"
+    },
+    "25": {
+      "6": "Late Summer"
+    },
+    "26": {
+      "6": "Late Summer"
+    },
+    "27": {
+      "6": "Late Summer"
+    },
+    "28": {
+      "6": "Late Summer"
+    },
+    "29": {
+      "6": "Late Summer"
+    },
+    "30": {
+      "6": "Late Summer"
+    },
+    "2": {
+      "1": "Late Summer"
     }
   }
 }

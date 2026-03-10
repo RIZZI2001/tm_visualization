@@ -4,14 +4,17 @@
 
 let optionsOverlay = null;
 let optionsData = {};
+let originalOptionsData = {};
 
 const optionsTabs = {
-    Data: ['dataSet', 'topicSet', 'metadataOptions', 'customSiteOrder', 'timeRange', 'placeCategories', 'excludedSites'],
+    Data: ['dataSet', 'topicSet', 'metadataOptions', 'customSiteOrder', 'placeCategories'],
     UI: ['scaleCellsByDistance', 'showPlaceNameLabels', 'sortCorrelations', 'fetchDelayExpandedRow', 'barchartItems', 'maxZoom', 'zoomSpeed'],
-    Coloring: ['topicColorScale', 'topicColorScaleType', 'metadataColorScale', 'metadataColorScaleType', 'otuColorScale', 'otuColorScaleType', 'invertColorScale', 'separateColorScales'],
+    Coloring: ['topicColorScale', 'topicColorScaleType', 'metadataColorScale', 'metadataColorScaleType', 'otuColorScale', 'otuColorScaleType', 'invertColorScale', 'normalizeColorScalesSeparately'],
     Defaults: ['defaultPlaceCategory', 'defaultPlaceInverted', 'defaultHiddenSites', 'defaultActiveMetadata', 'automaticItscRename', 'automaticItscRenameThreshold', 'initMapCircleRadius'],
     Reset: []
 };
+
+const resetLocalStorageOptions = ['dataSet', 'topicSet', 'metadataOptions', 'customSiteOrder', 'placeCategories'];
 
 /**
  * Initialize options handler and attach listener to options button
@@ -31,6 +34,7 @@ async function showOptionsOverlay() {
         // Fetch frontend-specs.json with cache-busting to get latest version
         const response = await fetch('./frontend-specs.json?t=' + Date.now());
         optionsData = await response.json();
+        originalOptionsData = JSON.parse(JSON.stringify(optionsData));
         
         // Create and show overlay
         createOptionsOverlay();
@@ -461,7 +465,19 @@ async function saveAndReloadOptions(data) {
             closeOptionsOverlay();
             // Wait 500ms to ensure file is written on server before reloading
             await new Promise(resolve => setTimeout(resolve, 500));
-            localStorage.clear();
+            
+            // Only clear localStorage if one of the resetLocalStorageOptions was actually changed
+            const actuallyChanged = Object.keys(data).filter(key => 
+                JSON.stringify(data[key]) !== JSON.stringify(originalOptionsData[key])
+            );
+            const changedResetOptions = actuallyChanged.filter(key => 
+                resetLocalStorageOptions.includes(key)
+            );
+            console.log('Changed options that require localStorage reset:', changedResetOptions, resetLocalStorageOptions, actuallyChanged);
+            if (changedResetOptions.length > 0) {
+                localStorage.clear();
+            }
+            
             location.reload();
         } else {
             const errorData = await response.json();

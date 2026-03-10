@@ -58,5 +58,5 @@
   "automaticItscRenameThreshold": 0.95,
   "automaticItscRename": true,
   "initMapCircleRadius": 1500,
-  "separateColorScales": false
+  "normalizeColorScalesSeparately": false
 }

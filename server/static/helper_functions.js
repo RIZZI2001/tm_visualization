@@ -330,7 +330,7 @@ function parseAndRenderHeatmap(csvData, cellElement, kind) {
 
     let vmin = Math.min(...values);
     let vmax = Math.max(...values);
-    if (!SPECS.separateColorScales && kind !== 'main') {
+    if (!SPECS.normalizeColorScalesSeparately && kind !== 'main') {
         vmin = VALUE_RANGES.detail_main.min;
         vmax = VALUE_RANGES.detail_main.max;
     }
@@ -992,7 +992,7 @@ function createColorScale(min, max, customColorScale = null, customScaleType = n
         }
     }
 
-    if(!SPECS.separateColorScales && CURRENT_VIEW === 'main') {
+    if(!SPECS.normalizeColorScalesSeparately && CURRENT_VIEW === 'main') {
         min = 0;
         max = 1;
     }
@@ -2104,7 +2104,7 @@ function createLegend(vmin, vmax) {
         scaleType = SPECS.topicColorScaleType;
     }
 
-    if (CURRENT_VIEW === 'main' && !SPECS.separateColorScales) {
+    if (CURRENT_VIEW === 'main' && !SPECS.normalizeColorScalesSeparately) {
         vmin = 0;
         vmax = 1;
     }
@@ -2169,7 +2169,7 @@ function updateLegendValues(rangeType) {
     if (!LEGEND_TEXT || LEGEND_TEXT.length === 0) return;
     
     let range = VALUE_RANGES[rangeType];
-    if(!SPECS.separateColorScales) {
+    if(!SPECS.normalizeColorScalesSeparately) {
         if (CURRENT_VIEW === 'main') {
             range = {min: 0, max: 1};
         } else {

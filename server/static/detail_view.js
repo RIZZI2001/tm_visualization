@@ -97,7 +97,6 @@ async function showDetailView(detailType, setCheckBoxes, activeElements, history
         const searchItem = customTitle || (activeElements.length > 0 ? activeElements[0] : null);
         if (searchItem) {
             const taxonomyPath = findTaxonomyPath(TAXONOMY_DICT, searchItem, [], taxDepth);
-            console.log('Found taxonomy path:', taxonomyPath);
             if(taxonomyPath && taxonomyPath.length < TAXONOMY_LEVELS.length){
                 detailTitle.textContent += ' (' + TAXONOMY_LEVELS[taxonomyPath.length - 1] + ')';
             }
@@ -465,7 +464,7 @@ async function initializeMap() {
         const siteData = SITE_COORDS.find(item => item.siteId === siteId);
         if (siteData) {
             const siteName = SPECS.showPlaceNameLabels 
-                ? (SITE_NAMES[siteId] || siteId)
+                ? (SITE_NAMES[siteId - 1] || siteId)
                 : siteId;
             let lat = siteData.latitude.toFixed(4);
             lat = lat > 0 ? `${lat}°N` : `${Math.abs(lat)}°S`;

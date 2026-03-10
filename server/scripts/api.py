@@ -78,6 +78,9 @@ def get_taxonomy_levels(dataSet: str = Query(...)):
 
 @app.post("/data")
 async def post_data(payload: Dict[str, Any]):
+    """
+    Acts like a GET method but uses POST to allow for longer requests
+    """
     # Payload is already parsed from JSON body
 
     file_rel = payload.get("file")
@@ -209,7 +212,11 @@ async def post_data(payload: Dict[str, Any]):
         id_spec = specs.get("id", {})
         id_average = id_spec.get("average", False)
         if isinstance(id_average, str):
-            id_average = id_average.lower() in ('true', '1', 'yes')
+            id_lower = id_average.lower()
+            if id_lower == 'sum':
+                id_average = 'sum'
+            else:
+                id_average = id_lower in ('true', '1', 'yes')
 
     # Check if attribute averaging is requested
     attribute_average = False
@@ -217,7 +224,11 @@ async def post_data(payload: Dict[str, Any]):
         attribute_spec = specs.get("attribute", {})
         attribute_average = attribute_spec.get("average", False)
         if isinstance(attribute_average, str):
-            attribute_average = attribute_average.lower() in ('true', '1', 'yes')
+            attr_lower = attribute_average.lower()
+            if attr_lower == 'sum':
+                attribute_average = 'sum'
+            else:
+                attribute_average = attr_lower in ('true', '1', 'yes')
 
     # Check if otu averaging is requested
     otu_average = False
@@ -225,7 +236,11 @@ async def post_data(payload: Dict[str, Any]):
         otu_spec = specs.get("otu", {})
         otu_average = otu_spec.get("average", False)
         if isinstance(otu_average, str):
-            otu_average = otu_average.lower() in ('true', '1', 'yes')
+            otu_lower = otu_average.lower()
+            if otu_lower == 'sum':
+                otu_average = 'sum'
+            else:
+                otu_average = otu_lower in ('true', '1', 'yes')
 
     # Convert allowed lists to strings
     if allowed_rows is not None:
@@ -270,22 +285,28 @@ async def post_data(payload: Dict[str, Any]):
         key_col = df.columns[0] if len(df.columns) > 0 else None
         
         if row_type == "id" and key_col is not None:
-            # Average rows: convert data to numeric, compute mean, replace with single row labeled "-2"
+            # Average rows: convert data to numeric, compute mean/sum, replace with single row labeled "-2"
             data_cols = list(df.columns[1:])
             for c in data_cols:
                 df[c] = pd.to_numeric(df[c], errors='coerce')
-            avg_values = df[data_cols].mean()
+            if id_average == 'sum':
+                avg_values = df[data_cols].sum()
+            else:
+                avg_values = df[data_cols].mean()
             df = pd.DataFrame([["-2"] + avg_values.tolist()], columns=df.columns)
         
         elif column_type == "id":
-            # Average columns: convert data to numeric, compute mean across id columns
+            # Average columns: convert data to numeric, compute mean/sum across id columns
             data_cols = [c for c in df.columns[1:]]  # All columns except the first (key)
             if len(data_cols) > 1:  # Only if there are multiple id columns to average
                 for c in data_cols:
                     df[c] = pd.to_numeric(df[c], errors='coerce')
                 key_col = df.columns[0]
-                # Compute mean across all id columns for each row
-                avg_col = df[data_cols].mean(axis=1)
+                # Compute mean/sum across all id columns for each row
+                if id_average == 'sum':
+                    avg_col = df[data_cols].sum(axis=1)
+                else:
+                    avg_col = df[data_cols].mean(axis=1)
                 df = df[[key_col]].copy()
                 df["-2"] = avg_col
 
@@ -294,22 +315,28 @@ async def post_data(payload: Dict[str, Any]):
         key_col = df.columns[0] if len(df.columns) > 0 else None
         
         if row_type == "attribute" and key_col is not None:
-            # Average rows: convert data to numeric, compute mean, replace with single row labeled "-2"
+            # Average rows: convert data to numeric, compute mean/sum, replace with single row labeled "-2"
             data_cols = list(df.columns[1:])
             for c in data_cols:
                 df[c] = pd.to_numeric(df[c], errors='coerce')
-            avg_values = df[data_cols].mean()
+            if attribute_average == 'sum':
+                avg_values = df[data_cols].sum()
+            else:
+                avg_values = df[data_cols].mean()
             df = pd.DataFrame([["-2"] + avg_values.tolist()], columns=df.columns)
         
         elif column_type == "attribute":
-            # Average columns: convert data to numeric, compute mean across attribute columns
+            # Average columns: convert data to numeric, compute mean/sum across attribute columns
             data_cols = [c for c in df.columns[1:]]  # All columns except the first (key)
             if len(data_cols) > 1:  # Only if there are multiple attribute columns to average
                 for c in data_cols:
                     df[c] = pd.to_numeric(df[c], errors='coerce')
                 key_col = df.columns[0]
-                # Compute mean across all attribute columns for each row
-                avg_col = df[data_cols].mean(axis=1)
+                # Compute mean/sum across all attribute columns for each row
+                if attribute_average == 'sum':
+                    avg_col = df[data_cols].sum(axis=1)
+                else:
+                    avg_col = df[data_cols].mean(axis=1)
                 df = df[[key_col]].copy()
                 df["-2"] = avg_col
 
@@ -318,22 +345,28 @@ async def post_data(payload: Dict[str, Any]):
         key_col = df.columns[0] if len(df.columns) > 0 else None
         
         if row_type == "otu" and key_col is not None:
-            # Average rows: convert data to numeric, compute mean, replace with single row labeled "-2"
+            # Average rows: convert data to numeric, compute mean/sum, replace with single row labeled "-2"
             data_cols = list(df.columns[1:])
             for c in data_cols:
                 df[c] = pd.to_numeric(df[c], errors='coerce')
-            avg_values = df[data_cols].mean()
+            if otu_average == 'sum':
+                avg_values = df[data_cols].sum()
+            else:
+                avg_values = df[data_cols].mean()
             df = pd.DataFrame([["-2"] + avg_values.tolist()], columns=df.columns)
         
         elif column_type == "otu":
-            # Average columns: convert data to numeric, compute mean across otu columns
+            # Average columns: convert data to numeric, compute mean/sum across otu columns
             data_cols = [c for c in df.columns[1:]]  # All columns except the first (key)
             if len(data_cols) > 1:  # Only if there are multiple otu columns to average
                 for c in data_cols:
                     df[c] = pd.to_numeric(df[c], errors='coerce')
                 key_col = df.columns[0]
-                # Compute mean across all otu columns for each row
-                avg_col = df[data_cols].mean(axis=1)
+                # Compute mean/sum across all otu columns for each row
+                if otu_average == 'sum':
+                    avg_col = df[data_cols].sum(axis=1)
+                else:
+                    avg_col = df[data_cols].mean(axis=1)
                 df = df[[key_col]].copy()
                 df["-2"] = avg_col
 

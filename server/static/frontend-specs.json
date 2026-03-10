@@ -45,11 +45,11 @@
   "showPlaceNameLabels": true,
   "sortCorrelations": true,
   "topicColorScale": "Inferno",
-  "topicColorScaleType": "squareRoot",
+  "topicColorScaleType": "linear",
   "metadataColorScale": "Purple",
   "metadataColorScaleType": "linear",
   "otuColorScale": "Viridis",
-  "otuColorScaleType": "squareRoot",
+  "otuColorScaleType": "linear",
   "invertColorScale": false,
   "barchartItems": 30,
   "fetchDelayExpandedRow": 150,
@@ -57,5 +57,7 @@
   "zoomSpeed": 1.08,
   "automaticItscRenameThreshold": 0.95,
   "automaticItscRename": true,
-  "initMapCircleRadius": 1500
+  "initMapCircleRadius": 1500,
+  "topicColorScaleForce 0-1": true,
+  "otuColorScaleForce 0-1": false
 }

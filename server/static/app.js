@@ -129,7 +129,7 @@ function populatePlaceSelectDropdown(select) {
 async function loadSitesData() {
     try {
         const payload = {
-            "file": `Input/${DATA_SET}/sites.csv`,
+            "file": `Output/${DATA_SET}/sites.csv`,
             "data_set": `${DATA_SET}`,
             "table_type": "site",
             "specs": {

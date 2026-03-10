@@ -15,8 +15,9 @@ OUTPUT_FOLDER = BASE_DIR / 'DATA' / 'Output'
 OUTPUT_TM_COMPONENTS = 'TM_Components'
 OUTPUT_TM_TOPICS = 'TM_Topics'
 
-DATASET_NAME = '16s'
-TAXONOMY_LEVELS = ["biodomain", "phylum", "class", "bioorder", "family", "genus", "name"]
+DATASET_NAME = '18s'
+TAXONOMY_LEVELS = ["biodomain", "class", "bioorder", "family", "genus", "name"] #18s
+#TAXONOMY_LEVELS = ["biodomain", "phylum", "class", "bioorder", "family", "genus", "name"] #16s
 METADATA_ATTRS = ["PO4", "NOx", "NH4", "NO2", "NO3", "temperature", "salinity", "Chl_a", "Phaeo", "Chl_a_conc", "f0", "fa"]
 
 def NNMF_on_microbiome_data(dataframe_in, dimensionality):
@@ -32,7 +33,6 @@ def NNMF_on_microbiome_data(dataframe_in, dimensionality):
     nnmf_topics = pd.DataFrame(nnmf_topics)
     nnmf_components = pd.DataFrame(nnmf_components, columns=dataframe_in.columns)
     return nnmf_model, nnmf_topics, nnmf_components
-
 
 # Dimensionality reduction function
 def topic_generation(dimensionality):
@@ -53,6 +53,9 @@ def topic_generation(dimensionality):
 
     # set topics index from input data and write outputs into their respective folders
     nnmf_topics.index = df.index
+    # normalize topics per sample to sum to 1 (probability distribution)
+    nnmf_topics = nnmf_topics.div(nnmf_topics.sum(axis=1), axis=0)
+
     topics_path = os.path.join(topics_dir, f"{dimensionality}_topics.csv")
     components_path = os.path.join(components_dir, f"{dimensionality}_components.csv")
 
@@ -80,9 +83,17 @@ def sites_generation():
     
     # Write to CSV file
     sites_df = pd.DataFrame(locations_data)
-    sites_output_path = INPUT_FOLDER / DATASET_NAME / 'sites.csv'
+    sites_output_path = OUTPUT_FOLDER / DATASET_NAME / 'sites.csv'
     sites_df.to_csv(str(sites_output_path), index=False)
     print(f"Sites data written to {sites_output_path}")
+
+def normalized_otus_generation():
+    print("Starting Normalized OTUs Generation")
+    otus_df = pd.read_csv(str(INPUT_FOLDER / DATASET_NAME / 'otus.csv'), index_col=0)
+    normalized_otus_df = otus_df.div(otus_df.sum(axis=1), axis=0)
+    normalized_otus_output_path = OUTPUT_FOLDER / DATASET_NAME / 'normalized_otus.csv'
+    normalized_otus_df.to_csv(str(normalized_otus_output_path))
+    print(f"Normalized OTUs data written to {normalized_otus_output_path}")
 
 def metadata_otu_correlation_generation():
     print("Starting Metadata-OTU Correlation Calculation")
@@ -276,7 +287,6 @@ def inter_topicSet_correlation_generation(topicSet1, topicSet2):
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     correlation_matrix.to_csv(output_path)
 
-
 def taxonomy_levels_generation():
     print("Starting Taxonomy Levels Generation")
     taxonomy_df = pd.read_csv(str(INPUT_FOLDER / DATASET_NAME / f'taxonomy.csv'), sep=',', index_col=0, header=0)
@@ -319,20 +329,20 @@ def taxonomy_levels_generation():
     
     print(f"Taxonomy levels JSON written to {output_path}")
 
-
 if __name__ == "__main__":
     MIN_TOPICS = 2
     MAX_TOPICS = 30
 
-    """ taxonomy_levels_generation()
+    taxonomy_levels_generation()
     sites_generation()
+    normalized_otus_generation()
     metadata_otu_correlation_generation()
-    metadata_metadata_correlation_generation() """
+    metadata_metadata_correlation_generation()
     for dim in range(MIN_TOPICS, MAX_TOPICS + 1):
         print(f"Processing dimensionality: {dim}")
-        """ topic_generation(dim)
+        topic_generation(dim)
         metadata_topic_correlation_generation(dim)
-        topic_topic_correlation_generation(dim) """
+        topic_topic_correlation_generation(dim)
         if dim > MIN_TOPICS:
             inter_topicSet_correlation_generation(dim, dim - 1)
     

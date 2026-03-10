@@ -1273,7 +1273,7 @@ async function fetchRankValues() {
             const BC_name = BC_names[i];
             const BC_value = parseFloat(BC_values[i]);
             if (!isNaN(BC_value)) {
-                BC_Data[BC_name] = BC_value;
+                BC_Data[BC_name] = Math.round(BC_value * 1000) / 1000; // Round to 3 decimal places
             }
         }
         
@@ -1476,24 +1476,32 @@ async function populateCorrelationBarChart(correlationType, title, detailLeftCon
 function detailViewBasePayload() {
     let tableType = 'topic';
     let filePath = `Output/${DATA_SET}/TM_Topics/${TOPIC_SET}_topics.csv`;
-    let spec_value = {
-        "type": "list",
-        "value": ACTIVE_ELEMENTS_DETAIL,
-        "average": "true"
-    };
+    let spec_value;
+    if (CURRENT_VIEW === 'topic') {
+        spec_value = {
+            "type": "list",
+            "value": ACTIVE_ELEMENTS_DETAIL,
+            "average": "sum"
+        };
+    }
     if (CURRENT_VIEW === 'otu') {
         tableType = 'otu';
-        filePath = `Input/${DATA_SET}/otus.csv`;
+        filePath = `Output/${DATA_SET}/normalized_otus.csv`;
         spec_value = {
             "type": "list",
             "prefix": "",
             "value": ACTIVE_ELEMENTS_DETAIL,
-            "average": "true"
+            "average": "sum"
         };
     }
     if (CURRENT_VIEW === 'metadata') {
         tableType = 'metadata';
         filePath = `Input/${DATA_SET}/metadata.csv`;
+        spec_value = {
+            "type": "list",
+            "value": ACTIVE_ELEMENTS_DETAIL,
+            "average": "true"
+        };
     }
 
     let spec_key;

@@ -982,9 +982,17 @@ function createColorScale(min, max, customColorScale = null, customScaleType = n
         } else if (CURRENT_VIEW === 'otu') {
             colorScaleName = SPECS.otuColorScale;
             scaleType = SPECS.otuColorScaleType;
+            if(SPECS["otuColorScaleForce 0-1"]) {
+                min = 0;
+                max = 1;
+            }
         } else {
             colorScaleName = SPECS.topicColorScale;
             scaleType = SPECS.topicColorScaleType;
+            if(SPECS["topicColorScaleForce 0-1"]) {
+                min = 0;
+                max = 1;
+            }
         }
     }
         
@@ -2091,8 +2099,16 @@ function createLegend(vmin, vmax) {
         scaleType = SPECS.metadataColorScaleType;
     } else if (CURRENT_VIEW === 'otu') {
         scaleType = SPECS.otuColorScaleType;
+        if (SPECS["otuColorScaleForce 0-1"]) {
+            vmin = 0;
+            vmax = 1;
+        }
     } else {
         scaleType = SPECS.topicColorScaleType;
+        if (SPECS["topicColorScaleForce 0-1"]) {
+            vmin = 0;
+            vmax = 1;
+        }
     }
 
     const color = createColorScale(vmin, vmax);
@@ -2154,7 +2170,13 @@ function createLegend(vmin, vmax) {
 function updateLegendValues(rangeType) {
     if (!LEGEND_TEXT || LEGEND_TEXT.length === 0) return;
     
-    const range = VALUE_RANGES[rangeType];
+    let range = VALUE_RANGES[rangeType];
+    if (SPECS["topicColorScaleForce 0-1"] && (CURRENT_VIEW === 'main' || CURRENT_VIEW === 'topic')) {
+        range = {min: 0, max: 1};
+    } else if (SPECS["otuColorScaleForce 0-1"] && CURRENT_VIEW === 'otu') {
+        range = {min: 0, max: 1};
+    }
+
     if (!range) return;
     
     const step = (range.max - range.min) / 4;

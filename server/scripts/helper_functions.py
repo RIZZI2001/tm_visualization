@@ -90,7 +90,7 @@ def generateSampleKeys(sample_input, data_set) -> List[dict]:
 	place = sample.get("place", {})
 	place_type = place.get("place_type", "site")
 
-	sites_path = DATA_DIR / "Input" / data_set / "sites.csv"
+	sites_path = DATA_DIR / "Output" / data_set / "sites.csv"
 	sites_df = pd.read_csv(sites_path)
 	# Parse lat/lon if needed
 	if "rough_lat_long" in sites_df.columns:

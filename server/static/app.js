@@ -287,6 +287,7 @@ async function initializeMainView(historyEntry = true) {
             let customName = localStorage.getItem('DETAIL_VIEW_CUSTOM_NAME');
             let taxDepth = localStorage.getItem('DETAIL_VIEW_TAXDEPTH');
             if(!customName || customName === '' || customName === 'null') customName = null;
+            if(!taxDepth || taxDepth === '' || taxDepth === 'null') taxDepth = null;
             await showDetailView(CURRENT_VIEW, true, ACTIVE_ELEMENTS_DETAIL, true, customName, taxDepth);
         }
         

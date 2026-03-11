@@ -193,7 +193,7 @@ async function showDetailView(detailType, setCheckBoxes, activeElements, history
     }
 
     if(detailType !== 'metadata') {
-        await fetchRankValues();
+        await fetchCompositionValues();
         if(detailType === 'topic') generateBarColors();
 
         if(compositionContainer || compositionTitle) {
@@ -789,14 +789,6 @@ async function createDetailViewGrid() {
         // Fetch detail data (mini heatmap) - full Place x Time data
         const detailPayload = JSON.parse(JSON.stringify(basePayload));
         detailPayload.specs.sample.average = "false";
-        
-        // Fetch averaged over time (vertical heatmap) - Place data only
-        const verticalPayload = JSON.parse(JSON.stringify(basePayload));
-        verticalPayload.specs.sample.average = !AXES_SWAPPED ? "time" : "place";
-        
-        // Fetch averaged over place (horizontal row) - Time data only
-        const horizontalPayload = JSON.parse(JSON.stringify(basePayload));
-        horizontalPayload.specs.sample.average = !AXES_SWAPPED ? "place" : "time";
 
         // Fetch all three datasets
         const detailResp = await fetchCSVData(detailPayload);
@@ -1215,7 +1207,7 @@ async function fetchTaxonomy(otuNames) {
     }
 }
 
-async function fetchRankValues() {
+async function fetchCompositionValues() {
     try {
         let specs;
         if (CURRENT_VIEW === 'topic') {
@@ -1223,12 +1215,13 @@ async function fetchRankValues() {
                 "otu": {
                     "type": "all",
                     "prefix": `otu_${DATA_SET}_`,
-                    "value": []
+                    "value": [],
+                    "average": "false"
                 },
                 "id": {
                     "type": "list",
                     "value": ACTIVE_ELEMENTS_DETAIL,
-                    "average": "true"
+                    "average": "sum"
                 }
             };
         } else if (CURRENT_VIEW === 'otu') {
@@ -1237,7 +1230,7 @@ async function fetchRankValues() {
                     "type": "list",
                     "prefix": "",
                     "value": ACTIVE_ELEMENTS_DETAIL,
-                    "average": "true"
+                    "average": "sum"
                 },
                 "id": {
                     "type": "all",

@@ -15,9 +15,9 @@ OUTPUT_FOLDER = BASE_DIR / 'DATA' / 'Output'
 OUTPUT_TM_COMPONENTS = 'TM_Components'
 OUTPUT_TM_TOPICS = 'TM_Topics'
 
-DATASET_NAME = '18s'
-TAXONOMY_LEVELS = ["biodomain", "class", "bioorder", "family", "genus", "name"] #18s
-#TAXONOMY_LEVELS = ["biodomain", "phylum", "class", "bioorder", "family", "genus", "name"] #16s
+DATASET_NAME = '16s'
+#TAXONOMY_LEVELS = ["biodomain", "class", "bioorder", "family", "genus", "name"] #18s
+TAXONOMY_LEVELS = ["biodomain", "phylum", "class", "bioorder", "family", "genus", "name"] #16s
 METADATA_ATTRS = ["PO4", "NOx", "NH4", "NO2", "NO3", "temperature", "salinity", "Chl_a", "Phaeo", "Chl_a_conc", "f0", "fa"]
 
 def NNMF_on_microbiome_data(dataframe_in, dimensionality):
@@ -55,6 +55,7 @@ def topic_generation(dimensionality):
     nnmf_topics.index = df.index
     # normalize topics per sample to sum to 1 (probability distribution)
     nnmf_topics = nnmf_topics.div(nnmf_topics.sum(axis=1), axis=0)
+    nnmf_components = nnmf_components.div(nnmf_components.sum(axis=1), axis=0)
 
     topics_path = os.path.join(topics_dir, f"{dimensionality}_topics.csv")
     components_path = os.path.join(components_dir, f"{dimensionality}_components.csv")

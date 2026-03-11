@@ -2117,6 +2117,7 @@ function createOverlay(className, title, contentElement, footerElement, onBackCl
 }
 
 function createLegend(vmin, vmax) {
+    console.log("Create legend");
     let scaleType;
     if (CURRENT_VIEW === 'metadata') {
         scaleType = SPECS.metadataColorScaleType;
@@ -2134,6 +2135,7 @@ function createLegend(vmin, vmax) {
     const color = createColorScale(vmin, vmax);
     const legendContainer = document.getElementById('legend-container');
     legendContainer.innerHTML = '';
+    legendContainer.style.display = 'block';
 
     const legendSvg = d3.create('svg')
         .attr('class', 'legend-svg')

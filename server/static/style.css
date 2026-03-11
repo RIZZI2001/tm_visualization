@@ -234,7 +234,7 @@ body {
 /* Map Options Container */
 #map-options-container {
   position: absolute;
-  top: 62px;
+  top: 10px;
   right: 10px;
   width: calc(100% / 8);
   min-width: 120px;

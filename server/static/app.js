@@ -302,7 +302,7 @@ swapAxesBtn.addEventListener('click', async () => {
     swapAxesBtn.innerText = AXES_SWAPPED ? `switch to time` : `switch to place`;
     // Time spacing can be different if sliders are set
     setTimeSpacing();
-    await initializeMainView();
+    await initializeMainView(false);
 });
 
 const placeSelect = document.getElementById('place_select');
@@ -313,7 +313,7 @@ placeSelect.addEventListener('change', async () => {
     localStorage.setItem('PLACE_CATEGORY', PLACE_CATEGORY);
     localStorage.setItem('PLACE_INVERTED', PLACE_INVERTED);
     setPlaceSpacingAndOrder();
-    initializeMainView();
+    initializeMainView(false);
 });
 
 const mainViewButton = document.getElementById('main-view-btn');

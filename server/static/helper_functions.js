@@ -317,15 +317,15 @@ function averageCSV(rows, direction) {
     if (direction === 'row') {
         for (let i = 1; i < rows.length; i++) {
             const values = rows[i].slice(1).map(parseFloat).filter(v => !isNaN(v));
-            const avg = values.length ? values.reduce((a, b) => a + b) / values.length : 0;
-            result.push([rows[i][0], avg.toString()]);
+            const avgStr = values.length ? (values.reduce((a, b) => a + b) / values.length).toString() : 'N/A';
+            result.push([rows[i][0], avgStr]);
         }
     } else if (direction === 'column') {
         const averagedRow = [rows[0][0]];
         for (let j = 1; j < rows[0].length; j++) {
             const values = rows.slice(1).map(r => parseFloat(r[j])).filter(v => !isNaN(v));
-            const avg = values.length ? values.reduce((a, b) => a + b) / values.length : 0;
-            averagedRow.push(avg.toString());
+            const avgStr = values.length ? (values.reduce((a, b) => a + b) / values.length).toString() : 'N/A';
+            averagedRow.push(avgStr);
         }
         result.push(averagedRow);
     }

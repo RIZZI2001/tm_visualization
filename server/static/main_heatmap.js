@@ -610,7 +610,7 @@ async function visualizeHeatMap() {
                             const placeFontSize = Math.max(8, Math.min(customCellHeight * 0.9, 16));
                             // Use location name if available, otherwise fall back to original label
                             const displayLabel = (locationNames && locationNames[idx]) ? locationNames[idx] : label;
-                            const textColor = hexToLightness(avgColor(avgVals[idx])) > 40 ? '#000000' : '#ffffff';
+                            const textColor = hexToLightness(avgColor(avgVals[idx])) > 50 ? '#000000' : '#ffffff';
                             const textElem = placeLabelsG.append('text')
                                 .attr('x', '98%')
                                 .attr('y', accHeight - customCellHeight * 0.65)

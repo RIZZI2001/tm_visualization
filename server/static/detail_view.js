@@ -799,23 +799,22 @@ async function createDetailViewGrid() {
         horizontalPayload.specs.sample.average = !AXES_SWAPPED ? "place" : "time";
 
         // Fetch all three datasets
-        const [detailResp, verticalResp, horizontalResp] = await Promise.all([
-            fetchCSVData(detailPayload),
-            fetchCSVData(verticalPayload),
-            fetchCSVData(horizontalPayload)
-        ]);
+        const detailResp = await fetchCSVData(detailPayload);
+        const detailRows = parseAndValidateCSV(detailResp.csv);
+        const verticalRows = averageCSV(detailRows, AXES_SWAPPED ? 'row' : 'column');
+        const horizontalRows = averageCSV(detailRows, AXES_SWAPPED ? 'column' : 'row');
 
         // Render detail heatmap (top right) - 2D full data
         if (detailResp && detailResp.csv) {
-            const result = parseAndRenderHeatmap(detailResp.csv, cellTopRight, 'main');
+            const result = parseAndRenderHeatmap(detailRows, cellTopRight, 'main');
             detailMainHeatmapSVG = result.svg;
             LEGEND_TEXT = createLegend(result.valueRange.min, result.valueRange.max);
             VALUE_RANGES.detail_main = result.valueRange;
         }
 
         // Render vertical heatmap (top left) - averaged data as 1D with Y labels
-        if (verticalResp && verticalResp.csv) {
-            const result = parseAndRenderHeatmap(verticalResp.csv, cellTopLeft, 'vertical');
+        if (verticalRows && verticalRows.length > 1) {
+            const result = parseAndRenderHeatmap(verticalRows, cellTopLeft, 'vertical');
             detailVerticalHeatmapSVG = result.svg;
             const {labels, colors} = result;
             createDetailViewLabels(cellTopLeft, labels, 'vertical', colors);
@@ -823,8 +822,8 @@ async function createDetailViewGrid() {
         }
 
         // Render horizontal row (bottom right) - averaged data as 1D with X labels
-        if (horizontalResp && horizontalResp.csv) {
-            const result = parseAndRenderHeatmap(horizontalResp.csv, cellBottomRight, 'horizontal');
+        if (horizontalRows && horizontalRows.length > 1) {
+            const result = parseAndRenderHeatmap(horizontalRows, cellBottomRight, 'horizontal');
             detailHorizontalHeatmapSVG = result.svg;
             const {labels, colors} = result;
             createDetailViewLabels(cellBottomRight, labels, 'horizontal', colors);
@@ -918,7 +917,7 @@ function createDetailViewLabels(cellElement, labels, direction, colors) {
                 const labelEl = document.createElement('div');
                 const topPercent = (accHeight / totalHeight) * 100;
                 const heightPercent = (customCellHeight / totalHeight) * 100;
-                const textColor = hexToLightness(colors[idx]) > 40 ? '#000000' : '#ffffff';
+                const textColor = hexToLightness(colors[idx]) > 50 ? '#000000' : '#ffffff';
                 const fontSize = Math.max(9, Math.min(customCellHeight * 0.4, 14));
                 
                 labelEl.style.position = 'absolute';

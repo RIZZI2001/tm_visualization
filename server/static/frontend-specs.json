@@ -45,7 +45,7 @@
   "showPlaceNameLabels": true,
   "sortCorrelations": true,
   "topicColorScale": "Inferno",
-  "topicColorScaleType": "linear",
+  "topicColorScaleType": "squareRoot",
   "metadataColorScale": "Purple",
   "metadataColorScaleType": "linear",
   "otuColorScale": "Viridis",

@@ -309,9 +309,31 @@ function getHeatmapTooltip() {
     return tooltip;
 }
 
-function parseAndRenderHeatmap(csvData, cellElement, kind) {
-    const rows = parseAndValidateCSV(csvData);
+function averageCSV(rows, direction) {
+    if (!rows || rows.length < 2) return rows;
+    
+    let result = [rows[0].slice()];
+    
+    if (direction === 'row') {
+        for (let i = 1; i < rows.length; i++) {
+            const values = rows[i].slice(1).map(parseFloat).filter(v => !isNaN(v));
+            const avg = values.length ? values.reduce((a, b) => a + b) / values.length : 0;
+            result.push([rows[i][0], avg.toString()]);
+        }
+    } else if (direction === 'column') {
+        const averagedRow = [rows[0][0]];
+        for (let j = 1; j < rows[0].length; j++) {
+            const values = rows.slice(1).map(r => parseFloat(r[j])).filter(v => !isNaN(v));
+            const avg = values.length ? values.reduce((a, b) => a + b) / values.length : 0;
+            averagedRow.push(avg.toString());
+        }
+        result.push(averagedRow);
+    }
+    if(result.length < result[0].length) { result = transpose(result); }
+    return result;
+}
 
+function parseAndRenderHeatmap(rows, cellElement, kind) {
     let rowLabels = rows[0].slice(1);
     let colLabels = rows.slice(1).map(r => r[0]);
 
@@ -1267,7 +1289,7 @@ function createLabelBoxes(labels, width, height, idPrefix = '', colors = []) {
             .attr('height', height)
             .attr('fill', 'none')
         
-        const textColor = colors.length > 0 ? (hexToLightness(colors[idx]) > 40 ? '#000000' : '#ffffff') : 'var(--primary-light)';
+        const textColor = colors.length > 0 ? (hexToLightness(colors[idx]) > 50 ? '#000000' : '#ffffff') : 'var(--primary-light)';
         // Text label with word wrapping
         const textEl = labelGroup.append('text')
             .attr('class', 'x-label-text')
@@ -1341,7 +1363,7 @@ function createVerticalLabelBoxes(labels, width, height, idPrefix = '', colors =
             .attr('height', customCellHeight)
             .attr('fill', 'none')
         
-        const textColor = colors.length > 0 ? (hexToLightness(colors[idx]) > 40 ? '#000000' : '#ffffff') : 'var(--primary-light)';
+        const textColor = colors.length > 0 ? (hexToLightness(colors[idx]) > 50 ? '#000000' : '#ffffff') : 'var(--primary-light)';
         // Text label with word wrapping
         const textEl = labelGroup.append('text')
             .attr('class', 'y-label-text')

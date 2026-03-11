@@ -9,7 +9,7 @@ let originalOptionsData = {};
 const optionsTabs = {
     Data: ['dataSet', 'topicSet', 'metadataOptions', 'customSiteOrder', 'placeCategories'],
     UI: ['scaleCellsByDistance', 'showPlaceNameLabels', 'sortCorrelations', 'fetchDelayExpandedRow', 'barchartItems', 'maxZoom', 'zoomSpeed'],
-    Coloring: ['topicColorScale', 'topicColorScaleType', 'metadataColorScale', 'metadataColorScaleType', 'otuColorScale', 'otuColorScaleType', 'invertColorScale', 'normalizeColorScalesSeparately'],
+    Coloring: ['normalizeColorScalesSeparately', 'topicColorScale', 'topicColorScaleType', 'metadataColorScale', 'metadataColorScaleType', 'otuColorScale', 'otuColorScaleType', 'invertColorScale'],
     Defaults: ['defaultPlaceCategory', 'defaultPlaceInverted', 'defaultHiddenSites', 'defaultActiveMetadata', 'automaticItscRename', 'automaticItscRenameThreshold', 'initMapCircleRadius'],
     Reset: []
 };

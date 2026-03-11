@@ -787,8 +787,9 @@ async function visualizeHeatMap() {
                             const saveEdit = () => {
                                 const newText = input.value || currentText;
                                 d3.select(textClone).text(newText);
-                                try{input.remove();}catch(e){}
                                 const oldname = nameOfTopic(rowLabels[i]);
+                                input.removeEventListener('blur', saveEdit);
+                                try{input.remove();}catch(e){}
                                 renameTopic(i, textClone, oldname);
                             };
                             input.addEventListener('blur', saveEdit);

@@ -160,10 +160,13 @@ function createDualHeatmap(heatmapsArray, container) {
 
     // Helper function to render column labels with 90° rotation
     function renderColumnLabels(xStart, colCount) {
-        const fontSize = Math.max(8, Math.min(12, 150 / Math.max(rowCount, colCount)));
+        const maxFontSize = Math.max(8, Math.min(12, 150 / Math.max(rowCount, colCount)));
         for (let col = 0; col < colCount; col++) {
             const x = xStart + col * cellSize + cellSize / 2;
             const y = headingHeight + topLabelHeight - 10;
+            const textContent = (TOPIC_NAMES[colCount] && TOPIC_NAMES[colCount][col]) || `Topic ${col}`;
+            const fontSize = Math.min(maxFontSize, maxFontSize / textContent.length * 13);
+
             const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
             text.setAttribute('x', x);
             text.setAttribute('y', y);
@@ -173,7 +176,7 @@ function createDualHeatmap(heatmapsArray, container) {
             text.setAttribute('font-weight', 'bold');
             text.setAttribute('fill', '#000');
             text.setAttribute('transform', `rotate(-90 ${x} ${y})`);
-            text.textContent = (TOPIC_NAMES[colCount] && TOPIC_NAMES[colCount][col]) || `Topic ${col}`;
+            text.textContent = textContent;
             svg.appendChild(text);
         }
     }
@@ -208,11 +211,13 @@ function createDualHeatmap(heatmapsArray, container) {
     }
 
     // Row labels (always display)
-    const fontSize = Math.max(8, Math.min(12, 150 / Math.max(rowCount, colCount1, colCount2)));
+    const maxFontSize = Math.max(8, Math.min(12, 150 / Math.max(rowCount, colCount1, colCount2)));
     for (let row = 0; row < rowCount; row++) {
         const x = grid1Width + labelWidth / 2;
         const y = headingHeight + topLabelHeight + row * cellSize + cellSize / 2;
-        
+        const textContent = (TOPIC_NAMES[TOPIC_SET] && TOPIC_NAMES[TOPIC_SET][row]) || `Topic ${row}`;
+        const fontSize = Math.min(maxFontSize, maxFontSize / textContent.length * 13);
+
         const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         text.setAttribute('x', x);
         text.setAttribute('y', y);
@@ -221,7 +226,7 @@ function createDualHeatmap(heatmapsArray, container) {
         text.setAttribute('font-size', fontSize);
         text.setAttribute('font-weight', 'bold');
         text.setAttribute('fill', '#000');
-        text.textContent = (TOPIC_NAMES[TOPIC_SET] && TOPIC_NAMES[TOPIC_SET][row]) || `Topic ${row}`;
+        text.textContent = textContent;
         svg.appendChild(text);
     }
 

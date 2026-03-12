@@ -512,7 +512,8 @@ function parseAndRenderHeatmap(rows, cellElement, kind) {
                     
                     // Show tooltip with row label, col label, and value
                     const tooltip = getHeatmapTooltip();
-                    const valueStr = !isNaN(val) ? val.toFixed(3) : 'N/A';
+                    let valueLabel = CURRENT_VIEW === 'metadata' ? 'Value' : 'Importance';
+                    let valueStr = isNaN(val) ?  'N/A' : (CURRENT_VIEW === 'metadata' ? val.toFixed(3) : (100 * val).toFixed(3) + '%');
                     
                     let rowLabel = rowLabels[row] || 'Unknown';
                     let colLabel = colLabels[col] || 'Unknown';
@@ -528,7 +529,7 @@ function parseAndRenderHeatmap(rows, cellElement, kind) {
                         ? (SITE_NAMES[parseInt(placeLabel.replace('s', '')) - 1] || placeLabel)
                         : placeLabel;
 
-                    tooltip.html(`<strong>Time:</strong> ${timeLabel}<br><strong>Place:</strong> ${placeLabel}<br><strong>Value:</strong> ${valueStr}`).style('display', 'block');
+                    tooltip.html(`<strong>Time:</strong> ${timeLabel}<br><strong>Place:</strong> ${placeLabel}<br><strong>${valueLabel}:</strong> ${valueStr}`).style('display', 'block');
                     
                     // Position tooltip in screen coordinates
                     const tooltipWidth = tooltip.node().offsetWidth;
@@ -595,8 +596,9 @@ function parseAndRenderHeatmap(rows, cellElement, kind) {
                     hoveredIndex = row;
                     const val = matrix[0][row]; // Get value from first column
                     const label = rowLabels[row] || 'Unknown';
-                    const valueStr = !isNaN(val) ? val.toFixed(3) : 'N/A';
-                    
+                    let valueLabel = CURRENT_VIEW === 'metadata' ? 'Value' : 'Importance';
+                    let valueStr = isNaN(val) ?  'N/A' : (CURRENT_VIEW === 'metadata' ? val.toFixed(3) : (100 * val).toFixed(3) + '%');
+
                     // Determine label text and category based on label format
                     let displayLabel = label;
                     let categoryName = 'Value';
@@ -617,7 +619,7 @@ function parseAndRenderHeatmap(rows, cellElement, kind) {
                     highlightCell.style.display = 'block';
                     
                     const tooltip = getHeatmapTooltip();
-                    tooltip.html(`<strong>${categoryName}:</strong> ${displayLabel}<br><strong>${categoryName == 'Time' ? 'Place' : 'Time'}:</strong> averaged<br><strong>Value:</strong> ${valueStr}`).style('display', 'block');
+                    tooltip.html(`<strong>${categoryName}:</strong> ${displayLabel}<br><strong>${categoryName == 'Time' ? 'Place' : 'Time'}:</strong> averaged<br><strong>${valueLabel}:</strong> ${valueStr}`).style('display', 'block');
                     
                     const tooltipWidth = tooltip.node().offsetWidth;
                     const nearRightEdge = svgRect.right + tooltipWidth + 5 > window.innerWidth * 0.95;
@@ -664,11 +666,12 @@ function parseAndRenderHeatmap(rows, cellElement, kind) {
                     hoveredIndex = col;
                     const val = matrix[col][0]; // Get value from first row
                     const label = colLabels[col] || 'Unknown';
-                    const valueStr = !isNaN(val) ? val.toFixed(3) : 'N/A';
-                    
+                    let valueLabel = CURRENT_VIEW === 'metadata' ? 'Value' : 'Importance';
+                    let valueStr = isNaN(val) ?  'N/A' : (CURRENT_VIEW === 'metadata' ? val.toFixed(3) : (100 * val).toFixed(3) + '%');
+
                     // Determine label text and category based on label format
                     let displayLabel = label;
-                    let categoryName = 'Value';
+                    let categoryName;
                     
                     if (X_CATEGORY === 'place') {
                         categoryName = 'Place';
@@ -687,7 +690,7 @@ function parseAndRenderHeatmap(rows, cellElement, kind) {
                     highlightCell.style.display = 'block';
                     
                     const tooltip = getHeatmapTooltip();
-                    tooltip.html(`<strong>${categoryName}:</strong> ${displayLabel}<br><strong>${categoryName == 'Time' ? 'Place' : 'Time'}:</strong> averaged<br><strong>Value:</strong> ${valueStr}`).style('display', 'block');
+                    tooltip.html(`<strong>${categoryName}:</strong> ${displayLabel}<br><strong>${categoryName == 'Time' ? 'Place' : 'Time'}:</strong> averaged<br><strong>${valueLabel}:</strong> ${valueStr}`).style('display', 'block');
                     
                     const tooltipWidth = tooltip.node().offsetWidth;
                     const nearRightEdge = (screenLeft + cellWidth) + tooltipWidth + 5 > window.innerWidth * 0.95;
@@ -2117,7 +2120,6 @@ function createOverlay(className, title, contentElement, footerElement, onBackCl
 }
 
 function createLegend(vmin, vmax) {
-    console.log("Create legend");
     let scaleType;
     if (CURRENT_VIEW === 'metadata') {
         scaleType = SPECS.metadataColorScaleType;
@@ -2172,6 +2174,10 @@ function createLegend(vmin, vmax) {
     for(let i = 0; i < labelcount; i++){
         const val = vmin + step * i;
         let pos = interpolateScale(i/(labelcount - 1), false, scaleType) * 90 + 5; // match the gradient stops
+        let displayVal = (Math.round(val*magnitude)/magnitude);
+        if(CURRENT_VIEW !== 'metadata') {
+            displayVal = (displayVal * 100) + '%';
+        }
         const textEl = legendSvg.append('text')
             .attr('x', `${pos}%`)
             .attr('y', '75%')
@@ -2180,7 +2186,7 @@ function createLegend(vmin, vmax) {
             .style('font-size', '14px')
             .style('font-weight', 'bold')
             .style('fill', 'var(--text-light)')
-            .text(Math.round(val*magnitude)/magnitude);
+            .text(displayVal);
         legendValueTexts.push(textEl.node());
     }
 
@@ -2206,7 +2212,11 @@ function updateLegendValues(rangeType) {
     const step = (range.max - range.min) / 4;
     const values = [range.min, range.min + step, range.min + step * 2, range.min + step * 3, range.max];
     const magnitude = Math.pow(10, 2 - Math.floor(Math.log10((range.max - range.min) * 2)));
+    let displayValues = values.map(v => (Math.round(v * magnitude) / magnitude));
+    if(CURRENT_VIEW !== 'metadata') {
+        displayValues = displayValues.map(v => (v * 100) + '%');
+    }
     LEGEND_TEXT.forEach((textElement, i) => {
-        d3.select(textElement).text(Math.round(values[i] * magnitude) / magnitude);
+        d3.select(textElement).text(displayValues[i]);
     });
 }

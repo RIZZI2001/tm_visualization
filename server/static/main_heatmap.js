@@ -344,7 +344,7 @@ async function visualizeHeatMap() {
      */
     function showTooltip(rowLabel, colLabel, value, isCollapsed, cellRect) {
         const tooltip = getHeatmapTooltip();
-        const valueStr = !isNaN(value) ? value.toFixed(3) : 'N/A';
+        const valueStr = !isNaN(value) ? (value * 100).toFixed(3) + '%' : 'N/A';
         
         let content = '';
         
@@ -353,12 +353,12 @@ async function visualizeHeatMap() {
             if (isCollapsed) {
                 // Collapsed: showing topic, colLabel is place
                 content += `${nameOfTopic(rowLabel)}<br>`;
-                content += `<strong>Place:</strong> ${placeName}<br><strong>Value:</strong> ${valueStr}`;
+                content += `<strong>Place:</strong> ${placeName}<br><strong>Importance:</strong> ${valueStr}`;
             } else {
                 // Expanded mini heatmap: rowLabel is time, colLabel is place
                 const formattedDate = formatDate(rowLabel);
                 content += `<strong>Date:</strong> ${formattedDate}<br>`;
-                content += `<strong>Place:</strong> ${placeName}<br><strong>Value:</strong> ${valueStr}`;
+                content += `<strong>Place:</strong> ${placeName}<br><strong>Importance:</strong> ${valueStr}`;
             }
         } else {
             // Normal: columns are dates, rows in mini are places
@@ -366,12 +366,12 @@ async function visualizeHeatMap() {
             if (isCollapsed) {
                 // Collapsed: showing topic, colLabel is date
                 content += `${nameOfTopic(rowLabel)}<br>`;
-                content += `<strong>Date:</strong> ${formattedDate}<br><strong>Value:</strong> ${valueStr}`;
+                content += `<strong>Date:</strong> ${formattedDate}<br><strong>Importance:</strong> ${valueStr}`;
             } else {
                 // Expanded mini heatmap: rowLabel is site/place, colLabel is date
                 const placeName = SPECS.showPlaceNameLabels ? SITE_NAMES[parseInt(rowLabel.replace('s', '')) -1] : rowLabel;
                 content += `<strong>Place:</strong> ${placeName}<br>`;
-                content += `<strong>Date:</strong> ${formattedDate}<br><strong>Value:</strong> ${valueStr}`;
+                content += `<strong>Date:</strong> ${formattedDate}<br><strong>Importance:</strong> ${valueStr}`;
             }
         }
         

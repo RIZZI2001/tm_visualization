@@ -1264,14 +1264,14 @@ async function fetchCompositionValues() {
             const BC_name = BC_names[i];
             const BC_value = parseFloat(BC_values[i]);
             if (!isNaN(BC_value)) {
-                BC_Data[BC_name] = Math.round(BC_value * 1000) / 1000; // Round to 3 decimal places
+                BC_Data[BC_name] = BC_value;
             }
         }
         
         // Sort by value (highest first) - return as array of [name, value] pairs to maintain sort order
         const sortedBC = Object.entries(BC_Data).sort((a, b) => b[1] - a[1]);
         sortedBC.splice(SPECS.barchartItems);
-        sortedBC.unshift(['name', 'value']);
+        sortedBC.unshift(['name', 'Importance']);
         BC_DATABASE = sortedBC;
 
         if(CURRENT_VIEW === 'topic') {
@@ -1287,6 +1287,7 @@ async function fetchCompositionValues() {
                 }
                 
                 const mergedHeader = [BC_DATABASE[0][0], BC_DATABASE[0][1], ...taxonomyHeader.slice(1)];
+                console.log('Merged Header:', mergedHeader);
                 BC_DATABASE[0] = mergedHeader;
                 for (let i = 1; i < BC_DATABASE.length; i++) {
                     const otuName = BC_DATABASE[i][0];
@@ -1410,9 +1411,6 @@ async function populateCorrelationBarChart(correlationType, title, detailLeftCon
         
         barItem.appendChild(barContainer);
         barItem.appendChild(label);
-        
-        // Store the value as a data attribute
-        barItem.dataset.value = item.value;
         
         let hoverTimeout = null;
         let isHovering = false;
@@ -1612,9 +1610,6 @@ function populateCompositionBarChart(container) {
             barItem.appendChild(bar);
             barItem.appendChild(label);
             
-            // Store the value as a data attribute
-            barItem.dataset.value = item.value;
-            
             let hoverTimeout = null;
             let isHovering = false;
             
@@ -1673,7 +1668,9 @@ function showBCTooltip(itemName, barElement) {
     }
     const BC_id = BC_DATABASE.findIndex(entry => entry[0] === itemName);
     for (let i = 1; i < BC_DATABASE[0].length; i++) {
-        content += `<strong>${BC_DATABASE[0][i]}:</strong> ${BC_DATABASE[BC_id][i]}<br>`;
+        let displayValue = BC_DATABASE[BC_id][i];
+        if( BC_DATABASE[0][i] === 'Importance') { displayValue = Math.round(BC_DATABASE[BC_id][i] * 1000000) / 10000 + '%'; }
+        content += `<strong>${BC_DATABASE[0][i]}:</strong> ${displayValue}<br>`;
     }
     tooltip.html(content).style('display', 'block');
     

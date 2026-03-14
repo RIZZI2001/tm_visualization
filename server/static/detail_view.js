@@ -215,8 +215,8 @@ async function showDetailView(detailType, setCheckBoxes, activeElements, history
 
     chartContainer.style.visibility = 'hidden';
     detailViewContainer.style.display = 'flex';
-    
-    if(DETAIL_MAP_MODE === null) {    
+    console.log(DETAIL_MAP_MODE);
+    if(DETAIL_MAP_MODE.map === 'heatmap') {    
         await createDetailViewGrid();
     } else {
         await openMap();
@@ -279,8 +279,8 @@ async function openMap() {
     exitButton.style.width = '100px';
     exitButton.textContent = 'Exit Map';
     exitButton.addEventListener('click', () => {
-        DETAIL_MAP_MODE = null;
-        localStorage.setItem('DETAIL_MAP_MODE', DETAIL_MAP_MODE);
+        DETAIL_MAP_MODE.map = 'heatmap';
+        localStorage.setItem('DETAIL_MAP_MODE', JSON.stringify(DETAIL_MAP_MODE));
         createDetailViewGrid();
     });
     mapHeader.appendChild(exitButton);
@@ -295,11 +295,15 @@ async function openMap() {
     switchSliderModeButton.className = 'map-switch-slider-mode-btn detail-map-btn';
     switchSliderModeButton.textContent = DETAIL_MAP_MODE === 'range' ? 'Switch Single' : 'Switch Range';
     switchSliderModeButton.addEventListener('click', () => {
-        DETAIL_MAP_MODE = (DETAIL_MAP_MODE === 'range') ? 'single' : 'range';
-        localStorage.setItem('DETAIL_MAP_MODE', DETAIL_MAP_MODE);
+        DETAIL_MAP_MODE.mode = (DETAIL_MAP_MODE.mode === 'range') ? 'single' : 'range';
+        localStorage.setItem('DETAIL_MAP_MODE', JSON.stringify(DETAIL_MAP_MODE));
         timeSliderContainer.innerHTML = '';
-        switchSliderModeButton.textContent = DETAIL_MAP_MODE === 'range' ? 'Switch Single' : 'Switch Range';
-        initializeDateRangeSlider(ACTIVE_DATES, timeSliderContainer, 'detail', DETAIL_MAP_MODE === 'single');
+        switchSliderModeButton.textContent = DETAIL_MAP_MODE.mode === 'range' ? 'Switch Single' : 'Switch Range';
+        initializeDateRangeSlider(ACTIVE_DATES, timeSliderContainer, 'detail', DETAIL_MAP_MODE.mode === 'single');
+        if(DETAIL_MAP_MODE.mode === 'single') {
+            MAP_MAX_DATE = MAP_MIN_DATE;
+            detailTimeSliderChanged();
+        }
     });
     timeSliderSection.appendChild(switchSliderModeButton);
     timeSliderSection.appendChild(timeSliderContainer);
@@ -335,7 +339,7 @@ async function openMap() {
     }
     MAP_MIN_MAX = {min: minValue, max: maxValue};
     ACTIVE_DATES = MAP_DATA.slice(1).map(row => row[0]);
-    initializeDateRangeSlider(ACTIVE_DATES, timeSliderContainer, 'detail', DETAIL_MAP_MODE === 'single');
+    initializeDateRangeSlider(ACTIVE_DATES, timeSliderContainer, 'detail', DETAIL_MAP_MODE.mode === 'single');
 
     const link = document.createElement('link');
     link.rel = 'stylesheet';
@@ -352,7 +356,7 @@ function detailTimeSliderChanged() {
     localStorage.setItem('MAP_MIN_DATE', MAP_MIN_DATE);
     localStorage.setItem('MAP_MAX_DATE', MAP_MAX_DATE);
     const activeDateSet = new Set(ACTIVE_DATES.slice(ACTIVE_DATES.indexOf(MAP_MIN_DATE), ACTIVE_DATES.indexOf(MAP_MAX_DATE) + 1));
-    const mapDataSlice = [MAP_DATA[0], ...MAP_DATA.slice(1).filter(row => activeDateSet.has(formatDate(row[0])))];
+    const mapDataSlice = [MAP_DATA[0], ...MAP_DATA.slice(1).filter(row => activeDateSet.has(row[0]))];
     MAP_CIRCLES.forEach(circle => {
         const siteId = circle.siteId;
         const siteColIdx = MAP_DATA[0].indexOf(`${siteId}`);
@@ -498,10 +502,10 @@ async function initializeMap() {
                 fillOpacity: MAP_OPTIONS.opacity,
                 pane: 'shadowPane'
             })
-            .bindPopup(`<strong>${siteName}</strong><br>[${lat}, ${lng}]<br>Value: ${getValueForSite(siteId)}`)
+            .bindPopup(``)
             .addTo(map);
             marker.on('popupopen', function() {
-                marker.setPopupContent(`<strong>${siteName}</strong><br>[${lat}, ${lng}]<br>Value: ${getValueForSite(siteId)}`);
+                marker.setPopupContent(`<strong>${siteName}</strong><br>[${lat}, ${lng}]<br>${getValueForSite(siteId)}`);
             });
             circle.marker = marker; // Link marker to circle for easy access when updating popup content
             MAP_CIRCLES.push(circle);
@@ -509,8 +513,12 @@ async function initializeMap() {
     });
 
     function getValueForSite(siteId) {
-        const value = MAP_SITE_VALUES[siteId];
-        return (value !== undefined && value !== null) ? value.toFixed(2) : 'N/A';
+        let value = MAP_SITE_VALUES[siteId];
+        value = (value !== undefined && value !== null) ? value : 'N/A';
+        if(CURRENT_VIEW === 'metadata') {
+            return `Value: ${value.toFixed(3)}`;
+        }
+        return `Importance: ${(value * 100).toFixed(2)} %`;
     }
 
     detailTimeSliderChanged();
@@ -737,8 +745,10 @@ async function createDetailViewGrid() {
     mapButton.textContent = 'Map';
     
     mapButton.addEventListener('click', () => {
-        DETAIL_MAP_MODE = 'range';
-        localStorage.setItem('DETAIL_MAP_MODE', DETAIL_MAP_MODE);
+        if(DETAIL_MAP_MODE.map === 'heatmap') {
+            DETAIL_MAP_MODE = {map: 'circles', mode: DETAIL_MAP_MODE.mode};
+        }
+        localStorage.setItem('DETAIL_MAP_MODE', JSON.stringify(DETAIL_MAP_MODE));
         openMap();
     });
     
@@ -784,11 +794,7 @@ async function createDetailViewGrid() {
     container.appendChild(gridWrapper);
 
     try {
-        const basePayload = detailViewBasePayload();
-
-        // Fetch detail data (mini heatmap) - full Place x Time data
-        const detailPayload = JSON.parse(JSON.stringify(basePayload));
-        detailPayload.specs.sample.average = "false";
+        const detailPayload = detailViewBasePayload();
 
         // Fetch all three datasets
         const detailResp = await fetchCSVData(detailPayload);
@@ -1287,7 +1293,6 @@ async function fetchCompositionValues() {
                 }
                 
                 const mergedHeader = [BC_DATABASE[0][0], BC_DATABASE[0][1], ...taxonomyHeader.slice(1)];
-                console.log('Merged Header:', mergedHeader);
                 BC_DATABASE[0] = mergedHeader;
                 for (let i = 1; i < BC_DATABASE.length; i++) {
                     const otuName = BC_DATABASE[i][0];
@@ -1423,7 +1428,7 @@ async function populateCorrelationBarChart(correlationType, title, detailLeftCon
                     clearTimeout(hoverTimeout);
                 }
                 currentTooltipBar = item.label;
-                showMetadataTooltip(item, barItem);
+                showCorrTooltip(item, barItem);
             }
         });
         
@@ -1513,9 +1518,9 @@ function detailViewBasePayload() {
     };
 }
 
-function showMetadataTooltip(item, barElement) {
+function showCorrTooltip(item, barElement) {
     const tooltip = getHeatmapTooltip();
-    const content = `<strong>${item.label}</strong><br><strong>Correlation:</strong> ${item.value.toFixed(3)}`;
+    const content = `<strong>${item.label}</strong><br><strong>Correlation:</strong> ${(item.value * 100).toFixed(2)} %`;
     tooltip.html(content).style('display', 'block');
     
     const barRect = barElement.getBoundingClientRect();
@@ -1621,7 +1626,7 @@ function populateCompositionBarChart(container) {
                         clearTimeout(hoverTimeout);
                     }
                     currentTooltipBar = item.label;
-                    showBCTooltip(item.label, barItem);
+                    showCompTooltip(item.label, barItem);
                 }
             });
             
@@ -1658,7 +1663,7 @@ function populateCompositionBarChart(container) {
     });
 }
 
-function showBCTooltip(itemName, barElement) {
+function showCompTooltip(itemName, barElement) {
     const tooltip = getHeatmapTooltip();
     let content = '';
     if(CURRENT_VIEW === 'otu') {

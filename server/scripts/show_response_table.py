@@ -22,7 +22,7 @@ API_URL = "http://127.0.0.1:8000/data"
 
 def fetch_response():
     payload = json.loads(REQ_PATH.read_text())
-    resp = requests.get(API_URL, params={"attribute": json.dumps(payload)})
+    resp = requests.post(API_URL, json=payload)
     resp.raise_for_status()
     # The API may return plain CSV text or a JSON object like {"csv": "...", "axis": [...]}
     text = resp.text
@@ -75,7 +75,6 @@ def main():
 
     if args.html:
         save_html(df)
-
 
 if __name__ == '__main__':
     main()

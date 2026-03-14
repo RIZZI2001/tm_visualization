@@ -72,7 +72,7 @@ let PAN_DETAIL_X = 0;
 let ZOOM_DETAIL_Y = 1;
 let PAN_DETAIL_Y = 0;
 
-let DETAIL_MAP_MODE;
+let DETAIL_MAP_MODE = {map: 'heatmap', mode: 'range'}; // 'heatmap' or 'circles', and 'range' or 'single'
 let MAP_DATA;
 let MAP_CIRCLES = [];
 let MAP_MIN_MAX = {min: 0, max: 0};
@@ -251,7 +251,7 @@ async function initializeMainView(historyEntry = true) {
         await loadSitesData();
         ALL_DATES = await loadAllDates();
         CURRENT_VIEW = localStorage.getItem('CURRENT_VIEW') || 'main';
-        DETAIL_MAP_MODE = localStorage.getItem('DETAIL_MAP_MODE') === 'null' ? null : localStorage.getItem('DETAIL_MAP_MODE');
+        DETAIL_MAP_MODE = localStorage.getItem('DETAIL_MAP_MODE') ? JSON.parse(localStorage.getItem('DETAIL_MAP_MODE')) : {map: 'heatmap', mode: 'range'};
         ACTIVE_ELEMENTS_DETAIL = JSON.parse(localStorage.getItem('ACTIVE_ELEMENTS_DETAIL')) || [];
 
         DATA_SET = SPECS.dataSet;

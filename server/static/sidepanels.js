@@ -435,19 +435,19 @@ function populateSiteSelectionPanel() {
             if (checkbox.checked) {
                 if (!ACTIVE_SITES.includes(siteId)) {
                     ACTIVE_SITES.push(siteId);
-                    setPlaceSpacingAndOrder();
                 }
             } else {
                 const idx = ACTIVE_SITES.indexOf(siteId);
                 if (idx > -1) ACTIVE_SITES.splice(idx, 1);
             }
+            setPlaceSpacingAndOrder();
 
             localStorage.setItem('ACTIVE_SITES', JSON.stringify(ACTIVE_SITES));
             
             if(CURRENT_VIEW === 'main') {
                 initializeMainView();
             } else if(CURRENT_VIEW === 'topic' || CURRENT_VIEW === 'otu' || CURRENT_VIEW === 'metadata') {
-                if(DETAIL_MAP_MODE === null) {
+                if(DETAIL_MAP_MODE.map === 'heatmap') {
                     await createDetailViewGrid();
                 } else {
                     await openMap();
@@ -474,7 +474,7 @@ function populateSiteSelectionPanel() {
             if(CURRENT_VIEW === 'main') {
                 initializeMainView();
             } else if(CURRENT_VIEW === 'topic' || CURRENT_VIEW === 'otu' || CURRENT_VIEW === 'metadata') {
-                if(DETAIL_MAP_MODE === null) {
+                if(DETAIL_MAP_MODE.map === 'heatmap') {
                     await createDetailViewGrid();
                 } else {
                     await openMap();
@@ -498,7 +498,7 @@ function populateSiteSelectionPanel() {
             if(CURRENT_VIEW === 'main') {
                 initializeMainView();
             } else if(CURRENT_VIEW === 'topic' || CURRENT_VIEW === 'otu' || CURRENT_VIEW === 'metadata') {
-                if(DETAIL_MAP_MODE === null) {
+                if(DETAIL_MAP_MODE.map === 'heatmap') {
                     await createDetailViewGrid();
                 } else {
                     await openMap();
@@ -517,7 +517,7 @@ function populateSiteSelectionPanel() {
             if(CURRENT_VIEW === 'main') {
                 initializeMainView();
             } else if(CURRENT_VIEW === 'topic' || CURRENT_VIEW === 'otu' || CURRENT_VIEW === 'metadata') {
-                if(DETAIL_MAP_MODE === null) {
+                if(DETAIL_MAP_MODE.map === 'heatmap') {
                     await createDetailViewGrid();
                 } else {
                     await openMap();

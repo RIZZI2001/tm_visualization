@@ -831,6 +831,7 @@ function setActiveDates(days, formatted = false) {
 }
 
 function setTimeSpacing() {
+    //console.log('Setting time spacing with CURRENT_VIEW =', CURRENT_VIEW, 'and AXES_SWAPPED =', AXES_SWAPPED);
     // Helper function to convert DD-MM-YYYY string to Date object
     function dateStringToDate(dateStr) {
         const parts = dateStr.split('-');

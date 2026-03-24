@@ -537,7 +537,7 @@ function hideRulerReadout(){
 
             const relativeX = screenX - lineGraphRect.left;
             const nearRightEdge = relativeX > lineGraphRect.width * 0.8;
-            const readout = createReadout(readoutX, readoutY, `${name}: ${dataPoint.value.toFixed(3)}`, nearRightEdge);
+            const readout = createReadout(readoutX, readoutY, `${name}: ${formatNumberWithPrecision(dataPoint.value)}`, nearRightEdge);
             readoutsContainer.appendChild(readout);
         });
         

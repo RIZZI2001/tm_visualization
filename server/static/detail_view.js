@@ -514,11 +514,13 @@ async function initializeMap() {
 
     function getValueForSite(siteId) {
         let value = MAP_SITE_VALUES[siteId];
-        value = (value !== undefined && value !== null) ? value : 'N/A';
-        if(CURRENT_VIEW === 'metadata') {
-            return `Value: ${value.toFixed(3)}`;
+        if (value === undefined || value === null) {
+            return 'Value: N/A';
         }
-        return `Importance: ${(value * 100).toFixed(2)} %`;
+        if(CURRENT_VIEW === 'metadata') {
+            return `Value: ${formatNumberWithPrecision(value)}`;
+        }
+        return `Importance: ${formatNumberWithPrecision(value * 100)} %`;
     }
 
     detailTimeSliderChanged();

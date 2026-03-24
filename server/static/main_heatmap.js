@@ -344,7 +344,7 @@ async function visualizeHeatMap() {
      */
     function showTooltip(rowLabel, colLabel, value, isCollapsed, cellRect) {
         const tooltip = getHeatmapTooltip();
-        const valueStr = !isNaN(value) ? (value * 100).toFixed(3) + '%' : 'N/A';
+        const valueStr = formatNumberWithPrecision(value * 100) + '%';
         
         let content = '';
         

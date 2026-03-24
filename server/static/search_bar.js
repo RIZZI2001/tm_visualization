@@ -39,15 +39,27 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const results = searchItems(searchBar.value);
             
-            // Display search results
-            showSearchResults(results);
+            // Check for exact match
+            const exactMatch = results.find(result => result.name === searchBar.value);
             
-            // If only one result, click it
-            if (results.length === 1 && dropdownMenu) {
-                const resultItem = dropdownMenu.querySelector('.search-dropdown-item');
-                if (resultItem) {
-                    resultItem.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
-                }
+            if (exactMatch) {
+                // Click the exact match
+                openDetailView(exactMatch.path, exactMatch.name, exactMatch.depth);
+                closeDropdown();
+                closeAllSubmenus();
+                searchBar.blur();
+                searchBar.value = exactMatch.name;
+            } else if (results.length === 1) {
+                // If only one result, click it
+                const result = results[0];
+                openDetailView(result.path, result.name, result.depth);
+                closeDropdown();
+                closeAllSubmenus();
+                searchBar.blur();
+                searchBar.value = result.name;
+            } else {
+                // Display all search results
+                showSearchResults(results);
             }
         }
     });

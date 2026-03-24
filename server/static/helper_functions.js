@@ -184,6 +184,20 @@ function formatDate(dateString) {
     return `${day}-${month}-${year}`;
 }
 
+/**
+ * Format a number with precision based on magnitude, eliminating floating-point artifacts
+ */
+function formatNumberWithPrecision(value, maxDecimals = 3) {
+    if (isNaN(value)) return 'N/A';
+    
+    const absValue = Math.abs(value);
+    const decimals = absValue >= 100 ? 0 : absValue >= 10 ? 1 : absValue >= 1 ? 2 : 3;
+    
+    // Round at high precision to eliminate floating-point noise, then format
+    const shifted = Math.round(value * Math.pow(10, decimals + 10)) / Math.pow(10, decimals + 10);
+    return parseFloat(shifted.toFixed(decimals)).toString();
+}
+
 // ============================================================================
 // Coordinate and Transform Utilities
 // ============================================================================
@@ -513,7 +527,7 @@ function parseAndRenderHeatmap(rows, cellElement, kind) {
                     // Show tooltip with row label, col label, and value
                     const tooltip = getHeatmapTooltip();
                     let valueLabel = CURRENT_VIEW === 'metadata' ? 'Value' : 'Importance';
-                    let valueStr = isNaN(val) ?  'N/A' : (CURRENT_VIEW === 'metadata' ? val.toFixed(3) : (100 * val).toFixed(3) + '%');
+                    let valueStr = CURRENT_VIEW === 'metadata' ? formatNumberWithPrecision(val) : formatNumberWithPrecision(100 * val) + '%';
                     
                     let rowLabel = rowLabels[row] || 'Unknown';
                     let colLabel = colLabels[col] || 'Unknown';
@@ -597,7 +611,7 @@ function parseAndRenderHeatmap(rows, cellElement, kind) {
                     const val = matrix[0][row]; // Get value from first column
                     const label = rowLabels[row] || 'Unknown';
                     let valueLabel = CURRENT_VIEW === 'metadata' ? 'Value' : 'Importance';
-                    let valueStr = isNaN(val) ?  'N/A' : (CURRENT_VIEW === 'metadata' ? val.toFixed(3) : (100 * val).toFixed(3) + '%');
+                    let valueStr = CURRENT_VIEW === 'metadata' ? formatNumberWithPrecision(val) : formatNumberWithPrecision(100 * val) + '%';
 
                     // Determine label text and category based on label format
                     let displayLabel = label;
@@ -667,7 +681,7 @@ function parseAndRenderHeatmap(rows, cellElement, kind) {
                     const val = matrix[col][0]; // Get value from first row
                     const label = colLabels[col] || 'Unknown';
                     let valueLabel = CURRENT_VIEW === 'metadata' ? 'Value' : 'Importance';
-                    let valueStr = isNaN(val) ?  'N/A' : (CURRENT_VIEW === 'metadata' ? val.toFixed(3) : (100 * val).toFixed(3) + '%');
+                    let valueStr = CURRENT_VIEW === 'metadata' ? formatNumberWithPrecision(val) : formatNumberWithPrecision(100 * val) + '%';
 
                     // Determine label text and category based on label format
                     let displayLabel = label;
@@ -2171,13 +2185,14 @@ function createLegend(vmin, vmax) {
     const legendValueTexts = [];
     const labelcount = 5;
     const step = (vmax - vmin) / (labelcount - 1);
-    const magnitude = Math.pow(10, 2 - Math.floor(Math.log10((vmax - vmin) * 2)));
     for(let i = 0; i < labelcount; i++){
         const val = vmin + step * i;
         let pos = interpolateScale(i/(labelcount - 1), false, scaleType) * 90 + 5; // match the gradient stops
-        let displayVal = (Math.round(val*magnitude)/magnitude);
+        let displayVal;
         if(CURRENT_VIEW !== 'metadata') {
-            displayVal = (displayVal * 100) + '%';
+            displayVal = formatNumberWithPrecision(val * 100) + '%';
+        } else {
+            displayVal = formatNumberWithPrecision(val);
         }
         const textEl = legendSvg.append('text')
             .attr('x', `${pos}%`)
@@ -2212,10 +2227,11 @@ function updateLegendValues(rangeType) {
     
     const step = (range.max - range.min) / 4;
     const values = [range.min, range.min + step, range.min + step * 2, range.min + step * 3, range.max];
-    const magnitude = Math.pow(10, 2 - Math.floor(Math.log10((range.max - range.min) * 2)));
-    let displayValues = values.map(v => (Math.round(v * magnitude) / magnitude));
+    let displayValues;
     if(CURRENT_VIEW !== 'metadata') {
-        displayValues = displayValues.map(v => (v * 100) + '%');
+        displayValues = values.map(v => formatNumberWithPrecision(v * 100) + '%');
+    } else {
+        displayValues = values.map(v => formatNumberWithPrecision(v));
     }
     LEGEND_TEXT.forEach((textElement, i) => {
         d3.select(textElement).text(displayValues[i]);

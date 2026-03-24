@@ -288,6 +288,7 @@ async function visualizeLineGraphs() {
 
 // Function to update line graphs on zoom
 function updateLineGraphs(lineGraphSection, svgW){
+    if(CURRENT_VIEW !== 'main') return;
     const data = lineGraphSection._lineGraphData;
     if(!data) return;
     

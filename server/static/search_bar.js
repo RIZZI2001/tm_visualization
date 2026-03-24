@@ -281,7 +281,14 @@ function openSubMenu(data, key, depth, parentElement, pathPrefix = []) {
     menu.className = 'search-submenu';
     menu.dataset.depth = depth;
     
-    Object.keys(data).sort().forEach(itemKey => {
+    Object.keys(data).sort((a, b) => {
+        const numA = parseInt(a);
+        const numB = parseInt(b);
+        if (!isNaN(numA) && !isNaN(numB)) {
+            return numA - numB;
+        }
+        return a.localeCompare(b);
+    }).forEach(itemKey => {
         const itemValue = data[itemKey];
         const item = document.createElement('div');
         item.className = 'search-submenu-item';

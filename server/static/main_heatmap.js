@@ -429,9 +429,11 @@ async function visualizeHeatMap() {
         // Compute layout using active topics so expanded row scales correctly
         const miniRowCount = Y_CATEGORY === 'place' ? ACTIVE_SITES.length : ACTIVE_DATES.length;
         const totalRowCount = miniRowCount + ACTIVE_TOPICS_MAIN.length - 1; // minus 1 because expanded row is replaced by mini rows
-        const expandedRatio = Math.sqrt(miniRowCount / totalRowCount) * 2/3; 
+        let expandedRatio = Math.sqrt(miniRowCount / totalRowCount);
+        expandedRatio = (expandedRatio > 0.99) ? expandedRatio = 1 : expandedRatio * 2/3;
         const expandedH = expandedRatio * heatMapSection.clientHeight;
         const smallH = Math.max(1, (heatMapSection.clientHeight - expandedH) / Math.max(1, ACTIVE_TOPICS_MAIN.length - 1));
+        console.log(expandedRatio, expandedH, smallH);
 
         // compute new y positions for full row list (invisible rows get 0 height)
         const heights = new Array(rowCount).fill(0);

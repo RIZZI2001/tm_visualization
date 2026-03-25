@@ -14,9 +14,11 @@
   --accent-light: #ff9913;
 
   /* Bars */
-  --bar: #7d4ba8;
+/*   --bar: #7d4ba8;
   --positive-bar: #169e81;
-  --negative-bar: #a0271f;
+  --negative-bar: #a0271f; */
+  --positive-bar: #36C25B;
+  --negative-bar: #A40073;
 
   /* Text */
   --text: #1f2f3d;

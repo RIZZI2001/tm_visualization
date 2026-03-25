@@ -132,7 +132,7 @@ function createDualHeatmap(heatmapsArray, container) {
                 rect.addEventListener('mouseenter', (e) => {
                     const tooltip = document.createElement('div');
                     tooltip.style.cssText = 'position:fixed;background:rgba(0,0,0,0.9);color:white;padding:6px 10px;border-radius:3px;font-size:12px;font-family:monospace;pointer-events:none;z-index:10000';
-                    tooltip.textContent = `T${rowLabels[row]} ↔ T${col}: ${(!isNaN(val) ? val.toFixed(4) : 'N/A')}`;
+                    tooltip.textContent = `T${rowLabels[row]} ↔ T${col}: ${(!isNaN(val) ? (val * 100).toFixed(2) + '%' : 'N/A')}`;
                     tooltip.style.left = e.clientX + 8 + 'px';
                     tooltip.style.top = e.clientY + 8 + 'px';
                     document.body.appendChild(tooltip);

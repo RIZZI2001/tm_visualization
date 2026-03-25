@@ -271,11 +271,12 @@ def inter_topicSet_correlation_generation(topicSet1, topicSet2):
             # Get valid pairs (non-NaN in both topics)
             valid_mask = topics1_aligned[topic1_str].notna() & topics2_aligned[topic2_str].notna()
             if valid_mask.sum() >= 3:  # Need at least 3 valid pairs for correlation
-                # use cosine similarity instead of pearson correlation for inter-topicSet correlation
+                """ # use cosine similarity instead of pearson correlation for inter-topicSet correlation
                 corr = np.dot(
                     topics1_aligned.loc[valid_mask, topic1_str], 
                     topics2_aligned.loc[valid_mask, topic2_str]) / (np.linalg.norm(topics1_aligned.loc[valid_mask, topic1_str]) * np.linalg.norm(topics2_aligned.loc[valid_mask, topic2_str])
-                )
+                ) """
+                corr, _ = pearsonr(topics1_aligned.loc[valid_mask, topic1_str], topics2_aligned.loc[valid_mask, topic2_str])
                 correlation_matrix.loc[topic1_str, topic2_str] = corr
             else:
                 correlation_matrix.loc[topic1_str, topic2_str] = np.nan
@@ -334,16 +335,16 @@ if __name__ == "__main__":
     MIN_TOPICS = 2
     MAX_TOPICS = 30
 
-    taxonomy_levels_generation()
+    """ taxonomy_levels_generation()
     sites_generation()
     normalized_otus_generation()
     metadata_otu_correlation_generation()
-    metadata_metadata_correlation_generation()
+    metadata_metadata_correlation_generation() """
     for dim in range(MIN_TOPICS, MAX_TOPICS + 1):
         print(f"Processing dimensionality: {dim}")
-        topic_generation(dim)
+        """ topic_generation(dim)
         metadata_topic_correlation_generation(dim)
-        topic_topic_correlation_generation(dim)
+        topic_topic_correlation_generation(dim) """
         if dim > MIN_TOPICS:
             inter_topicSet_correlation_generation(dim, dim - 1)
     

@@ -4,6 +4,7 @@ var DATA_SET = null;
 var TOPIC_SET = null;
 var AXES_SWAPPED;
 var CURRENT_VIEW;
+var CURRENTLY_LOADING = false;
 
 var PLACE_CATEGORY;
 var PLACE_INVERTED;
@@ -196,6 +197,7 @@ async function loadSitesData() {
 }
 
 async function initializeMainView(historyEntry = true) {
+    CURRENTLY_LOADING = true;
     CURRENT_VIEW = 'main';
     localStorage.setItem('CURRENT_VIEW', 'main');
     if(historyEntry) {
@@ -215,6 +217,7 @@ async function initializeMainView(historyEntry = true) {
     
     await visualizeHeatMap();
     await visualizeLineGraphs();
+    CURRENTLY_LOADING = false;
 }
 
 (async function(){
@@ -320,9 +323,12 @@ placeSelect.addEventListener('change', async () => {
 const mainViewButton = document.getElementById('main-view-btn');
 const backBtn = document.getElementById('back-btn');
 backBtn.addEventListener('click', async () => {
+    if(CURRENTLY_LOADING) return; // Prevent multiple rapid clicks
+    console.log('History before going back:', HISTORY);
     if(HISTORY.length >= 2){
         HISTORY.pop();
         const previousState = HISTORY[HISTORY.length - 1];
+        console.log('Going back to previous state:', previousState);
         if(previousState.view === 'main'){
             await initializeMainView(false);
             mainViewButton.style.visibility = 'hidden';
@@ -341,6 +347,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeGlobalMovementHandler();
     
     mainViewButton.addEventListener('click', () => {
+        if(CURRENTLY_LOADING) return; // Prevent multiple rapid clicks
         initializeMainView();
         mainViewButton.style.visibility = 'hidden';
     });

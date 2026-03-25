@@ -17,6 +17,7 @@ let metadataCorrelationContainer, topicCorrelationContainer, otuCorrelationConta
 let metadataCorrelationTitle, topicCorrelationTitle, otuCorrelationTitle, compositionTitle
 
 async function showDetailView(detailType, setCheckBoxes, activeElements, historyEntry = true, customTitle = null, taxDepth = null) {
+    CURRENTLY_LOADING = true;
     console.log(detailType, setCheckBoxes, activeElements, historyEntry, customTitle, taxDepth);
     const chartContainer = document.getElementById('chart-container');
     const detailViewContainer = document.getElementById('detail-view-container');
@@ -46,7 +47,6 @@ async function showDetailView(detailType, setCheckBoxes, activeElements, history
         label = activeElements.map(id => nameOfTopic(id)).join(', ');
     } else if(detailType === 'metadata' || detailType === 'otu') {
         label = activeElements.join(', ');
-        label = label.charAt(0).toUpperCase() + label.slice(1);
     }
     // Update title with topic ID(s)
     localStorage.setItem('DETAIL_VIEW_CUSTOM_NAME', customTitle);
@@ -215,12 +215,12 @@ async function showDetailView(detailType, setCheckBoxes, activeElements, history
 
     chartContainer.style.visibility = 'hidden';
     detailViewContainer.style.display = 'flex';
-    console.log(DETAIL_MAP_MODE);
     if(DETAIL_MAP_MODE.map === 'heatmap') {    
         await createDetailViewGrid();
     } else {
         await openMap();
     }
+    CURRENTLY_LOADING = false;
 }
 
 function setupTopicRename(detailTitle, titleText) {

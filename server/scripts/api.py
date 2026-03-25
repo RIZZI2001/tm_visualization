@@ -573,8 +573,8 @@ def setTopicName(dataSet, topicSet, topicID, topicName, topic_names, up=True, do
 
 @app.post("/save-options")
 async def save_options(options: dict):
-    specs_path = BASE_DIR / "static" / "frontend-specs.json"
-    default_options_path = BASE_DIR / "static" / "default-frontend-specs.json"
+    specs_path = BASE_DIR / "static" / "options.json"
+    default_options_path = BASE_DIR / "static" / "options-default.json"
     
     try:
         with open(specs_path, 'w') as f:

@@ -31,15 +31,15 @@ function initOptionsHandler() {
  */
 async function showOptionsOverlay() {
     try {
-        // Fetch frontend-specs.json with cache-busting to get latest version
-        const response = await fetch('./frontend-specs.json?t=' + Date.now());
+        // Fetch options.json with cache-busting to get latest version
+        const response = await fetch('./options.json?t=' + Date.now());
         optionsData = await response.json();
         originalOptionsData = JSON.parse(JSON.stringify(optionsData));
         
         // Create and show overlay
         createOptionsOverlay();
     } catch (error) {
-        console.error('Error loading frontend specs:', error);
+        console.error('Error loading options:', error);
     }
 }
 

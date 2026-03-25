@@ -984,7 +984,7 @@ async function visualizeHeatMap() {
         });
     });
 
-    // Row hover expansion behavior (value comes from frontend SPECS)
+    // Row hover expansion behavior (value comes from SPECS)
     let activeExpanded = null;
     let expandedRowBounds = null;
     let expandedTitleOverlaySVG = null; // Dynamically created overlay for expanded row title

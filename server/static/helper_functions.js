@@ -1,4 +1,4 @@
-// Loader for frontend specifications (stored as JSON under server/static/frontend-specs.json)
+// Loader for frontend specifications (stored as JSON under server/static/options.json)
 async function loadDatasets() {
     try{
         const resp = await fetch('/data_sets', {cache: 'no-store'});
@@ -9,7 +9,7 @@ async function loadDatasets() {
 
 async function loadFrontendSpecs(){
     try{
-        const resp = await fetch('./frontend-specs.json', {cache: 'no-store'});
+        const resp = await fetch('./options.json', {cache: 'no-store'});
         if(resp.ok) return await resp.json();
     }catch(e){}
     return {};

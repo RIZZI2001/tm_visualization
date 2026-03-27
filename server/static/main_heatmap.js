@@ -391,8 +391,8 @@ async function visualizeHeatMap() {
     }
     
     function expandRow(i){
-        if(i < 0 || i >= rowCount || ACTIVE_SITES.length <= 1) return;
-        
+        if(!AXES_SWAPPED && (i < 0 || i >= rowCount || ACTIVE_SITES.length <= 1)) return;
+
         // Clear any pending fetch timeout
         if(fetchTimeout !== null){
             clearTimeout(fetchTimeout);
@@ -511,136 +511,6 @@ async function visualizeHeatMap() {
             
             // Generate fresh payload with current ACTIVE_SITES state
             const currentPayload = generateMainHeatMapPayload();
-
-            // Fetch averaged place data for 1D heatmap background
-            const avgPayload = generatePayload(currentPayload, {
-                id: { type: 'single', value: topicVal },
-                average: X_CATEGORY
-            });
-            
-            fetchCSVData(avgPayload).then(avgResp => {
-                if (!avgResp || !avgResp.csv || activeExpanded !== i) return;
-                
-                const avgRows = d3.csvParseRows(String(avgResp.csv).trim());
-                if(!avgRows || avgRows.length < 2) return;
-                
-                // Parse averaged values and place labels
-                const avgVals = [];
-                const avgLabels = [];
-                for(let r=1; r<avgRows.length; r++){
-                    // First column is the place label
-                    avgLabels.push(avgRows[r][0] || '');
-                    // Try all columns after the first (label) column for values
-                    for(let c=1; c<avgRows[r].length; c++){
-                        const v = parseFloat(avgRows[r][c]);
-                        if(!isNaN(v)){
-                            avgVals.push(v);
-                            break; // Only take first valid value per row
-                        }
-                    }
-                }
-
-                if(Y_CATEGORY === 'time') {setActiveDates(avgLabels);}
-                
-                if(avgVals.length === 0 || activeExpanded !== i) return;
-                
-                VALUE_RANGES.label = { min: Math.min(...avgVals), max: Math.max(...avgVals) };
-                const avgColor = createColorScale(VALUE_RANGES.label.min, VALUE_RANGES.label.max);
-                updateLegendValues('label');
-                
-                // Render 1D heatmap in the label background
-                if(yLabelGroups && activeExpanded === i){
-                    const labelGroup = d3.select(yLabelGroups.nodes()[i]);
-                    const bgGroup = labelGroup.select('g.place-heatmap-bg');
-                    bgGroup.selectAll('rect:not(.bg-rect)').remove();
-                    
-                    const labelContainerH = yLabelSection.clientHeight;
-                    const scaleFactor = labelContainerH / heatMapSection.clientHeight;
-                    const expandedLabelH = expandedH * scaleFactor;
-                    const cellH = expandedLabelH / avgVals.length;
-
-                    let accHeight = 0;
-                    const renderRows = avgVals.length;
-                    const cellSizes = Y_CATEGORY === 'place' ? PLACE_CELL_SIZES : TIME_CELL_SIZES;
-
-                    avgVals.forEach((val, idx) => {
-                        const customCellHeight = cellH  * cellSizes[idx];
-                        accHeight += customCellHeight;
-                        bgGroup.append('rect')
-                            .attr('x', 0)
-                            .attr('y', accHeight - customCellHeight)
-                            .attr('width', '100%')
-                            .attr('height', customCellHeight)
-                            .attr('fill', avgColor(val))
-                            .attr('opacity', 1)
-                            .attr('stroke', 'none');
-                    });
-                    
-                    // Move background group to back so it's behind border and text
-                    labelGroup.node().insertBefore(bgGroup.node(), labelGroup.node().firstChild);
-                    
-                    // Add vertical timeline if axes are swapped (replaces place labels)
-                    if(AXES_SWAPPED) {
-                        const labelGroup = d3.select(yLabelGroups.nodes()[i]);
-
-                        const timelineX = yLabelSection.clientWidth;
-                        const verticalTimeline = createTimeline(avgLabels, timelineX, expandedH, true);
-                        
-                        // Create container for vertical timeline in labels section
-                        const timelineGroup = labelGroup.selectAll('g.vertical-timeline').data([null]);
-                        const timelineEnter = timelineGroup.enter().append('g').attr('class', 'vertical-timeline');
-                        const timelineG = timelineGroup.merge(timelineEnter);
-                        timelineG.selectAll('*').remove();
-                        
-                        const scaleFactor = labelContainerH / heatMapSection.clientHeight;
-                        const expandedLabelH = expandedH * scaleFactor;
-                        
-                        timelineG.append(() => verticalTimeline.svg.node())
-                            .attr('transform', `translate(${timelineX - 82}, 0) scale(1, ${expandedLabelH / expandedH})`);
-                    } else {
-                        const placeLabelsGroup = labelGroup.selectAll('g.place-labels').data([null]);
-                        const placeLabelsEnter = placeLabelsGroup.enter().append('g').attr('class', 'place-labels');
-                        const placeLabelsG = placeLabelsGroup.merge(placeLabelsEnter);
-                        placeLabelsG.selectAll('*').remove();
-
-                        accHeight = 0;
-                        const labelCellSizes = Y_CATEGORY === 'place' ? PLACE_CELL_SIZES : (Y_CATEGORY === 'time' ? TIME_CELL_SIZES : null);
-
-                        avgLabels.forEach((label, idx) => {
-                            const customCellHeight = cellH  * labelCellSizes[idx];
-                            accHeight += customCellHeight;
-                            const placeFontSize = Math.max(8, Math.min(customCellHeight * 0.9, 16));
-                            // Use location name if available, otherwise fall back to original label
-                            const displayLabel = (locationNames && locationNames[idx]) ? locationNames[idx] : label;
-                            const textColor = hexToLightness(avgColor(avgVals[idx])) > 50 ? '#000000' : '#ffffff';
-                            const textElem = placeLabelsG.append('text')
-                                .attr('x', '98%')
-                                .attr('y', accHeight - customCellHeight * 0.65)
-                                .attr('dy', '0.35em')
-                                .attr('text-anchor', 'end')
-                                .style('font-size', `${placeFontSize}px`)
-                                .style('fill', textColor)
-                                .style('pointer-events', 'none')
-                                .style('max-width', `${yLabelSection.clientWidth * 0.9}px`)
-                                .text(displayLabel);
-                            
-                            // Check if text overflows and reduce font size if needed
-                            setTimeout(() => {
-                                const textNode = textElem.node();
-                                if (textNode && textNode.getComputedTextLength) {
-                                    const textLength = textNode.getComputedTextLength();
-                                    const maxLabelWidth = yLabelSection.clientWidth * 0.9;
-                                    if (textLength > maxLabelWidth) {
-                                        const scaleFactor = maxLabelWidth / textLength;
-                                        const newFontSize = Math.min(16, Math.max(10, placeFontSize * scaleFactor));
-                                        textElem.style('font-size', `${newFontSize}px`);
-                                    }
-                                }
-                            }, 0);
-                        });
-                    }
-                }
-            }).catch(() => {});
 
             // Fetch detail data with place breakdown
             const detailPayload = generatePayload(currentPayload, {
@@ -823,6 +693,91 @@ async function visualizeHeatMap() {
                     .attr('stroke', 'white')
                     .attr('stroke-width', 1)
                     .attr('pointer-events', 'none');
+
+                // Calculate averaged values from detail data using averageCSV
+                if(miniMat.length > 0 && miniLabelsY.length > 0) {
+                    const avgRows = averageCSV(miniRows, 'column');
+                    const avgVals = avgRows.slice(1).map(row => parseFloat(row[1])).filter(v => !isNaN(v));
+                    const avgLabels = miniLabelsY;
+                    const avgColor = createColorScale(Math.min(...avgVals), Math.max(...avgVals));
+                    
+                    VALUE_RANGES.label = { min: Math.min(...avgVals), max: Math.max(...avgVals) };
+                    updateLegendValues('label');
+                    
+                    // Render 1D heatmap in label background
+                    if(yLabelGroups && activeExpanded === i){
+                        const labelGroup = d3.select(yLabelGroups.nodes()[i]);
+                        const bgGroup = labelGroup.select('g.place-heatmap-bg');
+                        bgGroup.selectAll('rect:not(.bg-rect)').remove();
+                        
+                        const labelContainerH = yLabelSection.clientHeight;
+                        const scaleFactor = labelContainerH / heatMapSection.clientHeight;
+                        const expandedLabelH = expandedH * scaleFactor;
+                        const cellH = expandedLabelH / avgVals.length;
+                        const cellSizes = Y_CATEGORY === 'place' ? PLACE_CELL_SIZES : TIME_CELL_SIZES;
+
+                        let accHeight = 0;
+                        avgVals.forEach((val, idx) => {
+                            const customCellHeight = cellH * (cellSizes?.[idx] || 1);
+                            accHeight += customCellHeight;
+                            bgGroup.append('rect')
+                                .attr('x', 0)
+                                .attr('y', accHeight - customCellHeight)
+                                .attr('width', '100%')
+                                .attr('height', customCellHeight)
+                                .attr('fill', avgColor(val))
+                                .attr('opacity', 1)
+                                .attr('stroke', 'none');
+                        });
+                        
+                        labelGroup.node().insertBefore(bgGroup.node(), labelGroup.node().firstChild);
+                        
+                        if(AXES_SWAPPED) {
+                            const timelineX = yLabelSection.clientWidth;
+                            const verticalTimeline = createTimeline(avgLabels, timelineX, expandedH, true);
+                            const timelineGroup = labelGroup.selectAll('g.vertical-timeline').data([null]);
+                            const timelineG = timelineGroup.enter().append('g').attr('class', 'vertical-timeline').merge(timelineGroup);
+                            timelineG.selectAll('*').remove();
+                            timelineG.append(() => verticalTimeline.svg.node())
+                                .attr('transform', `translate(${timelineX - 82}, 0) scale(1, ${expandedLabelH / expandedH})`);
+                        } else {
+                            const placeLabelsGroup = labelGroup.selectAll('g.place-labels').data([null]);
+                            const placeLabelsG = placeLabelsGroup.enter().append('g').attr('class', 'place-labels').merge(placeLabelsGroup);
+                            placeLabelsG.selectAll('*').remove();
+
+                            const labelCellSizes = Y_CATEGORY === 'place' ? PLACE_CELL_SIZES : (Y_CATEGORY === 'time' ? TIME_CELL_SIZES : null);
+                            accHeight = 0;
+                            avgLabels.forEach((label, idx) => {
+                                const customCellHeight = cellH * (labelCellSizes?.[idx] || 1);
+                                accHeight += customCellHeight;
+                                const placeFontSize = Math.max(8, Math.min(customCellHeight * 0.9, 16));
+                                const displayLabel = (locationNames && locationNames[idx]) ? locationNames[idx] : label;
+                                const textColor = hexToLightness(avgColor(avgVals[idx])) > 50 ? '#000000' : '#ffffff';
+                                const textElem = placeLabelsG.append('text')
+                                    .attr('x', '98%')
+                                    .attr('y', accHeight - customCellHeight * 0.65)
+                                    .attr('dy', '0.35em')
+                                    .attr('text-anchor', 'end')
+                                    .style('font-size', `${placeFontSize}px`)
+                                    .style('fill', textColor)
+                                    .style('pointer-events', 'none')
+                                    .text(displayLabel);
+                                
+                                setTimeout(() => {
+                                    const textNode = textElem.node();
+                                    if (textNode?.getComputedTextLength) {
+                                        const textLength = textNode.getComputedTextLength();
+                                        const maxLabelWidth = yLabelSection.clientWidth * 0.9;
+                                        if (textLength > maxLabelWidth) {
+                                            const scale = maxLabelWidth / textLength;
+                                            textElem.style('font-size', `${Math.min(16, Math.max(10, placeFontSize * scale))}px`);
+                                        }
+                                    }
+                                }, 0);
+                            });
+                        }
+                    }
+                }
             }).catch(() => {});
         }, SPECS.fetchDelayExpandedRow); // Wait 150ms before fetching data
     }
